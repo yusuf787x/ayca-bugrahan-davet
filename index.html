@@ -189,42 +189,6 @@
     box-shadow:0 14px 34px -12px rgba(44,74,124,.45);
   }
 
-  /* ── BIRDS ─────────────────────────────────────── */
-  .bird{
-    position:absolute;z-index:2;pointer-events:none;
-    width:38px;height:20px;top:18%;left:0;
-    color:var(--ink);
-    animation:fly-1 32s linear infinite;
-  }
-  .bird path{animation:flap .9s ease-in-out infinite;transform-origin:center;transform-box:fill-box}
-  .bird.b2{top:26%;color:var(--blue);animation:fly-2 40s linear infinite 5s}
-  .bird.b2 path{animation-duration:.75s}
-  .bird.b3{top:11%;animation:fly-3 46s linear infinite 12s}
-  .bird.b3 path{animation-duration:1.1s}
-  .bird.b4{top:32%;color:var(--green);animation:fly-4 36s linear infinite 18s}
-  .bird.b4 path{animation-duration:.82s}
-  @keyframes fly-1{
-    0%{transform:translate(-12vw,0)}
-    50%{transform:translate(55vw,-18px)}
-    100%{transform:translate(118vw,10px)}
-  }
-  @keyframes fly-2{
-    0%{transform:translate(-12vw,0)}
-    50%{transform:translate(55vw,22px)}
-    100%{transform:translate(118vw,-8px)}
-  }
-  @keyframes fly-3{
-    0%{transform:translate(-12vw,0)}
-    50%{transform:translate(55vw,-22px)}
-    100%{transform:translate(118vw,14px)}
-  }
-  @keyframes fly-4{
-    0%{transform:translate(-12vw,0)}
-    50%{transform:translate(55vw,18px)}
-    100%{transform:translate(118vw,-6px)}
-  }
-  @keyframes flap{0%,100%{transform:scaleY(1)}50%{transform:scaleY(.4)}}
-
   /* ── SECTION ORNAMENT ──────────────────────────── */
   .ornament{
     display:flex;align-items:center;justify-content:center;gap:14px;
@@ -428,25 +392,36 @@
   footer .foot-flower circle[stroke]{stroke:rgba(245,236,217,.4)}
 
   /* ── GLOBAL FLOATING PETALS ──────────────────── */
-  /* high z-index so they drift visibly over the hero video and all sections */
-  .petals{position:fixed;inset:0;pointer-events:none;z-index:6;overflow:hidden}
+  /* high z-index + forced GPU layer so iOS Safari renders them
+     above the native <video> compositing layer */
+  .petals{
+    position:fixed;inset:0;
+    pointer-events:none;
+    z-index:6;
+    overflow:hidden;
+    transform:translate3d(0,0,0);
+    -webkit-transform:translate3d(0,0,0);
+    isolation:isolate;
+  }
   .petal{
     position:absolute;top:-8vh;
-    width:22px;height:28px;
+    width:24px;height:30px;
     opacity:0;
     will-change:transform,opacity;
+    -webkit-backface-visibility:hidden;
+    backface-visibility:hidden;
   }
   .petal svg{width:100%;height:100%;display:block}
-  .petal.p1{left:7%;  animation:drift 26s linear infinite 0s}
-  .petal.p2{left:19%; animation:drift 32s linear infinite -6s}
-  .petal.p3{left:33%; animation:drift 28s linear infinite -14s}
-  .petal.p4{left:47%; animation:drift 34s linear infinite -3s}
-  .petal.p5{left:61%; animation:drift 30s linear infinite -18s}
-  .petal.p6{left:75%; animation:drift 26s linear infinite -9s}
-  .petal.p7{left:89%; animation:drift 32s linear infinite -22s}
-  .petal.p8{left:14%; width:16px;height:22px; animation:drift 24s linear infinite -11s}
-  .petal.p9{left:54%; width:18px;height:24px; animation:drift 36s linear infinite -4s}
-  .petal.p10{left:82%;width:15px;height:20px; animation:drift 28s linear infinite -25s}
+  .petal.p1{left:7%;  animation:drift 18s linear infinite 0s}
+  .petal.p2{left:19%; animation:drift 22s linear infinite -4s}
+  .petal.p3{left:33%; animation:drift 20s linear infinite -10s}
+  .petal.p4{left:47%; animation:drift 24s linear infinite -2s}
+  .petal.p5{left:61%; animation:drift 21s linear infinite -13s}
+  .petal.p6{left:75%; animation:drift 19s linear infinite -7s}
+  .petal.p7{left:89%; animation:drift 23s linear infinite -16s}
+  .petal.p8{left:14%; width:18px;height:24px; animation:drift 17s linear infinite -8s}
+  .petal.p9{left:54%; width:20px;height:26px; animation:drift 25s linear infinite -3s}
+  .petal.p10{left:82%;width:18px;height:24px; animation:drift 20s linear infinite -18s}
 
   @keyframes drift{
     0%  {transform:translate3d(0,-10vh,0) rotate(0deg);  opacity:0}
@@ -544,8 +519,8 @@
     /* petals keep desktop sizes on mobile for visibility */
     .couple .floral-bl{width:clamp(54px,14vw,90px);bottom:24px}
     .details .sprig-r{width:clamp(60px,16vw,100px);top:80px}
-    .quote .bloom-r{width:90px;opacity:.45}
-    .quote .bloom-l{width:100px;opacity:.5}
+    .quote .bloom-r{width:110px;opacity:.65}
+    .quote .bloom-l{width:120px;opacity:.7}
   }
   @media (max-width:420px){
     .hero-video{object-position:50% 50%}
@@ -559,11 +534,13 @@
     *{animation:none!important;transition:none!important}
     .fade-in{opacity:1;transform:none}
     .illustration-bg{transform:none!important}
+    /* exception: keep petals gently drifting (very slow) so they remain part of the scene */
+    .petal{animation:drift 60s linear infinite!important}
   }
 
   /* print */
   @media print{
-    .lang-toggle,.bird,.action-buttons{display:none}
+    .lang-toggle,.action-buttons{display:none}
     body{background:#fff}
   }
 </style>
@@ -621,12 +598,6 @@
       })();
     </script>
     <div class="illustration-fallback" id="illoBg" hidden></div>
-
-    <!-- flying birds on top of the video -->
-    <svg class="bird b1" viewBox="0 0 40 20" aria-hidden="true"><path d="M3,12 Q10,4 18,12 M22,12 Q30,4 37,12" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>
-    <svg class="bird b2" viewBox="0 0 40 20" aria-hidden="true"><path d="M3,12 Q10,4 18,12 M22,12 Q30,4 37,12" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>
-    <svg class="bird b3" viewBox="0 0 40 20" aria-hidden="true"><path d="M3,12 Q10,4 18,12 M22,12 Q30,4 37,12" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
-    <svg class="bird b4" viewBox="0 0 40 20" aria-hidden="true"><path d="M3,12 Q10,4 18,12 M22,12 Q30,4 37,12" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>
   </div>
 
   <div class="hero-content">
