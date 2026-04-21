@@ -33,10 +33,14 @@
     font-family:'Manrope',system-ui,-apple-system,sans-serif;
     font-weight:400;
     line-height:1.6;
-    overflow-x:hidden;
+    /* overflow-x:clip — NOT hidden.  hidden makes body a scroll
+       container on iOS Safari, which breaks position:fixed
+       children (petals were disappearing behind the video). */
+    overflow-x:clip;
     -webkit-font-smoothing:antialiased;
     text-rendering:optimizeLegibility;
   }
+  html{overflow-x:clip}
   img{max-width:100%;display:block}
   button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   a{color:inherit}
@@ -249,12 +253,11 @@
     box-shadow:
       0 18px 45px -22px rgba(44,74,124,.4),
       0 3px 8px -4px rgba(44,74,124,.22);
-    transform:rotate(-2.2deg);
+    transform:rotate(-4deg);
     max-width:min(92%,440px);
     position:relative;
-    transition:transform .5s cubic-bezier(.2,.6,.2,1);
+    will-change:transform;
   }
-  .photo-frame:hover{transform:rotate(0) scale(1.015)}
   .photo-frame::before{
     content:'';position:absolute;top:-14px;left:50%;
     width:86px;height:26px;transform:translateX(-50%) rotate(-3deg);
@@ -412,25 +415,28 @@
     backface-visibility:hidden;
   }
   .petal svg{width:100%;height:100%;display:block}
-  .petal.p1{left:7%;  animation:drift 18s linear infinite 0s}
-  .petal.p2{left:19%; animation:drift 22s linear infinite -4s}
-  .petal.p3{left:33%; animation:drift 20s linear infinite -10s}
-  .petal.p4{left:47%; animation:drift 24s linear infinite -2s}
-  .petal.p5{left:61%; animation:drift 21s linear infinite -13s}
-  .petal.p6{left:75%; animation:drift 19s linear infinite -7s}
-  .petal.p7{left:89%; animation:drift 23s linear infinite -16s}
-  .petal.p8{left:14%; width:18px;height:24px; animation:drift 17s linear infinite -8s}
-  .petal.p9{left:54%; width:20px;height:26px; animation:drift 25s linear infinite -3s}
-  .petal.p10{left:82%;width:18px;height:24px; animation:drift 20s linear infinite -18s}
+  /* baseline animation — actual `left`, duration and delay are randomized via JS
+     on load so there are no visible columns / rows. */
+  .petal.p1,.petal.p2,.petal.p3,.petal.p4,.petal.p5,
+  .petal.p6,.petal.p7,.petal.p8,.petal.p9,.petal.p10{
+    animation-name:drift;
+    animation-iteration-count:infinite;
+    animation-timing-function:linear;
+  }
+  .petal.p8{width:18px;height:24px}
+  .petal.p9{width:20px;height:26px}
+  .petal.p10{width:18px;height:24px}
 
+  /* wide, wind-blown drift — sway up to ±70px so leaves never fall in straight lines */
   @keyframes drift{
-    0%  {transform:translate3d(0,-10vh,0) rotate(0deg);  opacity:0}
-    6%  {opacity:.9}
-    25% {transform:translate3d(22px,25vh,0) rotate(100deg)}
-    50% {transform:translate3d(-28px,55vh,0) rotate(200deg)}
-    75% {transform:translate3d(30px,85vh,0) rotate(300deg)}
+    0%  {transform:translate3d(0,-12vh,0) rotate(0deg);  opacity:0}
+    8%  {opacity:.9}
+    25% {transform:translate3d(60px,22vh,0) rotate(90deg)}
+    45% {transform:translate3d(-70px,48vh,0) rotate(190deg)}
+    65% {transform:translate3d(55px,72vh,0) rotate(260deg)}
+    85% {transform:translate3d(-40px,96vh,0) rotate(350deg)}
     94% {opacity:.9}
-    100%{transform:translate3d(-14px,115vh,0) rotate(420deg); opacity:0}
+    100%{transform:translate3d(20px,118vh,0) rotate(410deg); opacity:0}
   }
 
   /* ── SECTION DECORATIONS ─────────────────────── */
@@ -583,7 +589,7 @@
     <!-- animated watercolor courtyard as hero background -->
     <video class="hero-video" id="heroVideo"
            autoplay loop muted playsinline
-           preload="auto"
+           preload="metadata"
            poster="./assets/illustration.svg"
            data-src-desktop="./assets/courtyard.mp4"
            data-src-mobile="./assets/courtyard-mobile.mp4"></video>
@@ -1199,6 +1205,56 @@ if (heroVid) {
   document.addEventListener('touchstart', tryPlay, { once: true, passive: true });
   document.addEventListener('click', tryPlay, { once: true });
 }
+
+/* ────────────────────────────────────────────────
+   PETAL RANDOMIZATION — natural, non-columnar drift
+   each petal gets a random horizontal start, duration,
+   and animation phase so they never fall in a row.
+   ──────────────────────────────────────────────── */
+(function randomizePetals() {
+  const petals = document.querySelectorAll('.petal');
+  petals.forEach(p => {
+    const left = Math.random() * 96;            // 0–96%
+    const duration = 18 + Math.random() * 14;   // 18–32s
+    const delay = -(Math.random() * duration);  // start mid-cycle
+    p.style.left = left.toFixed(1) + '%';
+    p.style.animationDuration = duration.toFixed(1) + 's';
+    p.style.animationDelay = delay.toFixed(1) + 's';
+  });
+})();
+
+/* ────────────────────────────────────────────────
+   COUPLE PHOTO — scroll-driven tilt (replaces hover)
+   photo starts tilted and straightens as it scrolls
+   into view.  works on mobile where there's no hover.
+   ──────────────────────────────────────────────── */
+(function scrollTiltPhoto() {
+  const frame = document.querySelector('.photo-frame');
+  if (!frame || reduceMotion) return;
+  const wrap = frame.closest('.photo-wrap') || frame.parentElement;
+  let ticking = false;
+  const update = () => {
+    const r = wrap.getBoundingClientRect();
+    const vh = window.innerHeight;
+    // progress 0 -> 1 as element moves from bottom of viewport to center
+    let p = 1 - (r.top - vh * 0.25) / (vh * 0.55);
+    p = Math.max(0, Math.min(1, p));
+    const startAngle = -4;       // fully tilted when entering
+    const endAngle   = -0.5;     // almost straight when centred
+    const angle = startAngle + (endAngle - startAngle) * p;
+    const scale = 1 + p * 0.015; // gentle zoom-in
+    frame.style.transform = 'rotate(' + angle.toFixed(2) + 'deg) scale(' + scale.toFixed(3) + ')';
+    ticking = false;
+  };
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(update);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+  update();
+})();
 </script>
 </body>
 </html>
