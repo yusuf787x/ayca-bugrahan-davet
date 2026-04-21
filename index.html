@@ -415,14 +415,8 @@
     backface-visibility:hidden;
   }
   .petal svg{width:100%;height:100%;display:block}
-  /* baseline animation — actual `left`, duration and delay are randomized via JS
-     on load so there are no visible columns / rows. */
-  .petal.p1,.petal.p2,.petal.p3,.petal.p4,.petal.p5,
-  .petal.p6,.petal.p7,.petal.p8,.petal.p9,.petal.p10{
-    animation-name:drift;
-    animation-iteration-count:infinite;
-    animation-timing-function:linear;
-  }
+  /* per-petal sizes — timing is defined inline on each <span> element
+     (HTML-parsed so iOS Safari applies delays correctly from t=0). */
   .petal.p8{width:18px;height:24px}
   .petal.p9{width:20px;height:26px}
   .petal.p10{width:18px;height:24px}
@@ -553,28 +547,24 @@
 </head>
 <body>
 
-<!-- ── GLOBAL DRIFTING PETALS (fixed, full viewport) ── -->
+<!-- ── GLOBAL DRIFTING PETALS ──
+     Each petal has its full animation (left / duration / delay) as an
+     inline style so values are applied by the HTML parser itself.
+     Setting them via JS after parse is unreliable on iOS Safari:
+     the animation had already begun with default timing, so negative
+     delays were dropped and every petal fell from top at t=0 — which
+     looked like a "row of leaves" coming down.  Inline styles fix that. -->
 <div class="petals" aria-hidden="true">
-  <!-- terracotta petal -->
-  <span class="petal p1"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#c96f4a" opacity=".78" stroke="#2c4a7c" stroke-width=".7"/><path d="M12,4 Q10,15 12,26" stroke="#2c4a7c" stroke-width=".5" fill="none" opacity=".6"/></svg></span>
-  <!-- yellow petal -->
-  <span class="petal p2"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#e8c547" opacity=".8" stroke="#2c4a7c" stroke-width=".7"/><path d="M12,4 Q10,15 12,26" stroke="#2c4a7c" stroke-width=".5" fill="none" opacity=".6"/></svg></span>
-  <!-- green leaf -->
-  <span class="petal p3"><svg viewBox="0 0 24 30"><path d="M12,1 Q4,8 5,18 Q8,27 12,29 Q16,27 19,18 Q20,8 12,1 Z" fill="#7a9b5e" opacity=".75" stroke="#2c4a7c" stroke-width=".7"/><path d="M12,3 Q12,15 12,28" stroke="#2c4a7c" stroke-width=".6" fill="none" opacity=".7"/><path d="M12,12 L8,16 M12,18 L16,22" stroke="#2c4a7c" stroke-width=".4" opacity=".5"/></svg></span>
-  <!-- blue petal -->
-  <span class="petal p4"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#6fa8c7" opacity=".78" stroke="#2c4a7c" stroke-width=".7"/><path d="M12,4 Q10,15 12,26" stroke="#2c4a7c" stroke-width=".5" fill="none" opacity=".55"/></svg></span>
-  <!-- terracotta petal variant -->
-  <span class="petal p5"><svg viewBox="0 0 24 30"><path d="M12,2 Q3,9 4,19 Q7,27 12,28 Q17,27 20,19 Q21,9 12,2 Z" fill="#c96f4a" opacity=".75" stroke="#2c4a7c" stroke-width=".7"/></svg></span>
-  <!-- soft-pink petal -->
-  <span class="petal p6"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#e8a88c" opacity=".82" stroke="#2c4a7c" stroke-width=".7"/><path d="M12,4 Q10,15 12,26" stroke="#2c4a7c" stroke-width=".5" fill="none" opacity=".55"/></svg></span>
-  <!-- green leaf 2 -->
-  <span class="petal p7"><svg viewBox="0 0 24 30"><path d="M12,1 Q4,8 5,18 Q8,27 12,29 Q16,27 19,18 Q20,8 12,1 Z" fill="#5d7a47" opacity=".72" stroke="#2c4a7c" stroke-width=".7"/><path d="M12,3 Q12,15 12,28" stroke="#2c4a7c" stroke-width=".6" fill="none" opacity=".7"/></svg></span>
-  <!-- small yellow petal -->
-  <span class="petal p8"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#e8c547" opacity=".88" stroke="#2c4a7c" stroke-width=".6"/></svg></span>
-  <!-- small terracotta -->
-  <span class="petal p9"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#c96f4a" opacity=".75" stroke="#2c4a7c" stroke-width=".6"/></svg></span>
-  <!-- small yellow accent -->
-  <span class="petal p10"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#f0c85a" opacity=".85" stroke="#2c4a7c" stroke-width=".6"/></svg></span>
+  <span class="petal p1" style="left:9%;animation:drift 22s linear -2s infinite"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#c96f4a" opacity=".78" stroke="#2c4a7c" stroke-width=".7"/><path d="M12,4 Q10,15 12,26" stroke="#2c4a7c" stroke-width=".5" fill="none" opacity=".6"/></svg></span>
+  <span class="petal p2" style="left:24%;animation:drift 27s linear -15s infinite"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#e8c547" opacity=".8" stroke="#2c4a7c" stroke-width=".7"/><path d="M12,4 Q10,15 12,26" stroke="#2c4a7c" stroke-width=".5" fill="none" opacity=".6"/></svg></span>
+  <span class="petal p3" style="left:38%;animation:drift 19s linear -8s infinite"><svg viewBox="0 0 24 30"><path d="M12,1 Q4,8 5,18 Q8,27 12,29 Q16,27 19,18 Q20,8 12,1 Z" fill="#7a9b5e" opacity=".75" stroke="#2c4a7c" stroke-width=".7"/><path d="M12,3 Q12,15 12,28" stroke="#2c4a7c" stroke-width=".6" fill="none" opacity=".7"/><path d="M12,12 L8,16 M12,18 L16,22" stroke="#2c4a7c" stroke-width=".4" opacity=".5"/></svg></span>
+  <span class="petal p4" style="left:53%;animation:drift 24s linear -19s infinite"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#6fa8c7" opacity=".78" stroke="#2c4a7c" stroke-width=".7"/><path d="M12,4 Q10,15 12,26" stroke="#2c4a7c" stroke-width=".5" fill="none" opacity=".55"/></svg></span>
+  <span class="petal p5" style="left:67%;animation:drift 21s linear -5s infinite"><svg viewBox="0 0 24 30"><path d="M12,2 Q3,9 4,19 Q7,27 12,28 Q17,27 20,19 Q21,9 12,2 Z" fill="#c96f4a" opacity=".75" stroke="#2c4a7c" stroke-width=".7"/></svg></span>
+  <span class="petal p6" style="left:81%;animation:drift 26s linear -12s infinite"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#e8a88c" opacity=".82" stroke="#2c4a7c" stroke-width=".7"/><path d="M12,4 Q10,15 12,26" stroke="#2c4a7c" stroke-width=".5" fill="none" opacity=".55"/></svg></span>
+  <span class="petal p7" style="left:92%;animation:drift 20s linear -17s infinite"><svg viewBox="0 0 24 30"><path d="M12,1 Q4,8 5,18 Q8,27 12,29 Q16,27 19,18 Q20,8 12,1 Z" fill="#5d7a47" opacity=".72" stroke="#2c4a7c" stroke-width=".7"/><path d="M12,3 Q12,15 12,28" stroke="#2c4a7c" stroke-width=".6" fill="none" opacity=".7"/></svg></span>
+  <span class="petal p8" style="left:16%;animation:drift 23s linear -11s infinite"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#e8c547" opacity=".88" stroke="#2c4a7c" stroke-width=".6"/></svg></span>
+  <span class="petal p9" style="left:45%;animation:drift 28s linear -3s infinite"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#c96f4a" opacity=".75" stroke="#2c4a7c" stroke-width=".6"/></svg></span>
+  <span class="petal p10" style="left:74%;animation:drift 25s linear -21s infinite"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#f0c85a" opacity=".85" stroke="#2c4a7c" stroke-width=".6"/></svg></span>
 </div>
 
 <!-- ── LANGUAGE TOGGLE ───────────────────────────── -->
@@ -1205,23 +1195,6 @@ if (heroVid) {
   document.addEventListener('touchstart', tryPlay, { once: true, passive: true });
   document.addEventListener('click', tryPlay, { once: true });
 }
-
-/* ────────────────────────────────────────────────
-   PETAL RANDOMIZATION — natural, non-columnar drift
-   each petal gets a random horizontal start, duration,
-   and animation phase so they never fall in a row.
-   ──────────────────────────────────────────────── */
-(function randomizePetals() {
-  const petals = document.querySelectorAll('.petal');
-  petals.forEach(p => {
-    const left = Math.random() * 96;            // 0–96%
-    const duration = 18 + Math.random() * 14;   // 18–32s
-    const delay = -(Math.random() * duration);  // start mid-cycle
-    p.style.left = left.toFixed(1) + '%';
-    p.style.animationDuration = duration.toFixed(1) + 's';
-    p.style.animationDelay = delay.toFixed(1) + 's';
-  });
-})();
 
 /* ────────────────────────────────────────────────
    COUPLE PHOTO — scroll-driven tilt (replaces hover)
