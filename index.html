@@ -1189,57 +1189,49 @@ document.getElementById('langToggle').addEventListener('click', () => {
 applyLang(currentLang);
 
 /* ────────────────────────────────────────────────
-   BACKGROUND MUSIC
-   — browsers block unmuted autoplay, so we try to
-     play muted first, then unmute on first user
-     interaction (scroll, tap, click)
-   — the toggle button mutes/unmutes, state persists
-     in localStorage so choice sticks across reloads
+   BACKGROUND MUSIC — full volume, plays loud as soon
+   as browser policy permits (immediately on return
+   visits, on first interaction for fresh visits).
    ──────────────────────────────────────────────── */
 (function musicPlayer() {
   const audio = document.getElementById('bgMusic');
   const btn   = document.getElementById('musicToggle');
   if (!audio || !btn) return;
 
-  audio.volume = 0.42;
+  audio.volume = 1.0;
+  audio.muted  = false;
 
-  // user preference: default = playing with sound
-  let preferMuted = localStorage.getItem('musicMuted') === 'true';
-
-  function applyState(muted) {
-    preferMuted = muted;
-    audio.muted = muted;
-    btn.classList.toggle('muted', muted);
-    btn.setAttribute('aria-label', muted ? 'Musik anschalten' : 'Musik stummschalten');
-    btn.setAttribute('title',      muted ? 'Musik anschalten' : 'Musik stummschalten');
-    localStorage.setItem('musicMuted', muted ? 'true' : 'false');
+  function updateBtn() {
+    btn.classList.toggle('muted', audio.muted);
+    btn.setAttribute('aria-label', audio.muted ? 'Musik anschalten' : 'Musik stummschalten');
+    btn.setAttribute('title',      audio.muted ? 'Musik anschalten' : 'Musik stummschalten');
   }
 
-  // initial: start muted (always works) — real preference applied after first interaction
-  audio.muted = true;
-  audio.play().catch(() => {});
-
-  // when user first interacts, honor their saved preference (unmute if wanted)
-  let armed = false;
-  const onFirstTap = () => {
-    if (armed) return;
-    armed = true;
+  // try unmuted autoplay first (works if user has interacted with the site before)
+  audio.play().catch(() => {
+    // browser blocked it — play muted so something starts, then unmute on any interaction
+    audio.muted = true;
+    updateBtn();
     audio.play().catch(() => {});
-    applyState(preferMuted);
-  };
-  ['pointerdown','keydown','touchstart','scroll'].forEach(ev =>
-    document.addEventListener(ev, onFirstTap, { once: true, passive: true })
-  );
-
-  // button toggles mute state
-  btn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    applyState(!audio.muted);
-    audio.play().catch(() => {});
+    const unmute = () => {
+      audio.muted = false;
+      audio.play().catch(() => {});
+      updateBtn();
+    };
+    ['pointerdown','touchstart','click','keydown','scroll'].forEach(ev =>
+      document.addEventListener(ev, unmute, { once: true, passive: true })
+    );
   });
 
-  // set initial button appearance based on saved preference
-  btn.classList.toggle('muted', preferMuted);
+  // button: manual mute / unmute
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    audio.muted = !audio.muted;
+    audio.play().catch(() => {});
+    updateBtn();
+  });
+
+  updateBtn();
 })();
 
 /* ────────────────────────────────────────────────
