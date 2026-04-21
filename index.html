@@ -45,9 +45,47 @@
   button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   a{color:inherit}
 
+  /* ── TOP CONTROLS (music + language) ──────────── */
+  .top-controls{
+    position:fixed;top:18px;right:18px;z-index:100;
+    display:flex;align-items:center;gap:10px;
+  }
+
+  .music-toggle{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:42px;height:42px;
+    background:rgba(245,236,217,.95);
+    backdrop-filter:blur(10px) saturate(1.4);
+    -webkit-backdrop-filter:blur(10px) saturate(1.4);
+    border:1.5px solid var(--ink);
+    color:var(--ink);
+    border-radius:999px;
+    box-shadow:
+      0 12px 30px -10px rgba(44,74,124,.42),
+      0 3px 8px -3px rgba(44,74,124,.28);
+    transition:transform .3s cubic-bezier(.2,.6,.2,1),box-shadow .3s;
+    cursor:pointer;
+  }
+  .music-toggle:hover{
+    transform:translateY(-2px) scale(1.05);
+    box-shadow:0 16px 36px -10px rgba(44,74,124,.5),0 4px 10px -3px rgba(44,74,124,.32);
+  }
+  .music-toggle:active{transform:translateY(0) scale(.96)}
+  .music-toggle .music-icon{width:18px;height:18px;display:block}
+  .music-toggle .mute-slash{opacity:0;transition:opacity .25s}
+  .music-toggle.muted .mute-slash{opacity:1}
+  .music-toggle.muted .note-stem,
+  .music-toggle.muted .note-head{opacity:.45;transition:opacity .25s}
+  /* playing "pulse" when music is on */
+  .music-toggle:not(.muted) .note-head{animation:noteBeat 1.8s ease-in-out infinite}
+  .music-toggle:not(.muted) .note-head:nth-of-type(2){animation-delay:.35s}
+  @keyframes noteBeat{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-1.2px)}
+  }
+
   /* ── LANGUAGE TOGGLE ───────────────────────────── */
   .lang-toggle{
-    position:fixed;top:18px;right:18px;z-index:100;
     display:inline-flex;align-items:center;gap:11px;
     background:rgba(245,236,217,.95);
     backdrop-filter:blur(10px) saturate(1.4);
@@ -537,8 +575,11 @@
 
   /* ── MOBILE ───────────────────────────────────── */
   @media (max-width:640px){
-    .lang-toggle{top:12px;right:12px;padding:4px 12px 4px 4px;gap:8px;font-size:.6rem;letter-spacing:.14em}
+    .top-controls{top:12px;right:12px;gap:8px}
+    .lang-toggle{padding:4px 12px 4px 4px;gap:8px;font-size:.6rem;letter-spacing:.14em}
     .lang-toggle .flag{width:26px;height:18px;border-radius:4px}
+    .music-toggle{width:36px;height:36px}
+    .music-toggle .music-icon{width:16px;height:16px}
     .eyebrow{letter-spacing:.28em;margin-bottom:22px}
     .names{margin-bottom:26px}
     .info-row{grid-template-columns:1fr;gap:4px;padding:14px 0}
@@ -605,11 +646,26 @@
   <span class="petal p10"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#7a9b5e" opacity=".76" stroke="#2c4a7c" stroke-width=".6"/></svg></span>
 </div>
 
-<!-- ── LANGUAGE TOGGLE ───────────────────────────── -->
-<button class="lang-toggle" id="langToggle" aria-label="Sprache wechseln / Dili değiştir" title="Switch language">
-  <span class="flag" id="flagEl" aria-hidden="true"></span>
-  <span class="lang-label" id="langLabel">Deutsch</span>
-</button>
+<!-- ── BACKGROUND MUSIC ─────────────────────────── -->
+<audio id="bgMusic" loop preload="auto">
+  <source src="./assets/music.mp3" type="audio/mpeg" />
+</audio>
+
+<!-- ── TOP RIGHT CONTROLS (music + language) ───── -->
+<div class="top-controls">
+  <button class="music-toggle" id="musicToggle" type="button" aria-label="Musik stummschalten" title="Musik stummschalten">
+    <svg class="music-icon" viewBox="0 0 24 24" aria-hidden="true">
+      <path class="note-stem" d="M9 17V5.5l10-2V15" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <ellipse class="note-head" cx="6" cy="17" rx="3" ry="2.4" fill="currentColor"/>
+      <ellipse class="note-head" cx="16" cy="15" rx="3" ry="2.4" fill="currentColor"/>
+      <line class="mute-slash" x1="3" y1="21" x2="21" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+  </button>
+  <button class="lang-toggle" id="langToggle" aria-label="Sprache wechseln / Dili değiştir" title="Switch language">
+    <span class="flag" id="flagEl" aria-hidden="true"></span>
+    <span class="lang-label" id="langLabel">Deutsch</span>
+  </button>
+</div>
 
 <!-- ── HERO ──────────────────────────────────────── -->
 <section class="hero">
@@ -831,7 +887,7 @@
       <img src="./couple.jpeg" alt="Ayça Feza &amp; Buğrahan" loading="lazy" />
     </div>
   </div>
-  <p class="caption fade-in" data-i18n="photoCaption">Bir yol, bir gönül…</p>
+  <p class="caption fade-in" data-i18n="photoCaption">İki gönül, bir yol</p>
 </section>
 
 <!-- ── DETAILS ───────────────────────────────────── -->
@@ -1046,7 +1102,7 @@ const i18n = {
     saveDate:      'TARİHİ KAYDEDİN',
     cdTitle:       'Geri Sayım',
     days:          'Gün',  hours: 'Saat',  mins: 'Dakika',  secs: 'Saniye',
-    photoCaption:  'Bir yol, bir gönül…',
+    photoCaption:  'İki gönül, bir yol',
     detailsTitle:  'Kız İsteme & Nişan',
     party:         'Bahçe Partisi',
     loc: 'KONUM',  date: 'TARİH',  time: 'SAAT',
@@ -1068,7 +1124,7 @@ const i18n = {
     saveDate:      'SAVE THE DATE',
     cdTitle:       'Countdown',
     days:          'Tage', hours: 'Stunden', mins: 'Minuten', secs: 'Sekunden',
-    photoCaption:  'Ein Weg, ein Herz…',
+    photoCaption:  'Zwei Herzen, ein Weg',
     detailsTitle:  'Kız İsteme & Verlobung',
     party:         'Gartenfeier',
     loc: 'ORT',    date: 'DATUM',  time: 'UHRZEIT',
@@ -1131,6 +1187,60 @@ document.getElementById('langToggle').addEventListener('click', () => {
 });
 
 applyLang(currentLang);
+
+/* ────────────────────────────────────────────────
+   BACKGROUND MUSIC
+   — browsers block unmuted autoplay, so we try to
+     play muted first, then unmute on first user
+     interaction (scroll, tap, click)
+   — the toggle button mutes/unmutes, state persists
+     in localStorage so choice sticks across reloads
+   ──────────────────────────────────────────────── */
+(function musicPlayer() {
+  const audio = document.getElementById('bgMusic');
+  const btn   = document.getElementById('musicToggle');
+  if (!audio || !btn) return;
+
+  audio.volume = 0.42;
+
+  // user preference: default = playing with sound
+  let preferMuted = localStorage.getItem('musicMuted') === 'true';
+
+  function applyState(muted) {
+    preferMuted = muted;
+    audio.muted = muted;
+    btn.classList.toggle('muted', muted);
+    btn.setAttribute('aria-label', muted ? 'Musik anschalten' : 'Musik stummschalten');
+    btn.setAttribute('title',      muted ? 'Musik anschalten' : 'Musik stummschalten');
+    localStorage.setItem('musicMuted', muted ? 'true' : 'false');
+  }
+
+  // initial: start muted (always works) — real preference applied after first interaction
+  audio.muted = true;
+  audio.play().catch(() => {});
+
+  // when user first interacts, honor their saved preference (unmute if wanted)
+  let armed = false;
+  const onFirstTap = () => {
+    if (armed) return;
+    armed = true;
+    audio.play().catch(() => {});
+    applyState(preferMuted);
+  };
+  ['pointerdown','keydown','touchstart','scroll'].forEach(ev =>
+    document.addEventListener(ev, onFirstTap, { once: true, passive: true })
+  );
+
+  // button toggles mute state
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    applyState(!audio.muted);
+    audio.play().catch(() => {});
+  });
+
+  // set initial button appearance based on saved preference
+  btn.classList.toggle('muted', preferMuted);
+})();
 
 /* ────────────────────────────────────────────────
    COUNTDOWN — live, jede Sekunde
