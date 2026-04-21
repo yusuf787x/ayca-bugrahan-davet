@@ -445,7 +445,7 @@
   .section-deco{
     position:absolute;
     pointer-events:none;
-    z-index:0;
+    z-index:4;
   }
   .sway-a{animation:sway-a 9s ease-in-out infinite;transform-origin:top center}
   .sway-b{animation:sway-b 11s ease-in-out infinite;transform-origin:top center}
@@ -482,8 +482,18 @@
   .countdown .sprig-tiny-l{bottom:30px;left:5%;width:clamp(50px,7vw,80px);opacity:.65}
   .countdown .sprig-tiny-r{bottom:30px;right:5%;width:clamp(50px,7vw,80px);opacity:.65;transform:scaleX(-1)}
 
-  /* footer extra flower */
-  footer .foot-flower{position:absolute;top:-22px;left:50%;transform:translateX(-50%);width:44px;height:44px;opacity:.85}
+  /* footer extra flower — inside the footer, above the gradient */
+  footer .foot-flower{
+    position:absolute;
+    top:22px;
+    left:50%;margin-left:-28px; /* robust centering: doesn't clash with bob transform */
+    width:56px;height:56px;
+    opacity:.95;
+    z-index:5;
+  }
+  @media (max-width:640px){
+    footer .foot-flower{top:18px;margin-left:-24px;width:48px;height:48px}
+  }
 
   /* ── SCROLL-ANIMATIONS ────────────────────────── */
   .fade-in{opacity:0;transform:translateY(22px);transition:opacity 1s cubic-bezier(.2,.6,.2,1),transform 1s cubic-bezier(.2,.6,.2,1)}
@@ -505,14 +515,27 @@
     .info-val{font-size:1.06rem}
     .info-card{padding:36px 26px}
     .photo-frame{padding:12px 12px 42px}
-    .hero-video{opacity:.58}
+    /* show the WHOLE video on mobile so the birds are visible */
+    .hero-video{
+      inset:0;
+      width:100%;height:100%;
+      object-fit:contain;
+      object-position:50% 22%;
+      opacity:.85;
+    }
     .illustration-fallback{opacity:.45}
     .cd-box{padding:16px 10px 12px}
     .action-btn{width:100%;max-width:300px}
-    .petal.p3,.petal.p5,.petal.p7,.petal.p9,.petal.p10{display:none}
-    .couple .floral-bl,.details .sprig-r{display:none}
-    .quote .bloom-r{width:80px;opacity:.4}
-    .quote .bloom-l{width:90px;opacity:.45}
+    /* all petals and decos keep drifting on mobile — slightly smaller */
+    .petal{width:18px;height:24px}
+    .petal.p8,.petal.p10{width:13px;height:18px}
+    .couple .floral-bl{width:clamp(54px,14vw,90px);bottom:24px}
+    .details .sprig-r{width:clamp(60px,16vw,100px);top:80px}
+    .quote .bloom-r{width:90px;opacity:.45}
+    .quote .bloom-l{width:100px;opacity:.5}
+  }
+  @media (max-width:420px){
+    .hero-video{object-position:50% 18%}
   }
   @media (max-width:420px){
     .cd-boxes{gap:8px}
