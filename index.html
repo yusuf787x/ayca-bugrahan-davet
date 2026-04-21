@@ -9,7 +9,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600&family=Dancing+Script:wght@500;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600&family=Dancing+Script:wght@500;600&family=Great+Vibes&display=swap" rel="stylesheet" />
 
 <style>
   :root{
@@ -157,14 +157,14 @@
     margin-bottom:28px;
   }
   .names{
-    font-family:'Cormorant Garamond',serif;
-    font-style:italic;font-weight:500;
-    font-size:clamp(3rem,7vw,6.8rem);
-    line-height:.98;letter-spacing:-.01em;
+    font-family:'Great Vibes','Cormorant Garamond',cursive;
+    font-style:normal;font-weight:400;
+    font-size:clamp(3.6rem,9vw,8rem);
+    line-height:1.05;letter-spacing:0;
     color:var(--ink);
     margin-bottom:32px;
   }
-  .names .amp{color:var(--terra);font-weight:400;margin:0 .08em}
+  .names .amp{color:var(--terra);font-weight:400;margin:0 .04em;font-size:.95em}
   .names .break{display:block}
   .hero-meta{
     font-size:clamp(.92rem,1.3vw,1.02rem);
@@ -280,9 +280,9 @@
   /* ── DETAILS ───────────────────────────────────── */
   .details{padding:80px 24px 100px;text-align:center;position:relative}
   .details-title{
-    font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;
-    font-size:clamp(2.2rem,5.2vw,3.8rem);
-    line-height:1.08;margin-bottom:10px;
+    font-family:'Great Vibes','Cormorant Garamond',cursive;font-weight:400;
+    font-size:clamp(2.8rem,6.6vw,4.8rem);
+    line-height:1.1;margin-bottom:10px;
   }
   .details-subtitle{
     font-size:.82rem;letter-spacing:.34em;text-transform:uppercase;
@@ -332,6 +332,47 @@
   .action-btn.filled{background:var(--ink);color:var(--bg)}
   .action-btn.filled:hover{background:transparent;color:var(--ink)}
 
+  /* ── ROUTE MODAL (Apple users) ───────────────── */
+  .route-modal{
+    position:fixed;inset:0;z-index:200;
+    background:rgba(44,74,124,.55);
+    backdrop-filter:blur(6px);
+    -webkit-backdrop-filter:blur(6px);
+    display:flex;align-items:center;justify-content:center;
+    padding:24px;
+    opacity:0;
+    transition:opacity .3s ease;
+  }
+  .route-modal.visible{opacity:1}
+  .route-modal[hidden]{display:none}
+  .route-card{
+    background:var(--bg);
+    border:1.5px solid var(--ink);
+    border-radius:20px;
+    padding:32px 26px 20px;
+    max-width:360px;width:100%;
+    display:flex;flex-direction:column;gap:12px;
+    transform:translateY(16px) scale(.96);
+    transition:transform .35s cubic-bezier(.2,.6,.2,1);
+    box-shadow:0 22px 50px -20px rgba(44,74,124,.5);
+  }
+  .route-modal.visible .route-card{transform:translateY(0) scale(1)}
+  .route-title{
+    text-align:center;
+    font-size:.74rem;letter-spacing:.28em;text-transform:uppercase;
+    color:var(--ink-soft);font-weight:500;
+    margin-bottom:10px;
+  }
+  .route-pick{text-align:center;display:block}
+  .route-close{
+    margin-top:4px;padding:10px 0;
+    font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--ink-soft);font-weight:500;
+    background:none;border:none;cursor:pointer;
+    transition:color .2s;
+  }
+  .route-close:hover{color:var(--ink)}
+
   /* ── QUOTE ─────────────────────────────────────── */
   .quote{padding:60px 24px 90px;text-align:center}
   .quote blockquote{max-width:680px;margin:0 auto;position:relative}
@@ -346,9 +387,12 @@
     line-height:1.4;margin-bottom:22px;
   }
   .quote-trans{
-    font-size:.95rem;color:var(--ink-soft);
-    font-weight:300;font-style:italic;margin-bottom:28px;
-    max-width:540px;margin-inline:auto;
+    font-family:'Great Vibes','Cormorant Garamond',cursive;
+    font-weight:400;
+    font-size:clamp(2rem,4.8vw,3.4rem);
+    line-height:1.2;
+    color:var(--ink);
+    max-width:720px;margin-inline:auto;
   }
   .quote cite{
     display:block;
@@ -479,11 +523,17 @@
   /* ── SCROLL-ANIMATIONS ────────────────────────── */
   .fade-in{opacity:0;transform:translateY(22px);transition:opacity 1s cubic-bezier(.2,.6,.2,1),transform 1s cubic-bezier(.2,.6,.2,1)}
   .fade-in.visible{opacity:1;transform:none}
-  .hero-content .fade-in{transition-delay:.1s}
-  .hero-content .fade-in:nth-child(2){transition-delay:.25s}
-  .hero-content .fade-in:nth-child(3){transition-delay:.4s}
-  .hero-content .fade-in:nth-child(4){transition-delay:.52s}
-  .hero-content .fade-in:nth-child(5){transition-delay:.65s}
+  /* hero text fades in slowly AFTER the video scene is already visible —
+     longer transition + staggered later delays so the user first
+     takes in the scene, then the text settles in gracefully */
+  .hero-content .fade-in{
+    transform:translateY(18px);
+    transition:opacity 2.2s cubic-bezier(.2,.6,.2,1),transform 2.2s cubic-bezier(.2,.6,.2,1);
+  }
+  .hero-content .fade-in:nth-child(1){transition-delay:1.0s}
+  .hero-content .fade-in:nth-child(2){transition-delay:1.5s}
+  .hero-content .fade-in:nth-child(3){transition-delay:2.1s}
+  .hero-content .fade-in:nth-child(4){transition-delay:2.7s}
 
   /* ── MOBILE ───────────────────────────────────── */
   @media (max-width:640px){
@@ -506,7 +556,9 @@
     .action-btn{width:100%;max-width:300px}
     /* petals keep desktop sizes on mobile for visibility */
     .couple .floral-bl{width:clamp(54px,14vw,90px);bottom:24px}
-    .details .sprig-r{width:clamp(60px,16vw,100px);top:80px}
+    /* hide the hanging branches next to "Kız İsteme & Nişan" on mobile —
+       too cramped on narrow screens, heading stands cleaner on its own */
+    .details .sprig-l,.details .sprig-r{display:none}
     .quote .bloom-r{width:110px;opacity:.65}
     .quote .bloom-l{width:120px;opacity:.7}
   }
@@ -541,16 +593,16 @@
      synchronized row.  A JS engine sidesteps the animation
      subsystem completely and works identically on every browser. -->
 <div class="petals" aria-hidden="true">
-  <span class="petal p1"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#c96f4a" opacity=".78" stroke="#2c4a7c" stroke-width=".7"/><path d="M12,4 Q10,15 12,26" stroke="#2c4a7c" stroke-width=".5" fill="none" opacity=".6"/></svg></span>
-  <span class="petal p2"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#e8c547" opacity=".8" stroke="#2c4a7c" stroke-width=".7"/><path d="M12,4 Q10,15 12,26" stroke="#2c4a7c" stroke-width=".5" fill="none" opacity=".6"/></svg></span>
-  <span class="petal p3"><svg viewBox="0 0 24 30"><path d="M12,1 Q4,8 5,18 Q8,27 12,29 Q16,27 19,18 Q20,8 12,1 Z" fill="#7a9b5e" opacity=".75" stroke="#2c4a7c" stroke-width=".7"/><path d="M12,3 Q12,15 12,28" stroke="#2c4a7c" stroke-width=".6" fill="none" opacity=".7"/><path d="M12,12 L8,16 M12,18 L16,22" stroke="#2c4a7c" stroke-width=".4" opacity=".5"/></svg></span>
-  <span class="petal p4"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#6fa8c7" opacity=".78" stroke="#2c4a7c" stroke-width=".7"/><path d="M12,4 Q10,15 12,26" stroke="#2c4a7c" stroke-width=".5" fill="none" opacity=".55"/></svg></span>
-  <span class="petal p5"><svg viewBox="0 0 24 30"><path d="M12,2 Q3,9 4,19 Q7,27 12,28 Q17,27 20,19 Q21,9 12,2 Z" fill="#c96f4a" opacity=".75" stroke="#2c4a7c" stroke-width=".7"/></svg></span>
-  <span class="petal p6"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#e8a88c" opacity=".82" stroke="#2c4a7c" stroke-width=".7"/><path d="M12,4 Q10,15 12,26" stroke="#2c4a7c" stroke-width=".5" fill="none" opacity=".55"/></svg></span>
-  <span class="petal p7"><svg viewBox="0 0 24 30"><path d="M12,1 Q4,8 5,18 Q8,27 12,29 Q16,27 19,18 Q20,8 12,1 Z" fill="#5d7a47" opacity=".72" stroke="#2c4a7c" stroke-width=".7"/><path d="M12,3 Q12,15 12,28" stroke="#2c4a7c" stroke-width=".6" fill="none" opacity=".7"/></svg></span>
-  <span class="petal p8"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#e8c547" opacity=".88" stroke="#2c4a7c" stroke-width=".6"/></svg></span>
-  <span class="petal p9"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#c96f4a" opacity=".75" stroke="#2c4a7c" stroke-width=".6"/></svg></span>
-  <span class="petal p10"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#f0c85a" opacity=".85" stroke="#2c4a7c" stroke-width=".6"/></svg></span>
+  <span class="petal p1"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#7a9b5e" opacity=".82" stroke="#2c4a7c" stroke-width=".7"/><path d="M12,4 Q10,15 12,26" stroke="#2c4a7c" stroke-width=".5" fill="none" opacity=".6"/></svg></span>
+  <span class="petal p2"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#7a9b5e" opacity=".78" stroke="#2c4a7c" stroke-width=".7"/><path d="M12,4 Q10,15 12,26" stroke="#2c4a7c" stroke-width=".5" fill="none" opacity=".6"/></svg></span>
+  <span class="petal p3"><svg viewBox="0 0 24 30"><path d="M12,1 Q4,8 5,18 Q8,27 12,29 Q16,27 19,18 Q20,8 12,1 Z" fill="#7a9b5e" opacity=".85" stroke="#2c4a7c" stroke-width=".7"/><path d="M12,3 Q12,15 12,28" stroke="#2c4a7c" stroke-width=".6" fill="none" opacity=".7"/><path d="M12,12 L8,16 M12,18 L16,22" stroke="#2c4a7c" stroke-width=".4" opacity=".5"/></svg></span>
+  <span class="petal p4"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#7a9b5e" opacity=".75" stroke="#2c4a7c" stroke-width=".7"/><path d="M12,4 Q10,15 12,26" stroke="#2c4a7c" stroke-width=".5" fill="none" opacity=".55"/></svg></span>
+  <span class="petal p5"><svg viewBox="0 0 24 30"><path d="M12,2 Q3,9 4,19 Q7,27 12,28 Q17,27 20,19 Q21,9 12,2 Z" fill="#7a9b5e" opacity=".8" stroke="#2c4a7c" stroke-width=".7"/></svg></span>
+  <span class="petal p6"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#7a9b5e" opacity=".72" stroke="#2c4a7c" stroke-width=".7"/><path d="M12,4 Q10,15 12,26" stroke="#2c4a7c" stroke-width=".5" fill="none" opacity=".55"/></svg></span>
+  <span class="petal p7"><svg viewBox="0 0 24 30"><path d="M12,1 Q4,8 5,18 Q8,27 12,29 Q16,27 19,18 Q20,8 12,1 Z" fill="#7a9b5e" opacity=".88" stroke="#2c4a7c" stroke-width=".7"/><path d="M12,3 Q12,15 12,28" stroke="#2c4a7c" stroke-width=".6" fill="none" opacity=".7"/></svg></span>
+  <span class="petal p8"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#7a9b5e" opacity=".78" stroke="#2c4a7c" stroke-width=".6"/></svg></span>
+  <span class="petal p9"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#7a9b5e" opacity=".82" stroke="#2c4a7c" stroke-width=".6"/></svg></span>
+  <span class="petal p10"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#7a9b5e" opacity=".76" stroke="#2c4a7c" stroke-width=".6"/></svg></span>
 </div>
 
 <!-- ── LANGUAGE TOGGLE ───────────────────────────── -->
@@ -589,8 +641,7 @@
       <span class="amp">&amp;</span>
       <span class="break">Buğrahan</span>
     </h1>
-    <p class="hero-meta fade-in" data-i18n="heroDate">27 Haziran 2026 Cumartesi</p>
-    <p class="hero-meta last fade-in" data-i18n="heroLoc">Amselweg 10 · 40878 Ratingen</p>
+    <p class="hero-meta last fade-in" data-i18n="heroDate">27 Haziran 2026 Cumartesi</p>
     <a class="cta fade-in" href="#details" data-i18n="saveDate">TARİHİ KAYDEDİN</a>
   </div>
 </section>
@@ -872,13 +923,25 @@
   </div>
 
   <div class="action-buttons fade-in">
-    <a class="action-btn"
-       href="https://www.google.com/maps/search/?api=1&query=Amselweg+10+40878+Ratingen"
-       target="_blank" rel="noopener noreferrer"
-       data-i18n="directions">NASIL GİDİLİR</a>
+    <button class="action-btn" id="routeBtn" type="button" data-i18n="directions">NASIL GİDİLİR</button>
     <button class="action-btn filled" id="addToCal" type="button" data-i18n="addToCal">TAKVİME EKLE</button>
   </div>
 </section>
+
+<!-- ── ROUTE MODAL (Apple users see this on click) ── -->
+<div class="route-modal" id="routeModal" hidden role="dialog" aria-modal="true" aria-labelledby="routeTitle">
+  <div class="route-card">
+    <p class="route-title" id="routeTitle" data-i18n="chooseMaps">HARİTA SEÇİN</p>
+    <a class="action-btn filled route-pick"
+       href="https://www.google.com/maps/search/?api=1&query=Amselweg+10+40878+Ratingen"
+       target="_blank" rel="noopener noreferrer">Google Maps</a>
+    <a class="action-btn filled route-pick"
+       href="https://maps.apple.com/?q=Amselweg+10+40878+Ratingen"
+       target="_blank" rel="noopener noreferrer"
+       data-i18n="appleMaps">Apple Haritalar</a>
+    <button class="route-close" id="routeClose" type="button" data-i18n="cancel">İPTAL</button>
+  </div>
+</div>
 
 <!-- ── QUOTE ─────────────────────────────────────── -->
 <section class="quote">
@@ -921,10 +984,7 @@
   </svg>
 
   <blockquote>
-    <span class="marks fade-in">&ldquo;</span>
-    <p class="quote-orig fade-in">İki dünyada da tek istediğim sen.</p>
     <p class="quote-trans fade-in" data-i18n="quoteTrans">Dünümüz, bugünümüz, yarınımız — seninle.</p>
-    <cite class="fade-in">— Mevlâna Celâleddîn-i Rûmî</cite>
   </blockquote>
 </section>
 
@@ -992,6 +1052,9 @@ const i18n = {
     loc: 'KONUM',  date: 'TARİH',  time: 'SAAT',
     dateVal:       '27 Haziran 2026 Cumartesi',
     directions:    'NASIL GİDİLİR',
+    chooseMaps:    'HARİTA SEÇİN',
+    appleMaps:     'Apple Haritalar',
+    cancel:        'İPTAL',
     addToCal:      'TAKVİME EKLE',
     quoteTrans:    'Dünümüz, bugünümüz, yarınımız — seninle.',
     footerDate:    '27 Haziran 2026',
@@ -1011,8 +1074,11 @@ const i18n = {
     loc: 'ORT',    date: 'DATUM',  time: 'UHRZEIT',
     dateVal:       'Samstag, 27. Juni 2026',
     directions:    'ROUTE PLANEN',
+    chooseMaps:    'KARTE WÄHLEN',
+    appleMaps:     'Apple Karten',
+    cancel:        'ABBRECHEN',
     addToCal:      'IN KALENDER SPEICHERN',
-    quoteTrans:    '„In beiden Welten bist du alles, was ich will."',
+    quoteTrans:    'Unser Gestern, unser Heute, unser Morgen — mit dir.',
     footerDate:    '27. Juni 2026',
     langBtn:       'TR',
   },
@@ -1137,6 +1203,47 @@ function downloadICS() {
   setTimeout(() => URL.revokeObjectURL(url), 1500);
 }
 document.getElementById('addToCal').addEventListener('click', downloadICS);
+
+/* ────────────────────────────────────────────────
+   ROUTE BUTTON — Apple devices get a maps picker,
+   everyone else opens Google Maps directly
+   ──────────────────────────────────────────────── */
+(function routeButton() {
+  const btn      = document.getElementById('routeBtn');
+  const modal    = document.getElementById('routeModal');
+  const closeBtn = document.getElementById('routeClose');
+  if (!btn || !modal) return;
+
+  const GMAPS_URL = 'https://www.google.com/maps/search/?api=1&query=Amselweg+10+40878+Ratingen';
+  // Apple = iPhone/iPad/iPod, or Mac desktop, or iPad running iPadOS (reports as Macintosh + touch)
+  const ua = navigator.userAgent;
+  const isApple =
+    /iPad|iPhone|iPod/.test(ua) ||
+    /Macintosh/.test(ua) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+  function open() {
+    modal.hidden = false;
+    requestAnimationFrame(() => modal.classList.add('visible'));
+  }
+  function close() {
+    modal.classList.remove('visible');
+    setTimeout(() => { modal.hidden = true; }, 300);
+  }
+
+  btn.addEventListener('click', () => {
+    if (isApple) open();
+    else window.open(GMAPS_URL, '_blank', 'noopener,noreferrer');
+  });
+  closeBtn.addEventListener('click', close);
+  modal.addEventListener('click', (e) => { if (e.target === modal) close(); });
+  modal.querySelectorAll('a').forEach(a =>
+    a.addEventListener('click', () => setTimeout(close, 150))
+  );
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !modal.hidden) close();
+  });
+})();
 
 /* ────────────────────────────────────────────────
    SCROLL-ANIMATIONS (IntersectionObserver)
