@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#f5ecd9" />
+<meta name="description" content="Ayça Feza & Buğrahan — Kız İsteme & Nişan · 27 Haziran 2026, Ratingen" />
+<title>Ayça Feza & Buğrahan — Kız İsteme & Nişan</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600&family=Dancing+Script:wght@500;600&display=swap" rel="stylesheet" />
+
+<style>
+  :root{
+    --bg:#f5ecd9;
+    --bg-2:#efe3cb;
+    --ink:#2c4a7c;
+    --ink-soft:rgba(44,74,124,.65);
+    --ink-faint:rgba(44,74,124,.2);
+    --green:#7a9b5e;
+    --blue:#6fa8c7;
+    --yellow:#e8c547;
+    --terra:#c96f4a;
+    --stone:#c9b88a;
+  }
+
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Manrope',system-ui,-apple-system,sans-serif;
+    font-weight:400;
+    line-height:1.6;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  img{max-width:100%;display:block}
+  button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+  a{color:inherit}
+
+  /* ── LANGUAGE TOGGLE ───────────────────────────── */
+  .lang-toggle{
+    position:fixed;top:18px;right:18px;z-index:100;
+    display:inline-flex;align-items:center;gap:11px;
+    background:rgba(245,236,217,.95);
+    backdrop-filter:blur(10px) saturate(1.4);
+    -webkit-backdrop-filter:blur(10px) saturate(1.4);
+    border:1.5px solid var(--ink);
+    color:var(--ink);
+    padding:6px 16px 6px 6px;
+    border-radius:999px;
+    font-weight:600;font-size:.68rem;letter-spacing:.18em;
+    text-transform:uppercase;
+    box-shadow:
+      0 12px 30px -10px rgba(44,74,124,.42),
+      0 3px 8px -3px rgba(44,74,124,.28);
+    transition:transform .3s cubic-bezier(.2,.6,.2,1),box-shadow .3s,background .3s;
+  }
+  .lang-toggle:hover{
+    transform:translateY(-2px) scale(1.03);
+    box-shadow:
+      0 16px 36px -10px rgba(44,74,124,.5),
+      0 4px 10px -3px rgba(44,74,124,.32);
+  }
+  .lang-toggle:active{transform:translateY(0) scale(.98)}
+  .lang-toggle .flag{
+    display:inline-block;
+    width:34px;height:24px;
+    border-radius:5px;
+    overflow:hidden;
+    box-shadow:
+      0 2px 4px rgba(0,0,0,.2),
+      inset 0 0 0 1px rgba(44,74,124,.12);
+    position:relative;
+    flex-shrink:0;
+  }
+  .lang-toggle .flag svg{display:block;width:100%;height:100%}
+  .lang-toggle .flag::after{
+    content:'';position:absolute;inset:0;
+    background:linear-gradient(135deg,rgba(255,255,255,.22) 0%,rgba(255,255,255,0) 50%);
+    pointer-events:none;
+  }
+  .lang-toggle .lang-label{line-height:1}
+
+  /* ── HERO ──────────────────────────────────────── */
+  .hero{
+    position:relative;
+    min-height:100vh;min-height:100dvh;
+    display:flex;align-items:center;justify-content:center;
+    overflow:hidden;
+    padding:120px 24px 80px;
+  }
+  .hero-illustration{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+  .hero-video{
+    position:absolute;inset:-6% -3% -3% -3%;
+    width:106%;height:109%;
+    object-fit:cover;
+    opacity:.82;
+    filter:saturate(1.04);
+    will-change:transform;
+    background:#efe3cb;
+  }
+  .illustration-fallback{
+    position:absolute;inset:-8% -4% -4% -4%;
+    background:url('./assets/illustration.svg') center bottom / cover no-repeat;
+    opacity:.7;
+  }
+  .hero-illustration::after{
+    content:'';position:absolute;inset:0;
+    background:
+      radial-gradient(ellipse 70% 62% at 50% 50%,rgba(245,236,217,.78) 0%,rgba(245,236,217,.4) 40%,rgba(245,236,217,.1) 70%,rgba(245,236,217,0) 90%),
+      linear-gradient(to bottom,rgba(245,236,217,.45) 0%,rgba(245,236,217,0) 25%,rgba(245,236,217,0) 70%,rgba(245,236,217,.55) 100%);
+    pointer-events:none;
+  }
+  .hero-content{
+    position:relative;z-index:3;text-align:center;
+    max-width:920px;width:100%;
+  }
+  /* halo glow around hero text for readability over video */
+  .hero-content .eyebrow,
+  .hero-content .names,
+  .hero-content .hero-meta{
+    text-shadow:
+      0 0 14px rgba(245,236,217,.95),
+      0 0 28px rgba(245,236,217,.85),
+      0 1px 0 rgba(245,236,217,.9),
+      0 2px 12px rgba(44,74,124,.18);
+  }
+  .eyebrow{
+    font-size:clamp(.68rem,1.1vw,.84rem);
+    letter-spacing:.4em;text-transform:uppercase;
+    font-weight:600;color:var(--ink);
+    margin-bottom:28px;
+  }
+  .names{
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;font-weight:500;
+    font-size:clamp(3rem,7vw,6.8rem);
+    line-height:.98;letter-spacing:-.01em;
+    color:var(--ink);
+    margin-bottom:32px;
+  }
+  .names .amp{color:var(--terra);font-weight:400;margin:0 .08em}
+  .names .break{display:block}
+  .hero-meta{
+    font-size:clamp(.92rem,1.3vw,1.02rem);
+    letter-spacing:.08em;margin-bottom:4px;
+    font-weight:500;
+  }
+  .hero-meta.last{margin-bottom:32px}
+  /* CTA: inverted fill so it pops off the video */
+  .cta{
+    display:inline-block;
+    padding:14px 36px;
+    font-weight:600;font-size:.8rem;letter-spacing:.3em;
+    color:var(--bg);
+    background:var(--ink);
+    border:1.5px solid var(--ink);
+    border-radius:999px;
+    text-decoration:none;
+    box-shadow:
+      0 10px 30px -12px rgba(44,74,124,.55),
+      0 2px 6px -2px rgba(44,74,124,.35);
+    transition:background .3s,color .3s,transform .3s,box-shadow .3s;
+  }
+  .cta:hover{
+    background:var(--bg);color:var(--ink);
+    transform:translateY(-2px);
+    box-shadow:0 14px 34px -12px rgba(44,74,124,.45);
+  }
+
+  /* ── BIRDS ─────────────────────────────────────── */
+  .bird{
+    position:absolute;z-index:2;pointer-events:none;
+    width:38px;height:20px;top:18%;left:0;
+    color:var(--ink);
+    animation:fly-1 32s linear infinite;
+  }
+  .bird path{animation:flap .9s ease-in-out infinite;transform-origin:center;transform-box:fill-box}
+  .bird.b2{top:26%;color:var(--blue);animation:fly-2 40s linear infinite 5s}
+  .bird.b2 path{animation-duration:.75s}
+  .bird.b3{top:11%;animation:fly-3 46s linear infinite 12s}
+  .bird.b3 path{animation-duration:1.1s}
+  .bird.b4{top:32%;color:var(--green);animation:fly-4 36s linear infinite 18s}
+  .bird.b4 path{animation-duration:.82s}
+  @keyframes fly-1{
+    0%{transform:translate(-12vw,0)}
+    50%{transform:translate(55vw,-18px)}
+    100%{transform:translate(118vw,10px)}
+  }
+  @keyframes fly-2{
+    0%{transform:translate(-12vw,0)}
+    50%{transform:translate(55vw,22px)}
+    100%{transform:translate(118vw,-8px)}
+  }
+  @keyframes fly-3{
+    0%{transform:translate(-12vw,0)}
+    50%{transform:translate(55vw,-22px)}
+    100%{transform:translate(118vw,14px)}
+  }
+  @keyframes fly-4{
+    0%{transform:translate(-12vw,0)}
+    50%{transform:translate(55vw,18px)}
+    100%{transform:translate(118vw,-6px)}
+  }
+  @keyframes flap{0%,100%{transform:scaleY(1)}50%{transform:scaleY(.4)}}
+
+  /* ── SECTION ORNAMENT ──────────────────────────── */
+  .ornament{
+    display:flex;align-items:center;justify-content:center;gap:14px;
+    margin:0 auto 36px;color:var(--ink-soft);
+    max-width:240px;
+  }
+  .ornament::before,.ornament::after{
+    content:'';flex:1;height:1px;
+    background:linear-gradient(to right,transparent,var(--ink-faint),transparent);
+  }
+  .ornament .dot{width:5px;height:5px;border-radius:50%;background:var(--terra);opacity:.7}
+
+  /* ── COUNTDOWN ─────────────────────────────────── */
+  .countdown{padding:90px 24px 70px;text-align:center}
+  .countdown h2{
+    font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;
+    font-size:clamp(1.8rem,3.8vw,2.7rem);
+    margin-bottom:40px;
+  }
+  .cd-boxes{
+    display:flex;justify-content:center;gap:clamp(10px,2vw,22px);
+    flex-wrap:wrap;
+  }
+  .cd-box{
+    position:relative;
+    min-width:clamp(74px,15vw,124px);
+    padding:20px 12px 16px;
+    border:1.5px solid var(--ink);
+    border-radius:14px;
+    background:rgba(245,236,217,.45);
+  }
+  .cd-box::before,.cd-box::after{
+    content:'';position:absolute;width:14px;height:14px;
+    border:1.2px solid var(--terra);opacity:.8;
+  }
+  .cd-box::before{top:-7px;left:-7px;border-right:none;border-bottom:none;border-top-left-radius:4px}
+  .cd-box::after{bottom:-7px;right:-7px;border-left:none;border-top:none;border-bottom-right-radius:4px}
+  .cd-box span{
+    display:block;
+    font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;
+    font-size:clamp(2.2rem,5vw,3.4rem);
+    line-height:1;color:var(--ink);
+    font-variant-numeric:tabular-nums;
+  }
+  .cd-box label{
+    display:block;margin-top:10px;
+    font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--ink-soft);font-weight:500;
+  }
+
+  /* ── COUPLE PHOTO ──────────────────────────────── */
+  .couple{padding:60px 24px 100px;text-align:center}
+  .photo-wrap{perspective:1200px}
+  .photo-frame{
+    display:inline-block;
+    background:#fff;
+    padding:16px 16px 58px;
+    box-shadow:
+      0 18px 45px -22px rgba(44,74,124,.4),
+      0 3px 8px -4px rgba(44,74,124,.22);
+    transform:rotate(-2.2deg);
+    max-width:min(92%,440px);
+    position:relative;
+    transition:transform .5s cubic-bezier(.2,.6,.2,1);
+  }
+  .photo-frame:hover{transform:rotate(0) scale(1.015)}
+  .photo-frame::before{
+    content:'';position:absolute;top:-14px;left:50%;
+    width:86px;height:26px;transform:translateX(-50%) rotate(-3deg);
+    background:rgba(233,199,100,.45);
+    border:1px dashed rgba(44,74,124,.25);
+    box-shadow:0 2px 6px -4px rgba(44,74,124,.3);
+  }
+  .photo-frame img{
+    width:100%;height:auto;
+    filter:saturate(1.04) contrast(1.02);
+  }
+  .caption{
+    margin-top:36px;
+    font-family:'Cormorant Garamond',serif;font-style:italic;
+    font-size:clamp(1.02rem,1.6vw,1.25rem);
+    color:var(--ink);
+    max-width:480px;margin-inline:auto;
+  }
+
+  /* ── DETAILS ───────────────────────────────────── */
+  .details{padding:80px 24px 100px;text-align:center;position:relative}
+  .details-title{
+    font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;
+    font-size:clamp(2.2rem,5.2vw,3.8rem);
+    line-height:1.08;margin-bottom:10px;
+  }
+  .details-subtitle{
+    font-size:.82rem;letter-spacing:.34em;text-transform:uppercase;
+    color:var(--terra);font-weight:500;margin-bottom:50px;
+  }
+  .info-card{
+    max-width:560px;margin:0 auto 44px;
+    padding:46px 40px;
+    background:rgba(255,253,248,.55);
+    border:1.5px solid var(--ink);
+    border-radius:20px;
+    position:relative;
+  }
+  .info-card .corner{
+    position:absolute;width:58px;height:58px;pointer-events:none;
+  }
+  .info-card .corner.tl{top:-22px;left:-22px}
+  .info-card .corner.br{bottom:-22px;right:-22px;transform:rotate(180deg)}
+  .info-row{
+    display:grid;grid-template-columns:110px 1fr;gap:20px;
+    padding:16px 0;text-align:left;
+    border-bottom:1px dashed rgba(44,74,124,.22);
+  }
+  .info-row:last-child{border-bottom:none}
+  .info-label{
+    font-size:.7rem;letter-spacing:.26em;text-transform:uppercase;
+    color:var(--ink-soft);font-weight:500;padding-top:6px;
+  }
+  .info-val{
+    font-family:'Cormorant Garamond',serif;font-style:italic;
+    font-size:1.18rem;color:var(--ink);line-height:1.4;
+  }
+  .action-buttons{
+    display:flex;gap:14px;justify-content:center;flex-wrap:wrap;
+  }
+  .action-btn{
+    display:inline-block;
+    padding:13px 26px;
+    font-weight:500;font-size:.76rem;letter-spacing:.24em;
+    color:var(--ink);
+    border:1.5px solid var(--ink);
+    border-radius:999px;
+    text-decoration:none;
+    transition:background .3s,color .3s,transform .3s;
+  }
+  .action-btn:hover{background:var(--ink);color:var(--bg);transform:translateY(-2px)}
+  .action-btn.filled{background:var(--ink);color:var(--bg)}
+  .action-btn.filled:hover{background:transparent;color:var(--ink)}
+
+  /* ── QUOTE ─────────────────────────────────────── */
+  .quote{padding:60px 24px 90px;text-align:center}
+  .quote blockquote{max-width:680px;margin:0 auto;position:relative}
+  .quote .marks{
+    font-family:'Cormorant Garamond',serif;font-style:italic;
+    font-size:5rem;line-height:0;color:var(--terra);
+    opacity:.5;display:block;margin-bottom:30px;
+  }
+  .quote-orig{
+    font-family:'Cormorant Garamond',serif;font-style:italic;
+    font-size:clamp(1.45rem,3.2vw,2.05rem);
+    line-height:1.4;margin-bottom:22px;
+  }
+  .quote-trans{
+    font-size:.95rem;color:var(--ink-soft);
+    font-weight:300;font-style:italic;margin-bottom:28px;
+    max-width:540px;margin-inline:auto;
+  }
+  .quote cite{
+    display:block;
+    font-size:.74rem;letter-spacing:.3em;text-transform:uppercase;
+    color:var(--terra);font-style:normal;font-weight:500;
+  }
+
+  /* ── FOOTER ── inverted palette: end-of-page signal ── */
+  footer{
+    position:relative;
+    padding:100px 24px 70px;text-align:center;
+    margin-top:60px;
+    background:var(--ink);
+    color:var(--bg);
+    overflow:hidden;
+  }
+  /* soft curved transition from cream to ink at the very top */
+  footer::before{
+    content:'';position:absolute;top:-1px;left:0;right:0;height:40px;
+    background:
+      radial-gradient(ellipse 80% 100% at 50% 0%, var(--bg) 0%, var(--bg) 40%, transparent 70%);
+    pointer-events:none;
+  }
+  .script{
+    font-family:'Dancing Script',cursive;font-weight:500;
+    font-size:clamp(2rem,4.7vw,3rem);
+    color:var(--bg);margin-bottom:8px;
+  }
+  footer .date{
+    font-size:.76rem;letter-spacing:.3em;text-transform:uppercase;
+    color:rgba(245,236,217,.65);margin-bottom:32px;
+  }
+  .footer-branch{
+    width:110px;height:40px;margin-inline:auto;
+    color:rgba(245,236,217,.85);
+  }
+  /* recolor strokes/fills inside footer svgs for dark bg */
+  footer svg path[stroke]{stroke:rgba(245,236,217,.7)}
+  footer svg path[fill="#7a9b5e"]{fill:rgba(163,192,128,.85)}
+  footer svg circle[fill="#c96f4a"]{fill:#e8a88c}
+  footer .foot-flower ellipse[fill="#fbf4e3"]{fill:rgba(245,236,217,.95)}
+  footer .foot-flower ellipse[stroke]{stroke:rgba(245,236,217,.4)}
+  footer .foot-flower circle[fill="#e8c547"]{fill:#f4d96a}
+  footer .foot-flower circle[stroke]{stroke:rgba(245,236,217,.4)}
+
+  /* ── GLOBAL FLOATING PETALS ──────────────────── */
+  .petals{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden}
+  .petal{
+    position:absolute;top:-8vh;
+    width:22px;height:28px;
+    opacity:0;
+    will-change:transform,opacity;
+  }
+  .petal svg{width:100%;height:100%;display:block}
+  .petal.p1{left:7%;  animation:drift 26s linear infinite 0s}
+  .petal.p2{left:19%; animation:drift 32s linear infinite -6s}
+  .petal.p3{left:33%; animation:drift 28s linear infinite -14s}
+  .petal.p4{left:47%; animation:drift 34s linear infinite -3s}
+  .petal.p5{left:61%; animation:drift 30s linear infinite -18s}
+  .petal.p6{left:75%; animation:drift 26s linear infinite -9s}
+  .petal.p7{left:89%; animation:drift 32s linear infinite -22s}
+  .petal.p8{left:14%; width:16px;height:22px; animation:drift 24s linear infinite -11s}
+  .petal.p9{left:54%; width:18px;height:24px; animation:drift 36s linear infinite -4s}
+  .petal.p10{left:82%;width:15px;height:20px; animation:drift 28s linear infinite -25s}
+
+  @keyframes drift{
+    0%  {transform:translate3d(0,-10vh,0) rotate(0deg);  opacity:0}
+    6%  {opacity:.9}
+    25% {transform:translate3d(22px,25vh,0) rotate(100deg)}
+    50% {transform:translate3d(-28px,55vh,0) rotate(200deg)}
+    75% {transform:translate3d(30px,85vh,0) rotate(300deg)}
+    94% {opacity:.9}
+    100%{transform:translate3d(-14px,115vh,0) rotate(420deg); opacity:0}
+  }
+
+  /* ── SECTION DECORATIONS ─────────────────────── */
+  section{position:relative}
+  .section-deco{
+    position:absolute;
+    pointer-events:none;
+    z-index:0;
+  }
+  .sway-a{animation:sway-a 9s ease-in-out infinite;transform-origin:top center}
+  .sway-b{animation:sway-b 11s ease-in-out infinite;transform-origin:top center}
+  .sway-c{animation:sway-c 13s ease-in-out infinite;transform-origin:center}
+  .bob    {animation:bob   7s ease-in-out infinite}
+
+  @keyframes sway-a{0%,100%{transform:rotate(-2.5deg)}50%{transform:rotate(2.5deg)}}
+  @keyframes sway-b{0%,100%{transform:rotate(1.5deg) translateY(0)}50%{transform:rotate(-2deg) translateY(-6px)}}
+  @keyframes sway-c{0%,100%{transform:scale(1) rotate(-1deg)}50%{transform:scale(1.04) rotate(1deg)}}
+  @keyframes bob  {0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+  /* countdown garland across the top */
+  .countdown .garland-top{
+    top:-14px;left:50%;transform:translateX(-50%);
+    width:min(560px,84%);height:auto;
+    opacity:.85;
+  }
+
+  /* couple section flowers */
+  .couple .floral-tl{top:20px;left:3%;width:clamp(78px,13vw,150px);opacity:.85}
+  .couple .floral-br{bottom:140px;right:3%;width:clamp(90px,15vw,170px);opacity:.85}
+  .couple .floral-bl{bottom:40px;left:6%;width:clamp(60px,9vw,100px);opacity:.7}
+
+  /* details section hanging branches */
+  .details .sprig-l{top:40px;left:-10px;width:clamp(72px,10vw,130px);opacity:.75}
+  .details .sprig-r{top:100px;right:-10px;width:clamp(72px,10vw,130px);opacity:.75;transform:scaleX(-1)}
+  .details .sprig-r.sway-b{animation-name:sway-b;transform-origin:top center}
+
+  /* quote section blooms */
+  .quote .bloom-l{top:20%;left:4%;width:clamp(90px,13vw,170px);opacity:.6}
+  .quote .bloom-r{bottom:15%;right:4%;width:clamp(80px,11vw,140px);opacity:.55}
+
+  /* countdown side sprigs */
+  .countdown .sprig-tiny-l{bottom:30px;left:5%;width:clamp(50px,7vw,80px);opacity:.65}
+  .countdown .sprig-tiny-r{bottom:30px;right:5%;width:clamp(50px,7vw,80px);opacity:.65;transform:scaleX(-1)}
+
+  /* footer extra flower */
+  footer .foot-flower{position:absolute;top:-22px;left:50%;transform:translateX(-50%);width:44px;height:44px;opacity:.85}
+
+  /* ── SCROLL-ANIMATIONS ────────────────────────── */
+  .fade-in{opacity:0;transform:translateY(22px);transition:opacity 1s cubic-bezier(.2,.6,.2,1),transform 1s cubic-bezier(.2,.6,.2,1)}
+  .fade-in.visible{opacity:1;transform:none}
+  .hero-content .fade-in{transition-delay:.1s}
+  .hero-content .fade-in:nth-child(2){transition-delay:.25s}
+  .hero-content .fade-in:nth-child(3){transition-delay:.4s}
+  .hero-content .fade-in:nth-child(4){transition-delay:.52s}
+  .hero-content .fade-in:nth-child(5){transition-delay:.65s}
+
+  /* ── MOBILE ───────────────────────────────────── */
+  @media (max-width:640px){
+    .lang-toggle{top:12px;right:12px;padding:4px 12px 4px 4px;gap:8px;font-size:.6rem;letter-spacing:.14em}
+    .lang-toggle .flag{width:26px;height:18px;border-radius:4px}
+    .eyebrow{letter-spacing:.28em;margin-bottom:22px}
+    .names{margin-bottom:26px}
+    .info-row{grid-template-columns:1fr;gap:4px;padding:14px 0}
+    .info-label{padding-top:0}
+    .info-val{font-size:1.06rem}
+    .info-card{padding:36px 26px}
+    .photo-frame{padding:12px 12px 42px}
+    .hero-video{opacity:.58}
+    .illustration-fallback{opacity:.45}
+    .cd-box{padding:16px 10px 12px}
+    .action-btn{width:100%;max-width:300px}
+    .petal.p3,.petal.p5,.petal.p7,.petal.p9,.petal.p10{display:none}
+    .couple .floral-bl,.details .sprig-r{display:none}
+    .quote .bloom-r{width:80px;opacity:.4}
+    .quote .bloom-l{width:90px;opacity:.45}
+  }
+  @media (max-width:420px){
+    .cd-boxes{gap:8px}
+    .cd-box{min-width:70px}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+    .fade-in{opacity:1;transform:none}
+    .illustration-bg{transform:none!important}
+  }
+
+  /* print */
+  @media print{
+    .lang-toggle,.bird,.action-buttons{display:none}
+    body{background:#fff}
+  }
+</style>
+</head>
+<body>
+
+<!-- ── GLOBAL DRIFTING PETALS (fixed, full viewport) ── -->
+<div class="petals" aria-hidden="true">
+  <!-- terracotta petal -->
+  <span class="petal p1"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#c96f4a" opacity=".78" stroke="#2c4a7c" stroke-width=".7"/><path d="M12,4 Q10,15 12,26" stroke="#2c4a7c" stroke-width=".5" fill="none" opacity=".6"/></svg></span>
+  <!-- yellow petal -->
+  <span class="petal p2"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#e8c547" opacity=".8" stroke="#2c4a7c" stroke-width=".7"/><path d="M12,4 Q10,15 12,26" stroke="#2c4a7c" stroke-width=".5" fill="none" opacity=".6"/></svg></span>
+  <!-- green leaf -->
+  <span class="petal p3"><svg viewBox="0 0 24 30"><path d="M12,1 Q4,8 5,18 Q8,27 12,29 Q16,27 19,18 Q20,8 12,1 Z" fill="#7a9b5e" opacity=".75" stroke="#2c4a7c" stroke-width=".7"/><path d="M12,3 Q12,15 12,28" stroke="#2c4a7c" stroke-width=".6" fill="none" opacity=".7"/><path d="M12,12 L8,16 M12,18 L16,22" stroke="#2c4a7c" stroke-width=".4" opacity=".5"/></svg></span>
+  <!-- cream petal -->
+  <span class="petal p4"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#fbf4e3" opacity=".95" stroke="#2c4a7c" stroke-width=".7"/><path d="M12,4 Q10,15 12,26" stroke="#2c4a7c" stroke-width=".5" fill="none" opacity=".5"/></svg></span>
+  <!-- terracotta petal variant -->
+  <span class="petal p5"><svg viewBox="0 0 24 30"><path d="M12,2 Q3,9 4,19 Q7,27 12,28 Q17,27 20,19 Q21,9 12,2 Z" fill="#c96f4a" opacity=".72" stroke="#2c4a7c" stroke-width=".7"/></svg></span>
+  <!-- blue-ish daisy petal -->
+  <span class="petal p6"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#fbf4e3" opacity=".9" stroke="#2c4a7c" stroke-width=".7"/><path d="M12,4 Q10,15 12,26" stroke="#2c4a7c" stroke-width=".5" fill="none" opacity=".5"/></svg></span>
+  <!-- green leaf 2 -->
+  <span class="petal p7"><svg viewBox="0 0 24 30"><path d="M12,1 Q4,8 5,18 Q8,27 12,29 Q16,27 19,18 Q20,8 12,1 Z" fill="#5d7a47" opacity=".7" stroke="#2c4a7c" stroke-width=".7"/><path d="M12,3 Q12,15 12,28" stroke="#2c4a7c" stroke-width=".6" fill="none" opacity=".7"/></svg></span>
+  <!-- small yellow petal -->
+  <span class="petal p8"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#e8c547" opacity=".85"  stroke="#2c4a7c" stroke-width=".6"/></svg></span>
+  <!-- small terracotta -->
+  <span class="petal p9"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#c96f4a" opacity=".7" stroke="#2c4a7c" stroke-width=".6"/></svg></span>
+  <!-- tiny cream -->
+  <span class="petal p10"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#fbf4e3" opacity=".9" stroke="#2c4a7c" stroke-width=".6"/></svg></span>
+</div>
+
+<!-- ── LANGUAGE TOGGLE ───────────────────────────── -->
+<button class="lang-toggle" id="langToggle" aria-label="Sprache wechseln / Dili değiştir" title="Switch language">
+  <span class="flag" id="flagEl" aria-hidden="true"></span>
+  <span class="lang-label" id="langLabel">Deutsch</span>
+</button>
+
+<!-- ── HERO ──────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-illustration" aria-hidden="true">
+    <!-- animated watercolor courtyard as hero background -->
+    <video class="hero-video" id="heroVideo"
+           autoplay loop muted playsinline
+           preload="auto"
+           poster="./assets/illustration.svg">
+      <source src="./assets/courtyard.mp4" type="video/mp4" />
+      <!-- fallback: static illustration -->
+    </video>
+    <div class="illustration-fallback" id="illoBg" hidden></div>
+
+    <!-- flying birds on top of the video -->
+    <svg class="bird b1" viewBox="0 0 40 20" aria-hidden="true"><path d="M3,12 Q10,4 18,12 M22,12 Q30,4 37,12" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>
+    <svg class="bird b2" viewBox="0 0 40 20" aria-hidden="true"><path d="M3,12 Q10,4 18,12 M22,12 Q30,4 37,12" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>
+    <svg class="bird b3" viewBox="0 0 40 20" aria-hidden="true"><path d="M3,12 Q10,4 18,12 M22,12 Q30,4 37,12" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+    <svg class="bird b4" viewBox="0 0 40 20" aria-hidden="true"><path d="M3,12 Q10,4 18,12 M22,12 Q30,4 37,12" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>
+  </div>
+
+  <div class="hero-content">
+    <p class="eyebrow fade-in" data-i18n="eyebrow">KIZ İSTEME &amp; NİŞAN DAVETİ</p>
+    <h1 class="names fade-in">
+      <span>Ayça&nbsp;Feza</span>
+      <span class="amp">&amp;</span>
+      <span class="break">Buğrahan</span>
+    </h1>
+    <p class="hero-meta fade-in" data-i18n="heroDate">27 Haziran 2026 Cumartesi</p>
+    <p class="hero-meta last fade-in" data-i18n="heroLoc">Amselweg 10 · 40878 Ratingen</p>
+    <a class="cta fade-in" href="#details" data-i18n="saveDate">TARİHİ KAYDEDİN</a>
+  </div>
+</section>
+
+<!-- ── COUNTDOWN ─────────────────────────────────── -->
+<section class="countdown">
+  <!-- flower garland across the top -->
+  <svg class="section-deco garland-top sway-b" viewBox="0 0 560 80" aria-hidden="true">
+    <!-- wire -->
+    <path d="M10,18 Q140,62 280,50 Q420,40 550,18" stroke="#2c4a7c" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".7"/>
+    <!-- leaves along wire -->
+    <g>
+      <path d="M70,36 q-8,-6 -14,2 q4,8 15,2 Z" fill="#7a9b5e" opacity=".7"/>
+      <path d="M70,36 q-8,-6 -14,2 q4,8 15,2" stroke="#2c4a7c" stroke-width=".8" fill="none"/>
+      <path d="M180,52 q8,-6 15,2 q-5,8 -16,2 Z" fill="#7a9b5e" opacity=".7"/>
+      <path d="M180,52 q8,-6 15,2 q-5,8 -16,2" stroke="#2c4a7c" stroke-width=".8" fill="none"/>
+      <path d="M350,48 q-8,-6 -15,2 q5,8 16,2 Z" fill="#5d7a47" opacity=".7"/>
+      <path d="M350,48 q-8,-6 -15,2 q5,8 16,2" stroke="#2c4a7c" stroke-width=".8" fill="none"/>
+      <path d="M470,32 q8,-6 15,2 q-5,8 -16,2 Z" fill="#7a9b5e" opacity=".7"/>
+      <path d="M470,32 q8,-6 15,2 q-5,8 -16,2" stroke="#2c4a7c" stroke-width=".8" fill="none"/>
+    </g>
+    <!-- hanging flowers -->
+    <g transform="translate(130,56)">
+      <path d="M0,0 L0,8" stroke="#2c4a7c" stroke-width=".8"/>
+      <g transform="translate(0,14)">
+        <g fill="#fbf4e3" stroke="#2c4a7c" stroke-width=".7">
+          <ellipse cx="0" cy="-7" rx="3" ry="6"/>
+          <ellipse cx="0" cy="-7" rx="3" ry="6" transform="rotate(72)"/>
+          <ellipse cx="0" cy="-7" rx="3" ry="6" transform="rotate(144)"/>
+          <ellipse cx="0" cy="-7" rx="3" ry="6" transform="rotate(216)"/>
+          <ellipse cx="0" cy="-7" rx="3" ry="6" transform="rotate(288)"/>
+        </g>
+        <circle r="2.8" fill="#e8c547" stroke="#2c4a7c" stroke-width=".7"/>
+      </g>
+    </g>
+    <g transform="translate(240,62)">
+      <path d="M0,0 L0,8" stroke="#2c4a7c" stroke-width=".8"/>
+      <g transform="translate(0,16)">
+        <circle r="7" fill="#c96f4a" opacity=".72" stroke="#2c4a7c" stroke-width=".7"/>
+        <circle r="3" fill="#e8c547" stroke="#2c4a7c" stroke-width=".5"/>
+      </g>
+    </g>
+    <g transform="translate(310,56)">
+      <path d="M0,0 L0,8" stroke="#2c4a7c" stroke-width=".8"/>
+      <g transform="translate(0,14)">
+        <g fill="#fbf4e3" stroke="#2c4a7c" stroke-width=".7">
+          <ellipse cx="0" cy="-7" rx="3" ry="6"/>
+          <ellipse cx="0" cy="-7" rx="3" ry="6" transform="rotate(72)"/>
+          <ellipse cx="0" cy="-7" rx="3" ry="6" transform="rotate(144)"/>
+          <ellipse cx="0" cy="-7" rx="3" ry="6" transform="rotate(216)"/>
+          <ellipse cx="0" cy="-7" rx="3" ry="6" transform="rotate(288)"/>
+        </g>
+        <circle r="2.8" fill="#e8c547" stroke="#2c4a7c" stroke-width=".7"/>
+      </g>
+    </g>
+    <g transform="translate(420,52)">
+      <path d="M0,0 L0,8" stroke="#2c4a7c" stroke-width=".8"/>
+      <g transform="translate(0,16)">
+        <circle r="6" fill="#c96f4a" opacity=".7" stroke="#2c4a7c" stroke-width=".7"/>
+        <circle r="2.5" fill="#e8c547" stroke="#2c4a7c" stroke-width=".5"/>
+      </g>
+    </g>
+  </svg>
+
+  <!-- small corner sprigs -->
+  <svg class="section-deco sprig-tiny-l sway-a" viewBox="0 0 80 120" aria-hidden="true">
+    <path d="M40,0 Q44,40 36,80 Q30,110 24,118" stroke="#2c4a7c" stroke-width="1" fill="none"/>
+    <path d="M40,25 q-10,-4 -14,6 q6,7 15,0 Z" fill="#7a9b5e" opacity=".65"/>
+    <path d="M40,25 q-10,-4 -14,6 q6,7 15,0" stroke="#2c4a7c" stroke-width=".7" fill="none"/>
+    <path d="M42,55 q10,-4 14,6 q-6,7 -15,0 Z" fill="#7a9b5e" opacity=".65"/>
+    <path d="M42,55 q10,-4 14,6 q-6,7 -15,0" stroke="#2c4a7c" stroke-width=".7" fill="none"/>
+    <path d="M36,85 q-10,-4 -14,6 q6,7 15,0 Z" fill="#5d7a47" opacity=".7"/>
+    <path d="M36,85 q-10,-4 -14,6 q6,7 15,0" stroke="#2c4a7c" stroke-width=".7" fill="none"/>
+    <g transform="translate(24,115)">
+      <circle r="4" fill="#c96f4a" opacity=".72" stroke="#2c4a7c" stroke-width=".6"/>
+      <circle r="1.5" fill="#e8c547"/>
+    </g>
+  </svg>
+  <svg class="section-deco sprig-tiny-r sway-b" viewBox="0 0 80 120" aria-hidden="true">
+    <path d="M40,0 Q44,40 36,80 Q30,110 24,118" stroke="#2c4a7c" stroke-width="1" fill="none"/>
+    <path d="M40,25 q-10,-4 -14,6 q6,7 15,0 Z" fill="#7a9b5e" opacity=".65"/>
+    <path d="M40,25 q-10,-4 -14,6 q6,7 15,0" stroke="#2c4a7c" stroke-width=".7" fill="none"/>
+    <path d="M42,55 q10,-4 14,6 q-6,7 -15,0 Z" fill="#7a9b5e" opacity=".65"/>
+    <path d="M42,55 q10,-4 14,6 q-6,7 -15,0" stroke="#2c4a7c" stroke-width=".7" fill="none"/>
+    <path d="M36,85 q-10,-4 -14,6 q6,7 15,0 Z" fill="#5d7a47" opacity=".7"/>
+    <path d="M36,85 q-10,-4 -14,6 q6,7 15,0" stroke="#2c4a7c" stroke-width=".7" fill="none"/>
+    <g transform="translate(24,115)">
+      <g fill="#fbf4e3" stroke="#2c4a7c" stroke-width=".6">
+        <ellipse cx="0" cy="-5" rx="2.2" ry="4.5"/>
+        <ellipse cx="0" cy="-5" rx="2.2" ry="4.5" transform="rotate(72)"/>
+        <ellipse cx="0" cy="-5" rx="2.2" ry="4.5" transform="rotate(144)"/>
+        <ellipse cx="0" cy="-5" rx="2.2" ry="4.5" transform="rotate(216)"/>
+        <ellipse cx="0" cy="-5" rx="2.2" ry="4.5" transform="rotate(288)"/>
+      </g>
+      <circle r="2" fill="#e8c547"/>
+    </g>
+  </svg>
+
+  <div class="ornament fade-in"><span class="dot"></span></div>
+  <h2 class="fade-in" data-i18n="cdTitle">Geri Sayım</h2>
+  <div class="cd-boxes fade-in">
+    <div class="cd-box"><span id="days">00</span><label data-i18n="days">Gün</label></div>
+    <div class="cd-box"><span id="hours">00</span><label data-i18n="hours">Saat</label></div>
+    <div class="cd-box"><span id="mins">00</span><label data-i18n="mins">Dakika</label></div>
+    <div class="cd-box"><span id="secs">00</span><label data-i18n="secs">Saniye</label></div>
+  </div>
+</section>
+
+<!-- ── COUPLE PHOTO ──────────────────────────────── -->
+<section class="couple">
+  <!-- top-left floral cluster -->
+  <svg class="section-deco floral-tl sway-a" viewBox="0 0 150 160" aria-hidden="true">
+    <!-- curved stem -->
+    <path d="M10,155 Q30,100 65,65 Q100,35 140,15" stroke="#2c4a7c" stroke-width="1.1" fill="none" stroke-linecap="round"/>
+    <!-- leaves -->
+    <path d="M26,120 q-14,-4 -18,10 q9,9 22,0 Z" fill="#7a9b5e" opacity=".7"/>
+    <path d="M26,120 q-14,-4 -18,10 q9,9 22,0" stroke="#2c4a7c" stroke-width=".8" fill="none"/>
+    <path d="M50,80 q-14,-4 -18,10 q9,9 22,0 Z" fill="#5d7a47" opacity=".65"/>
+    <path d="M50,80 q-14,-4 -18,10 q9,9 22,0" stroke="#2c4a7c" stroke-width=".8" fill="none"/>
+    <path d="M85,50 q14,-4 18,10 q-9,9 -22,0 Z" fill="#7a9b5e" opacity=".7"/>
+    <path d="M85,50 q14,-4 18,10 q-9,9 -22,0" stroke="#2c4a7c" stroke-width=".8" fill="none"/>
+    <!-- terracotta flower cluster -->
+    <g transform="translate(70,55)">
+      <circle r="9" fill="#c96f4a" opacity=".72" stroke="#2c4a7c" stroke-width=".7"/>
+      <circle cx="-6" cy="8" r="7" fill="#c96f4a" opacity=".68" stroke="#2c4a7c" stroke-width=".7"/>
+      <circle cx="8" cy="6" r="6" fill="#c96f4a" opacity=".7" stroke="#2c4a7c" stroke-width=".7"/>
+      <circle r="3" fill="#e8c547"/>
+    </g>
+    <!-- daisy top -->
+    <g transform="translate(135,20)">
+      <g fill="#fbf4e3" stroke="#2c4a7c" stroke-width=".8">
+        <ellipse cx="0" cy="-10" rx="4" ry="8"/>
+        <ellipse cx="0" cy="-10" rx="4" ry="8" transform="rotate(72)"/>
+        <ellipse cx="0" cy="-10" rx="4" ry="8" transform="rotate(144)"/>
+        <ellipse cx="0" cy="-10" rx="4" ry="8" transform="rotate(216)"/>
+        <ellipse cx="0" cy="-10" rx="4" ry="8" transform="rotate(288)"/>
+      </g>
+      <circle r="3.5" fill="#e8c547" stroke="#2c4a7c" stroke-width=".6"/>
+    </g>
+  </svg>
+
+  <!-- bottom-right cluster -->
+  <svg class="section-deco floral-br sway-b" viewBox="0 0 170 170" aria-hidden="true">
+    <path d="M160,165 Q140,110 105,70 Q70,35 20,15" stroke="#2c4a7c" stroke-width="1.1" fill="none" stroke-linecap="round"/>
+    <path d="M140,130 q14,-4 18,10 q-9,9 -22,0 Z" fill="#7a9b5e" opacity=".7"/>
+    <path d="M140,130 q14,-4 18,10 q-9,9 -22,0" stroke="#2c4a7c" stroke-width=".8" fill="none"/>
+    <path d="M115,90 q-14,-4 -18,10 q9,9 22,0 Z" fill="#5d7a47" opacity=".68"/>
+    <path d="M115,90 q-14,-4 -18,10 q9,9 22,0" stroke="#2c4a7c" stroke-width=".8" fill="none"/>
+    <path d="M80,55 q-14,-4 -18,10 q9,9 22,0 Z" fill="#7a9b5e" opacity=".7"/>
+    <path d="M80,55 q-14,-4 -18,10 q9,9 22,0" stroke="#2c4a7c" stroke-width=".8" fill="none"/>
+    <!-- large daisy -->
+    <g transform="translate(95,72)">
+      <g fill="#fbf4e3" stroke="#2c4a7c" stroke-width=".9">
+        <ellipse cx="0" cy="-13" rx="5" ry="10"/>
+        <ellipse cx="0" cy="-13" rx="5" ry="10" transform="rotate(72)"/>
+        <ellipse cx="0" cy="-13" rx="5" ry="10" transform="rotate(144)"/>
+        <ellipse cx="0" cy="-13" rx="5" ry="10" transform="rotate(216)"/>
+        <ellipse cx="0" cy="-13" rx="5" ry="10" transform="rotate(288)"/>
+      </g>
+      <circle r="4.5" fill="#e8c547" stroke="#2c4a7c" stroke-width=".7"/>
+    </g>
+    <!-- bud -->
+    <g transform="translate(35,25)">
+      <path d="M0,0 Q-4,-8 0,-14 Q4,-8 0,0 Z" fill="#c96f4a" opacity=".7" stroke="#2c4a7c" stroke-width=".7"/>
+      <path d="M-2,0 Q2,-2 4,2" stroke="#7a9b5e" stroke-width="1" fill="none"/>
+    </g>
+  </svg>
+
+  <!-- small bottom-left accent -->
+  <svg class="section-deco floral-bl sway-c" viewBox="0 0 100 100" aria-hidden="true">
+    <g transform="translate(50,50)">
+      <g fill="#fbf4e3" stroke="#2c4a7c" stroke-width=".9">
+        <ellipse cx="0" cy="-18" rx="6" ry="14"/>
+        <ellipse cx="0" cy="-18" rx="6" ry="14" transform="rotate(72)"/>
+        <ellipse cx="0" cy="-18" rx="6" ry="14" transform="rotate(144)"/>
+        <ellipse cx="0" cy="-18" rx="6" ry="14" transform="rotate(216)"/>
+        <ellipse cx="0" cy="-18" rx="6" ry="14" transform="rotate(288)"/>
+      </g>
+      <circle r="6" fill="#e8c547" stroke="#2c4a7c" stroke-width=".8"/>
+    </g>
+    <path d="M50,78 Q44,92 34,98" stroke="#2c4a7c" stroke-width="1" fill="none"/>
+    <path d="M46,90 q-8,-2 -10,6 q6,4 12,-2 Z" fill="#7a9b5e" opacity=".7"/>
+  </svg>
+
+  <div class="photo-wrap fade-in">
+    <div class="photo-frame">
+      <img src="./couple.jpeg" alt="Ayça Feza &amp; Buğrahan" loading="lazy" />
+    </div>
+  </div>
+  <p class="caption fade-in" data-i18n="photoCaption">Bir yol, bir gönül…</p>
+</section>
+
+<!-- ── DETAILS ───────────────────────────────────── -->
+<section class="details" id="details">
+  <!-- hanging branch left -->
+  <svg class="section-deco sprig-l sway-a" viewBox="0 0 130 320" aria-hidden="true">
+    <path d="M65,0 Q70,80 60,160 Q50,240 35,315" stroke="#2c4a7c" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+    <path d="M65,40 q-16,-4 -22,10 q10,10 24,0 Z" fill="#7a9b5e" opacity=".7"/>
+    <path d="M65,40 q-16,-4 -22,10 q10,10 24,0" stroke="#2c4a7c" stroke-width=".9" fill="none"/>
+    <path d="M67,80 q16,-4 22,10 q-10,10 -24,0 Z" fill="#5d7a47" opacity=".65"/>
+    <path d="M67,80 q16,-4 22,10 q-10,10 -24,0" stroke="#2c4a7c" stroke-width=".9" fill="none"/>
+    <path d="M62,125 q-16,-4 -22,10 q10,10 24,0 Z" fill="#7a9b5e" opacity=".7"/>
+    <path d="M62,125 q-16,-4 -22,10 q10,10 24,0" stroke="#2c4a7c" stroke-width=".9" fill="none"/>
+    <path d="M58,170 q16,-4 22,10 q-10,10 -24,0 Z" fill="#5d7a47" opacity=".65"/>
+    <path d="M58,170 q16,-4 22,10 q-10,10 -24,0" stroke="#2c4a7c" stroke-width=".9" fill="none"/>
+    <path d="M50,218 q-16,-4 -22,10 q10,10 24,0 Z" fill="#7a9b5e" opacity=".7"/>
+    <path d="M50,218 q-16,-4 -22,10 q10,10 24,0" stroke="#2c4a7c" stroke-width=".9" fill="none"/>
+    <!-- flower at tip -->
+    <g transform="translate(35,300)">
+      <g fill="#fbf4e3" stroke="#2c4a7c" stroke-width=".8">
+        <ellipse cx="0" cy="-9" rx="4" ry="7"/>
+        <ellipse cx="0" cy="-9" rx="4" ry="7" transform="rotate(72)"/>
+        <ellipse cx="0" cy="-9" rx="4" ry="7" transform="rotate(144)"/>
+        <ellipse cx="0" cy="-9" rx="4" ry="7" transform="rotate(216)"/>
+        <ellipse cx="0" cy="-9" rx="4" ry="7" transform="rotate(288)"/>
+      </g>
+      <circle r="3" fill="#e8c547" stroke="#2c4a7c" stroke-width=".6"/>
+    </g>
+  </svg>
+
+  <!-- hanging branch right (mirrored) -->
+  <svg class="section-deco sprig-r sway-b" viewBox="0 0 130 320" aria-hidden="true">
+    <path d="M65,0 Q70,80 60,160 Q50,240 35,315" stroke="#2c4a7c" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+    <path d="M65,40 q-16,-4 -22,10 q10,10 24,0 Z" fill="#7a9b5e" opacity=".7"/>
+    <path d="M65,40 q-16,-4 -22,10 q10,10 24,0" stroke="#2c4a7c" stroke-width=".9" fill="none"/>
+    <path d="M67,80 q16,-4 22,10 q-10,10 -24,0 Z" fill="#5d7a47" opacity=".65"/>
+    <path d="M67,80 q16,-4 22,10 q-10,10 -24,0" stroke="#2c4a7c" stroke-width=".9" fill="none"/>
+    <path d="M62,125 q-16,-4 -22,10 q10,10 24,0 Z" fill="#7a9b5e" opacity=".7"/>
+    <path d="M62,125 q-16,-4 -22,10 q10,10 24,0" stroke="#2c4a7c" stroke-width=".9" fill="none"/>
+    <path d="M58,170 q16,-4 22,10 q-10,10 -24,0 Z" fill="#5d7a47" opacity=".65"/>
+    <path d="M58,170 q16,-4 22,10 q-10,10 -24,0" stroke="#2c4a7c" stroke-width=".9" fill="none"/>
+    <path d="M50,218 q-16,-4 -22,10 q10,10 24,0 Z" fill="#7a9b5e" opacity=".7"/>
+    <path d="M50,218 q-16,-4 -22,10 q10,10 24,0" stroke="#2c4a7c" stroke-width=".9" fill="none"/>
+    <g transform="translate(35,300)">
+      <circle r="8" fill="#c96f4a" opacity=".72" stroke="#2c4a7c" stroke-width=".8"/>
+      <circle r="3" fill="#e8c547"/>
+    </g>
+  </svg>
+
+  <div class="ornament fade-in"><span class="dot"></span></div>
+  <h2 class="details-title fade-in" data-i18n="detailsTitle">Kız İsteme &amp; Nişan</h2>
+  <p class="details-subtitle fade-in" data-i18n="party">Bahçe Partisi</p>
+
+  <div class="info-card fade-in">
+    <!-- corner ornaments -->
+    <svg class="corner tl" viewBox="0 0 60 60" aria-hidden="true">
+      <path d="M8,48 Q22,36 34,40 Q42,24 52,10" stroke="#2c4a7c" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+      <path d="M22,38 q-5,-7 -12,-6 q3,9 13,7 Z" fill="#7a9b5e" opacity=".55"/>
+      <path d="M22,38 q-5,-7 -12,-6 q3,9 13,7" stroke="#2c4a7c" stroke-width=".9" fill="none"/>
+      <path d="M34,28 q5,-7 12,-6 q-3,9 -13,7 Z" fill="#7a9b5e" opacity=".55"/>
+      <path d="M34,28 q5,-7 12,-6 q-3,9 -13,7" stroke="#2c4a7c" stroke-width=".9" fill="none"/>
+      <path d="M44,14 q-4,-5 -10,-4 q2,7 10,5 Z" fill="#7a9b5e" opacity=".55"/>
+      <path d="M44,14 q-4,-5 -10,-4 q2,7 10,5" stroke="#2c4a7c" stroke-width=".9" fill="none"/>
+      <circle cx="52" cy="9" r="2" fill="#c96f4a" opacity=".75"/>
+    </svg>
+    <svg class="corner br" viewBox="0 0 60 60" aria-hidden="true">
+      <path d="M8,48 Q22,36 34,40 Q42,24 52,10" stroke="#2c4a7c" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+      <path d="M22,38 q-5,-7 -12,-6 q3,9 13,7 Z" fill="#7a9b5e" opacity=".55"/>
+      <path d="M22,38 q-5,-7 -12,-6 q3,9 13,7" stroke="#2c4a7c" stroke-width=".9" fill="none"/>
+      <path d="M34,28 q5,-7 12,-6 q-3,9 -13,7 Z" fill="#7a9b5e" opacity=".55"/>
+      <path d="M34,28 q5,-7 12,-6 q-3,9 -13,7" stroke="#2c4a7c" stroke-width=".9" fill="none"/>
+      <path d="M44,14 q-4,-5 -10,-4 q2,7 10,5 Z" fill="#7a9b5e" opacity=".55"/>
+      <path d="M44,14 q-4,-5 -10,-4 q2,7 10,5" stroke="#2c4a7c" stroke-width=".9" fill="none"/>
+      <circle cx="52" cy="9" r="2" fill="#c96f4a" opacity=".75"/>
+    </svg>
+
+    <div class="info-row">
+      <span class="info-label" data-i18n="loc">KONUM</span>
+      <span class="info-val">Amselweg 10, 40878 Ratingen</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label" data-i18n="date">TARİH</span>
+      <span class="info-val" data-i18n="dateVal">27 Haziran 2026 Cumartesi</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label" data-i18n="time">SAAT</span>
+      <span class="info-val">16:00</span>
+    </div>
+  </div>
+
+  <div class="action-buttons fade-in">
+    <a class="action-btn"
+       href="https://www.google.com/maps/search/?api=1&query=Amselweg+10+40878+Ratingen"
+       target="_blank" rel="noopener noreferrer"
+       data-i18n="directions">NASIL GİDİLİR</a>
+    <button class="action-btn filled" id="addToCal" type="button" data-i18n="addToCal">TAKVİME EKLE</button>
+  </div>
+</section>
+
+<!-- ── QUOTE ─────────────────────────────────────── -->
+<section class="quote">
+  <!-- soft watercolor bloom left -->
+  <svg class="section-deco bloom-l sway-c" viewBox="0 0 170 170" aria-hidden="true">
+    <g>
+      <circle cx="70" cy="65" r="38" fill="#c96f4a" opacity=".35"/>
+      <circle cx="95" cy="95" r="30" fill="#e8c547" opacity=".4"/>
+      <circle cx="50" cy="100" r="26" fill="#7a9b5e" opacity=".4"/>
+      <circle cx="80" cy="80" r="15" fill="#fbf4e3" opacity=".5"/>
+    </g>
+    <!-- ink accents -->
+    <path d="M40,90 Q70,50 110,70" stroke="#2c4a7c" stroke-width=".8" fill="none" opacity=".5"/>
+    <path d="M60,120 q-10,-6 -14,4 q6,8 16,2 Z" fill="#5d7a47" opacity=".5"/>
+    <path d="M60,120 q-10,-6 -14,4 q6,8 16,2" stroke="#2c4a7c" stroke-width=".6" fill="none" opacity=".6"/>
+    <g transform="translate(100,60)">
+      <g fill="#fbf4e3" stroke="#2c4a7c" stroke-width=".7" opacity=".8">
+        <ellipse cx="0" cy="-9" rx="4" ry="7"/>
+        <ellipse cx="0" cy="-9" rx="4" ry="7" transform="rotate(72)"/>
+        <ellipse cx="0" cy="-9" rx="4" ry="7" transform="rotate(144)"/>
+        <ellipse cx="0" cy="-9" rx="4" ry="7" transform="rotate(216)"/>
+        <ellipse cx="0" cy="-9" rx="4" ry="7" transform="rotate(288)"/>
+      </g>
+      <circle r="3" fill="#e8c547"/>
+    </g>
+  </svg>
+
+  <!-- bloom right -->
+  <svg class="section-deco bloom-r sway-a" viewBox="0 0 140 140" aria-hidden="true">
+    <g>
+      <circle cx="70" cy="60" r="32" fill="#7a9b5e" opacity=".38"/>
+      <circle cx="50" cy="85" r="25" fill="#c96f4a" opacity=".38"/>
+      <circle cx="90" cy="90" r="22" fill="#e8c547" opacity=".4"/>
+    </g>
+    <path d="M30,70 Q60,40 100,60" stroke="#2c4a7c" stroke-width=".8" fill="none" opacity=".5"/>
+    <g transform="translate(50,50)">
+      <circle r="8" fill="#c96f4a" opacity=".8" stroke="#2c4a7c" stroke-width=".7"/>
+      <circle r="3" fill="#e8c547"/>
+    </g>
+  </svg>
+
+  <blockquote>
+    <span class="marks fade-in">&ldquo;</span>
+    <p class="quote-orig fade-in">İki dünyada da tek istediğim sen.</p>
+    <p class="quote-trans fade-in" data-i18n="quoteTrans">Dünümüz, bugünümüz, yarınımız — seninle.</p>
+    <cite class="fade-in">— Mevlâna Celâleddîn-i Rûmî</cite>
+  </blockquote>
+</section>
+
+<!-- ── FOOTER ────────────────────────────────────── -->
+<footer>
+  <svg class="foot-flower bob" viewBox="0 0 44 44" aria-hidden="true">
+    <g transform="translate(22,22)">
+      <g fill="#fbf4e3" stroke="#2c4a7c" stroke-width=".9">
+        <ellipse cx="0" cy="-10" rx="4.5" ry="9"/>
+        <ellipse cx="0" cy="-10" rx="4.5" ry="9" transform="rotate(72)"/>
+        <ellipse cx="0" cy="-10" rx="4.5" ry="9" transform="rotate(144)"/>
+        <ellipse cx="0" cy="-10" rx="4.5" ry="9" transform="rotate(216)"/>
+        <ellipse cx="0" cy="-10" rx="4.5" ry="9" transform="rotate(288)"/>
+      </g>
+      <circle r="3.8" fill="#e8c547" stroke="#2c4a7c" stroke-width=".7"/>
+    </g>
+  </svg>
+  <p class="script fade-in">Ayça Feza &amp; Buğrahan</p>
+  <p class="date fade-in" data-i18n="footerDate">27 Haziran 2026</p>
+  <svg class="footer-branch fade-in" viewBox="0 0 110 40" aria-hidden="true">
+    <path d="M4,20 Q55,16 106,20" stroke="#2c4a7c" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+    <path d="M26,18 q-4,-7 -11,-5 q1,7 11,5 Z" fill="#7a9b5e" opacity=".7"/>
+    <path d="M26,18 q-4,-7 -11,-5 q1,7 11,5" stroke="#2c4a7c" stroke-width=".9" fill="none"/>
+    <path d="M42,22 q4,7 11,5 q-1,-7 -11,-5 Z" fill="#7a9b5e" opacity=".7"/>
+    <path d="M42,22 q4,7 11,5 q-1,-7 -11,-5" stroke="#2c4a7c" stroke-width=".9" fill="none"/>
+    <path d="M66,18 q-4,-7 -11,-5 q1,7 11,5 Z" fill="#7a9b5e" opacity=".7"/>
+    <path d="M66,18 q-4,-7 -11,-5 q1,7 11,5" stroke="#2c4a7c" stroke-width=".9" fill="none"/>
+    <path d="M82,22 q4,7 11,5 q-1,-7 -11,-5 Z" fill="#7a9b5e" opacity=".7"/>
+    <path d="M82,22 q4,7 11,5 q-1,-7 -11,-5" stroke="#2c4a7c" stroke-width=".9" fill="none"/>
+    <circle cx="55" cy="20" r="1.8" fill="#c96f4a" opacity=".8"/>
+  </svg>
+</footer>
+
+<script>
+/* ────────────────────────────────────────────────
+   EVENT-DATEN — hier anpassen falls sich was ändert
+   ──────────────────────────────────────────────── */
+const EVENT = {
+  // 27.06.2026, 16:00 Europe/Berlin (im Juni = UTC+2) → 14:00 UTC
+  startUTC: '2026-06-27T14:00:00Z',
+  endUTC:   '2026-06-27T20:00:00Z', // 22:00 local
+  titleTR:  'Ayça Feza & Buğrahan — Kız İsteme & Nişan',
+  titleDE:  'Ayça Feza & Buğrahan — Verlobung & Kız İsteme',
+  location: 'Amselweg 10, 40878 Ratingen, Deutschland',
+  descTR:   'Bahçe Partisi — Kız İsteme & Nişan',
+  descDE:   'Gartenfeier — Verlobung & Kız İsteme',
+};
+const EVENT_DATE = new Date(EVENT.startUTC);
+
+/* ────────────────────────────────────────────────
+   ÜBERSETZUNGEN
+   ──────────────────────────────────────────────── */
+const i18n = {
+  tr: {
+    docTitle:      'Ayça Feza & Buğrahan — Kız İsteme & Nişan',
+    eyebrow:       'KIZ İSTEME & NİŞAN DAVETİ',
+    heroDate:      '27 Haziran 2026 Cumartesi',
+    heroLoc:       'Amselweg 10 · 40878 Ratingen',
+    saveDate:      'TARİHİ KAYDEDİN',
+    cdTitle:       'Geri Sayım',
+    days:          'Gün',  hours: 'Saat',  mins: 'Dakika',  secs: 'Saniye',
+    photoCaption:  'Bir yol, bir gönül…',
+    detailsTitle:  'Kız İsteme & Nişan',
+    party:         'Bahçe Partisi',
+    loc: 'KONUM',  date: 'TARİH',  time: 'SAAT',
+    dateVal:       '27 Haziran 2026 Cumartesi',
+    directions:    'NASIL GİDİLİR',
+    addToCal:      'TAKVİME EKLE',
+    quoteTrans:    'Dünümüz, bugünümüz, yarınımız — seninle.',
+    footerDate:    '27 Haziran 2026',
+    langBtn:       'DE',
+  },
+  de: {
+    docTitle:      'Ayça Feza & Buğrahan — Verlobung & Kız İsteme',
+    eyebrow:       'EINLADUNG · KIZ İSTEME & VERLOBUNG',
+    heroDate:      'Samstag, 27. Juni 2026',
+    heroLoc:       'Amselweg 10 · 40878 Ratingen',
+    saveDate:      'SAVE THE DATE',
+    cdTitle:       'Countdown',
+    days:          'Tage', hours: 'Stunden', mins: 'Minuten', secs: 'Sekunden',
+    photoCaption:  'Ein Weg, ein Herz…',
+    detailsTitle:  'Kız İsteme & Verlobung',
+    party:         'Gartenfeier',
+    loc: 'ORT',    date: 'DATUM',  time: 'UHRZEIT',
+    dateVal:       'Samstag, 27. Juni 2026',
+    directions:    'ROUTE PLANEN',
+    addToCal:      'IN KALENDER SPEICHERN',
+    quoteTrans:    '„In beiden Welten bist du alles, was ich will."',
+    footerDate:    '27. Juni 2026',
+    langBtn:       'TR',
+  },
+};
+
+/* ────────────────────────────────────────────────
+   SPRACHUMSCHALTUNG (Standard = TR, via localStorage)
+   ──────────────────────────────────────────────── */
+
+/* inline SVG flags — target language is always shown */
+const FLAGS = {
+  tr: `<svg viewBox="0 0 60 40" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+         <rect width="60" height="40" fill="#e30a17"/>
+         <circle cx="22" cy="20" r="9" fill="#fff"/>
+         <circle cx="25" cy="20" r="7.2" fill="#e30a17"/>
+         <polygon fill="#fff" points="38,15 39.18,18.38 42.76,18.46 39.9,20.62 40.94,24.05 38,22 35.06,24.05 36.1,20.62 33.24,18.46 36.82,18.38"/>
+       </svg>`,
+  de: `<svg viewBox="0 0 60 40" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+         <rect width="60" height="13.34" y="0"     fill="#000"/>
+         <rect width="60" height="13.34" y="13.33" fill="#dd0000"/>
+         <rect width="60" height="13.34" y="26.66" fill="#ffce00"/>
+       </svg>`,
+};
+const TARGET_LABEL = { de: 'Deutsch', tr: 'Türkçe' };
+
+let currentLang = localStorage.getItem('lang') || 'tr';
+if (!i18n[currentLang]) currentLang = 'tr';
+
+function applyLang(lang) {
+  const t = i18n[lang];
+  document.documentElement.lang = lang;
+  document.title = t.docTitle;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key] !== undefined) el.textContent = t[key];
+  });
+  /* toggle always shows the OTHER language */
+  const target = lang === 'tr' ? 'de' : 'tr';
+  document.getElementById('flagEl').innerHTML = FLAGS[target];
+  document.getElementById('langLabel').textContent = TARGET_LABEL[target];
+  const btn = document.getElementById('langToggle');
+  btn.setAttribute('aria-label', target === 'de' ? 'Auf Deutsch wechseln' : 'Türkçeye geç');
+  btn.title = target === 'de' ? 'Auf Deutsch wechseln' : 'Türkçeye geç';
+  localStorage.setItem('lang', lang);
+  currentLang = lang;
+}
+
+document.getElementById('langToggle').addEventListener('click', () => {
+  applyLang(currentLang === 'tr' ? 'de' : 'tr');
+});
+
+applyLang(currentLang);
+
+/* ────────────────────────────────────────────────
+   COUNTDOWN — live, jede Sekunde
+   ──────────────────────────────────────────────── */
+const elDays  = document.getElementById('days');
+const elHours = document.getElementById('hours');
+const elMins  = document.getElementById('mins');
+const elSecs  = document.getElementById('secs');
+const pad = n => String(Math.max(0, n)).padStart(2, '0');
+
+function tick() {
+  let diff = EVENT_DATE.getTime() - Date.now();
+  if (diff < 0) diff = 0;
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor((diff % 86400000) / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  elDays.textContent  = pad(d);
+  elHours.textContent = pad(h);
+  elMins.textContent  = pad(m);
+  elSecs.textContent  = pad(s);
+}
+tick();
+setInterval(tick, 1000);
+
+/* ────────────────────────────────────────────────
+   ICS-DOWNLOAD — client-seitig
+   ──────────────────────────────────────────────── */
+function toICSTime(iso) {
+  // 2026-06-27T14:00:00Z → 20260627T140000Z
+  return iso.replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+}
+function escICS(s) {
+  return String(s).replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\n/g, '\\n');
+}
+
+function downloadICS() {
+  const title = currentLang === 'de' ? EVENT.titleDE : EVENT.titleTR;
+  const desc  = currentLang === 'de' ? EVENT.descDE  : EVENT.descTR;
+  const now   = toICSTime(new Date().toISOString());
+
+  const lines = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//AycaFeza & Bugrahan//Nisan 2026//TR',
+    'CALSCALE:GREGORIAN',
+    'METHOD:PUBLISH',
+    'BEGIN:VEVENT',
+    'UID:ayca-feza-bugrahan-nisan-2026@davet',
+    'DTSTAMP:' + now,
+    'DTSTART:' + toICSTime(EVENT.startUTC),
+    'DTEND:'   + toICSTime(EVENT.endUTC),
+    'SUMMARY:' + escICS(title),
+    'LOCATION:' + escICS(EVENT.location),
+    'DESCRIPTION:' + escICS(desc),
+    'STATUS:CONFIRMED',
+    'TRANSP:OPAQUE',
+    'END:VEVENT',
+    'END:VCALENDAR',
+  ].join('\r\n');
+
+  const blob = new Blob([lines], { type: 'text/calendar;charset=utf-8' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  a.download = 'ayca-bugrahan-nisan-2026.ics';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1500);
+}
+document.getElementById('addToCal').addEventListener('click', downloadICS);
+
+/* ────────────────────────────────────────────────
+   SCROLL-ANIMATIONS (IntersectionObserver)
+   ──────────────────────────────────────────────── */
+if ('IntersectionObserver' in window) {
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-in').forEach(el => io.observe(el));
+} else {
+  document.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
+}
+
+/* ────────────────────────────────────────────────
+   PARALLAX — sanft auf dem Hero-Video
+   ──────────────────────────────────────────────── */
+const heroVid = document.getElementById('heroVideo');
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (heroVid && !reduceMotion) {
+  let ticking = false;
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      const y = window.scrollY;
+      if (y < 1200) heroVid.style.transform = 'translate3d(0,' + (y * 0.22) + 'px,0)';
+      ticking = false;
+    });
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+}
+
+/* iOS autoplay safeguard: try to play after any interaction */
+if (heroVid) {
+  const tryPlay = () => heroVid.play().catch(() => {});
+  tryPlay();
+  document.addEventListener('touchstart', tryPlay, { once: true, passive: true });
+  document.addEventListener('click', tryPlay, { once: true });
+}
+</script>
+</body>
+</html>

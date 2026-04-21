@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMax slice" role="img" aria-label="Mediterrane Gartenszene mit Steinhaus, Zypressen, Brunnen und Lichterkette">
+  <defs>
+    <style>
+      .ink      { stroke:#2c4a7c; fill:none; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
+      .ink-thin { stroke:#2c4a7c; fill:none; stroke-width:1;   stroke-linecap:round; stroke-linejoin:round; }
+      .w-cy     { fill:#5d7a47; opacity:.55; }
+      .w-cy-lt  { fill:#7a9b5e; opacity:.45; }
+      .w-stone  { fill:#c9b88a; opacity:.48; }
+      .w-terra  { fill:#c96f4a; opacity:.55; }
+      .w-lantern{ fill:#e8c547; opacity:.75; }
+      .w-water  { fill:#6fa8c7; opacity:.38; }
+      .w-wine   { fill:#7a2c3a; opacity:.65; }
+      .w-bottle { fill:#3d5a3c; opacity:.62; }
+      .w-leaf   { fill:#7a9b5e; opacity:.55; }
+      .w-petal  { fill:#fbf4e3; opacity:.92; }
+      .w-yellow { fill:#e8c547; opacity:.9;  }
+      .w-shutter{ fill:#6fa8c7; opacity:.5;  }
+      .w-label  { fill:#fbf4e3; opacity:.88; }
+    </style>
+  </defs>
+
+  <!-- small far-back cypresses -->
+  <g opacity="0.7">
+    <path class="w-cy-lt" d="M230,530 Q215,460 225,380 Q235,320 250,270 Q265,320 275,380 Q285,460 270,530 Z"/>
+    <path class="ink-thin" d="M230,530 Q215,460 225,380 Q235,320 250,270 Q265,320 275,380 Q285,460 270,530"/>
+    <path class="w-cy-lt" d="M920,520 Q905,455 915,375 Q925,315 940,270 Q955,315 965,375 Q975,455 960,520 Z"/>
+    <path class="ink-thin" d="M920,520 Q905,455 915,375 Q925,315 940,270 Q955,315 965,375 Q975,455 960,520"/>
+  </g>
+
+  <!-- STONE HOUSE -->
+  <g>
+    <!-- roof -->
+    <path class="w-terra" d="M420,290 L600,180 L780,290 Z"/>
+    <path class="ink" d="M420,290 L600,180 L780,290"/>
+    <path class="ink-thin" d="M440,285 L760,285 M455,275 L745,275 M470,265 L730,265 M485,255 L715,255 M500,245 L700,245 M520,232 L680,232 M540,218 L660,218 M560,205 L640,205 M580,193 L620,193"/>
+    <!-- body -->
+    <path class="w-stone" d="M440,290 L760,290 L760,502 L440,502 Z"/>
+    <path class="ink" d="M440,290 L440,502 L760,502 L760,290"/>
+    <!-- stone texture lines -->
+    <g class="ink-thin" opacity="0.55">
+      <path d="M460,320 Q475,322 490,320 M510,325 Q525,327 540,325 M560,320 Q575,322 590,320 M610,325 Q625,327 640,325 M660,320 Q675,322 690,320 M710,325 Q725,327 740,325"/>
+      <path d="M450,360 Q465,362 480,360 M500,365 Q515,367 530,365 M550,360 Q565,362 580,360 M600,365 Q615,367 630,365 M650,360 Q665,362 680,360 M700,365 Q715,367 730,365"/>
+      <path d="M460,410 Q475,412 490,410 M510,415 Q525,417 540,415 M560,410 Q575,412 590,410 M610,415 Q625,417 640,415 M660,410 Q675,412 690,410 M710,415 Q725,417 740,415"/>
+      <path d="M450,455 Q465,457 480,455 M500,460 Q515,462 530,460 M550,455 Q565,457 580,455 M600,460 Q615,462 630,460 M650,455 Q665,457 680,455 M700,460 Q715,462 730,460"/>
+    </g>
+    <!-- door -->
+    <path class="w-terra" d="M580,400 L620,400 L620,502 L580,502 Z" opacity=".45"/>
+    <path class="ink" d="M580,502 L580,410 Q580,400 590,400 L610,400 Q620,400 620,410 L620,502"/>
+    <path class="ink-thin" d="M600,410 L600,498 M614,452 Q617,455 614,458"/>
+    <!-- left window -->
+    <g>
+      <path class="w-shutter" d="M472,342 L522,342 L522,392 L472,392 Z"/>
+      <path class="ink" d="M472,342 L522,342 L522,392 L472,392 Z"/>
+      <path class="ink-thin" d="M497,342 L497,392 M474,352 L495,352 M499,352 L520,352 M474,367 L495,367 M499,367 L520,367 M474,382 L495,382 M499,382 L520,382"/>
+      <path class="ink" d="M466,392 L528,392"/>
+      <path class="ink-thin" d="M472,342 Q497,336 522,342"/>
+    </g>
+    <!-- right window -->
+    <g>
+      <path class="w-shutter" d="M678,342 L728,342 L728,392 L678,392 Z"/>
+      <path class="ink" d="M678,342 L728,342 L728,392 L678,392 Z"/>
+      <path class="ink-thin" d="M703,342 L703,392 M680,352 L701,352 M705,352 L726,352 M680,367 L701,367 M705,367 L726,367 M680,382 L701,382 M705,382 L726,382"/>
+      <path class="ink" d="M672,392 L734,392"/>
+      <path class="ink-thin" d="M678,342 Q703,336 728,342"/>
+    </g>
+    <!-- chimney -->
+    <path class="w-stone" d="M680,218 L680,160 L710,160 L710,218 Z"/>
+    <path class="ink" d="M680,218 L680,160 L710,160 L710,218"/>
+    <!-- tiny plant on roof edge -->
+    <path class="w-leaf" d="M462,292 q-3,-8 -9,-6 q2,7 9,6 Z M450,294 q-3,-6 -8,-4 q1,6 8,4 Z"/>
+    <path class="ink-thin" d="M462,292 q-3,-8 -9,-6 q2,7 9,6 M450,294 q-3,-6 -8,-4 q1,6 8,4"/>
+  </g>
+
+  <!-- LEFT CYPRESS (tall, foreground) -->
+  <g>
+    <path class="w-cy" d="M112,625 Q85,520 95,400 Q100,300 132,195 Q160,300 168,400 Q172,525 150,625 Z"/>
+    <path class="ink" d="M112,625 Q85,520 95,400 Q100,300 132,195 Q160,300 168,400 Q172,525 150,625"/>
+    <path class="ink-thin" opacity="0.7" d="M120,280 Q125,285 122,295 M135,310 Q140,318 136,328 M115,360 Q118,368 114,378 M140,420 Q144,428 139,438 M120,472 Q123,480 119,490 M138,530 Q142,538 137,548 M125,572 Q129,580 124,590"/>
+    <path class="ink" d="M126,625 L126,648 M140,625 L140,648"/>
+  </g>
+
+  <!-- RIGHT CYPRESS (tall, foreground) -->
+  <g>
+    <path class="w-cy" d="M1050,625 Q1025,520 1035,400 Q1040,300 1072,195 Q1098,300 1106,400 Q1112,525 1090,625 Z"/>
+    <path class="ink" d="M1050,625 Q1025,520 1035,400 Q1040,300 1072,195 Q1098,300 1106,400 Q1112,525 1090,625"/>
+    <path class="ink-thin" opacity="0.7" d="M1060,280 Q1065,285 1062,295 M1075,310 Q1080,318 1076,328 M1056,360 Q1059,368 1055,378 M1080,420 Q1084,428 1079,438 M1060,472 Q1063,480 1059,490 M1078,530 Q1082,538 1077,548 M1066,572 Q1070,580 1065,590"/>
+    <path class="ink" d="M1066,625 L1066,648 M1082,625 L1082,648"/>
+  </g>
+
+  <!-- LOW STONE WALL (flanking, not behind fountain) -->
+  <g>
+    <path class="w-stone" d="M0,540 L200,540 L200,590 L0,590 Z"/>
+    <path class="ink" d="M0,540 L200,540 M0,590 L200,590"/>
+    <g class="ink-thin" opacity="0.7">
+      <path d="M30,540 L30,590 M70,540 L70,590 M110,540 L110,590 M150,540 L150,590 M190,540 L190,590"/>
+      <path d="M0,563 L200,563"/>
+    </g>
+    <path class="w-stone" d="M840,540 L1200,540 L1200,590 L840,590 Z"/>
+    <path class="ink" d="M840,540 L1200,540 M840,590 L1200,590"/>
+    <g class="ink-thin" opacity="0.7">
+      <path d="M870,540 L870,590 M920,540 L920,590 M970,540 L970,590 M1020,540 L1020,590 M1070,540 L1070,590 M1120,540 L1120,590 M1170,540 L1170,590"/>
+      <path d="M840,563 L1200,563"/>
+    </g>
+  </g>
+
+  <!-- FOUNTAIN (octagonal, center front) -->
+  <g transform="translate(600,640)">
+    <!-- basin -->
+    <path class="w-water" d="M-130,-30 L-85,-65 L85,-65 L130,-30 L130,30 L85,65 L-85,65 L-130,30 Z"/>
+    <path class="ink" d="M-130,-30 L-85,-65 L85,-65 L130,-30 L130,30 L85,65 L-85,65 L-130,30 Z"/>
+    <path class="ink-thin" d="M-118,-25 L-78,-58 L78,-58 L118,-25"/>
+    <!-- rim below -->
+    <path class="w-stone" d="M-130,30 L-130,52 L130,52 L130,30 Z"/>
+    <path class="ink" d="M-130,30 L-130,52 L130,52 L130,30"/>
+    <!-- center pillar -->
+    <path class="w-stone" d="M-20,-95 L20,-95 L20,-50 L-20,-50 Z"/>
+    <path class="ink" d="M-20,-95 L-20,-50 M20,-95 L20,-50 M-22,-50 L22,-50 M-22,-95 L22,-95"/>
+    <!-- jet -->
+    <path class="w-water" d="M-6,-138 Q-9,-118 -3,-98 Q0,-92 3,-98 Q9,-118 6,-138 Q2,-144 0,-142 Q-2,-144 -6,-138 Z"/>
+    <path class="ink-thin" d="M-6,-136 Q-3,-108 0,-95 M6,-136 Q3,-108 0,-95"/>
+    <!-- droplets -->
+    <path class="ink-thin" d="M-12,-118 q-2,-3 -5,-1 M13,-122 q2,-3 5,-1 M-16,-95 q-2,-2 -4,0 M17,-100 q2,-2 4,0 M-20,-70 q-2,-2 -4,0 M21,-73 q2,-2 4,0"/>
+    <!-- water ripples -->
+    <g class="ink-thin" opacity="0.8">
+      <path d="M-95,-20 Q-72,-26 -48,-20 M42,-18 Q62,-24 82,-18 M-72,0 Q-42,-6 -12,0 M12,4 Q42,-2 72,4 M-50,25 Q-20,20 8,25 M30,32 Q60,26 90,32"/>
+    </g>
+    <!-- vine creeping up -->
+    <path class="ink-thin" d="M-130,30 Q-140,10 -135,-12 Q-128,-30 -118,-40"/>
+    <path class="w-leaf" d="M-132,5 q-8,-4 -12,4 q4,6 12,0 Z"/>
+    <path class="ink-thin" d="M-132,5 q-8,-4 -12,4 q4,6 12,0"/>
+    <path class="w-leaf" d="M-127,-18 q-8,-4 -12,4 q4,6 12,0 Z"/>
+    <path class="ink-thin" d="M-127,-18 q-8,-4 -12,4 q4,6 12,0"/>
+  </g>
+
+  <!-- GROUND line + subtle pavement -->
+  <g class="ink-thin" opacity="0.55">
+    <path d="M0,720 Q200,716 400,720 Q600,725 800,720 Q1000,716 1200,720"/>
+    <path d="M50,740 Q70,738 90,740 M130,745 Q150,743 170,745 M210,740 Q230,738 250,740 M290,745 Q310,743 330,745 M370,740 Q390,738 410,740 M450,745 Q470,743 490,745 M530,740 Q550,738 570,740 M610,745 Q630,743 650,745 M690,740 Q710,738 730,740 M770,745 Q790,743 810,745 M850,740 Q870,738 890,740 M930,745 Q950,743 970,745 M1010,740 Q1030,738 1050,740 M1090,745 Q1110,743 1130,745"/>
+    <path d="M40,770 Q60,768 80,770 M120,775 Q140,773 160,775 M200,770 Q220,768 240,770 M850,775 Q870,773 890,775 M950,770 Q970,768 990,770 M1040,775 Q1060,773 1080,775"/>
+  </g>
+
+  <!-- WINE BOTTLE (left foreground) -->
+  <g transform="translate(260,580)">
+    <!-- cork -->
+    <path fill="#c96f4a" opacity=".65" d="M-14,-80 L14,-80 L14,-68 L-14,-68 Z"/>
+    <path class="ink" d="M-14,-80 L14,-80 L14,-68 L-14,-68 Z"/>
+    <!-- body -->
+    <path class="w-bottle" d="M-14,-68 L-14,-38 Q-26,-32 -26,-8 L-26,78 Q-26,90 -14,90 L14,90 Q26,90 26,78 L26,-8 Q26,-32 14,-38 L14,-68 Z"/>
+    <path class="ink" d="M-14,-68 L-14,-38 Q-26,-32 -26,-8 L-26,78 Q-26,90 -14,90 L14,90 Q26,90 26,78 L26,-8 Q26,-32 14,-38 L14,-68"/>
+    <!-- label -->
+    <path class="w-label" d="M-22,10 L22,10 L22,58 L-22,58 Z"/>
+    <path class="ink" d="M-22,10 L22,10 L22,58 L-22,58 Z"/>
+    <path class="ink-thin" d="M-16,22 Q0,24 16,22 M-13,33 Q0,35 13,33 M-16,44 Q0,46 16,44"/>
+    <!-- little highlight -->
+    <path class="ink-thin" opacity=".4" d="M-20,-20 Q-22,0 -22,40"/>
+  </g>
+
+  <!-- WINE GLASS -->
+  <g transform="translate(340,620)">
+    <!-- bowl outline -->
+    <path class="ink" d="M-24,-40 Q-24,6 0,18 Q24,6 24,-40 L-24,-40 Z"/>
+    <!-- wine -->
+    <path class="w-wine" d="M-20,-20 Q-20,4 0,14 Q20,4 20,-20 Z"/>
+    <path class="ink-thin" d="M-20,-20 Q0,-14 20,-20"/>
+    <!-- stem -->
+    <path class="ink" d="M0,18 L0,52 M-18,55 L18,55"/>
+    <path class="ink-thin" d="M-18,55 Q0,59 18,55"/>
+  </g>
+
+  <!-- VASE WITH DAISIES -->
+  <g transform="translate(430,590)">
+    <!-- vase -->
+    <path class="w-water" d="M-28,0 Q-32,22 -24,55 Q-22,72 -16,80 L16,80 Q22,72 24,55 Q32,22 28,0 Z" opacity=".45"/>
+    <path class="ink" d="M-28,0 L28,0 M-28,0 Q-32,22 -24,55 Q-22,72 -16,80 L16,80 Q22,72 24,55 Q32,22 28,0"/>
+    <path class="ink-thin" d="M-24,10 L24,10"/>
+    <!-- stems -->
+    <path class="ink" d="M-10,0 Q-14,-18 -22,-45 M0,0 Q2,-22 -4,-55 M10,0 Q14,-18 18,-50"/>
+    <!-- leaves -->
+    <path class="w-leaf" d="M-14,-22 q-9,-4 -12,4 q3,7 12,2 Z"/>
+    <path class="ink-thin" d="M-14,-22 q-9,-4 -12,4 q3,7 12,2"/>
+    <path class="w-leaf" d="M6,-32 q9,-4 12,4 q-3,7 -12,2 Z"/>
+    <path class="ink-thin" d="M6,-32 q9,-4 12,4 q-3,7 -12,2"/>
+    <!-- daisies (copies) -->
+    <g transform="translate(-22,-50)">
+      <g class="w-petal">
+        <ellipse cx="0" cy="-8" rx="3.2" ry="6.5"/>
+        <ellipse cx="0" cy="-8" rx="3.2" ry="6.5" transform="rotate(72)"/>
+        <ellipse cx="0" cy="-8" rx="3.2" ry="6.5" transform="rotate(144)"/>
+        <ellipse cx="0" cy="-8" rx="3.2" ry="6.5" transform="rotate(216)"/>
+        <ellipse cx="0" cy="-8" rx="3.2" ry="6.5" transform="rotate(288)"/>
+      </g>
+      <g class="ink-thin" fill="none" stroke-width=".8">
+        <ellipse cx="0" cy="-8" rx="3.2" ry="6.5"/>
+        <ellipse cx="0" cy="-8" rx="3.2" ry="6.5" transform="rotate(72)"/>
+        <ellipse cx="0" cy="-8" rx="3.2" ry="6.5" transform="rotate(144)"/>
+        <ellipse cx="0" cy="-8" rx="3.2" ry="6.5" transform="rotate(216)"/>
+        <ellipse cx="0" cy="-8" rx="3.2" ry="6.5" transform="rotate(288)"/>
+      </g>
+      <circle class="w-yellow" r="3.2"/>
+      <circle r="3.2" fill="none" stroke="#2c4a7c" stroke-width=".8"/>
+    </g>
+    <g transform="translate(-4,-60)">
+      <g class="w-petal">
+        <ellipse cx="0" cy="-8" rx="3.2" ry="6.5"/>
+        <ellipse cx="0" cy="-8" rx="3.2" ry="6.5" transform="rotate(72)"/>
+        <ellipse cx="0" cy="-8" rx="3.2" ry="6.5" transform="rotate(144)"/>
+        <ellipse cx="0" cy="-8" rx="3.2" ry="6.5" transform="rotate(216)"/>
+        <ellipse cx="0" cy="-8" rx="3.2" ry="6.5" transform="rotate(288)"/>
+      </g>
+      <g class="ink-thin" fill="none" stroke-width=".8">
+        <ellipse cx="0" cy="-8" rx="3.2" ry="6.5"/>
+        <ellipse cx="0" cy="-8" rx="3.2" ry="6.5" transform="rotate(72)"/>
+        <ellipse cx="0" cy="-8" rx="3.2" ry="6.5" transform="rotate(144)"/>
+        <ellipse cx="0" cy="-8" rx="3.2" ry="6.5" transform="rotate(216)"/>
+        <ellipse cx="0" cy="-8" rx="3.2" ry="6.5" transform="rotate(288)"/>
+      </g>
+      <circle class="w-yellow" r="3.2"/>
+      <circle r="3.2" fill="none" stroke="#2c4a7c" stroke-width=".8"/>
+    </g>
+    <g transform="translate(18,-55)">
+      <g class="w-petal">
+        <ellipse cx="0" cy="-8" rx="3.2" ry="6.5"/>
+        <ellipse cx="0" cy="-8" rx="3.2" ry="6.5" transform="rotate(72)"/>
+        <ellipse cx="0" cy="-8" rx="3.2" ry="6.5" transform="rotate(144)"/>
+        <ellipse cx="0" cy="-8" rx="3.2" ry="6.5" transform="rotate(216)"/>
+        <ellipse cx="0" cy="-8" rx="3.2" ry="6.5" transform="rotate(288)"/>
+      </g>
+      <g class="ink-thin" fill="none" stroke-width=".8">
+        <ellipse cx="0" cy="-8" rx="3.2" ry="6.5"/>
+        <ellipse cx="0" cy="-8" rx="3.2" ry="6.5" transform="rotate(72)"/>
+        <ellipse cx="0" cy="-8" rx="3.2" ry="6.5" transform="rotate(144)"/>
+        <ellipse cx="0" cy="-8" rx="3.2" ry="6.5" transform="rotate(216)"/>
+        <ellipse cx="0" cy="-8" rx="3.2" ry="6.5" transform="rotate(288)"/>
+      </g>
+      <circle class="w-yellow" r="3.2"/>
+      <circle r="3.2" fill="none" stroke="#2c4a7c" stroke-width=".8"/>
+    </g>
+  </g>
+
+  <!-- STRING LIGHTS (upper left, on top of everything) -->
+  <g>
+    <!-- wire -->
+    <path class="ink" d="M20,75 Q150,155 280,130 Q380,112 470,170"/>
+    <!-- leaves along wire -->
+    <g>
+      <path class="w-leaf" d="M85,115 q-6,-10 -14,-8 q-2,6 4,12 q6,4 10,-4 Z"/>
+      <path class="ink-thin" d="M85,115 q-6,-10 -14,-8 q-2,6 4,12 q6,4 10,-4"/>
+      <path class="w-leaf" d="M180,145 q-6,-10 -14,-8 q-2,6 4,12 q6,4 10,-4 Z"/>
+      <path class="ink-thin" d="M180,145 q-6,-10 -14,-8 q-2,6 4,12 q6,4 10,-4"/>
+      <path class="w-leaf" d="M385,140 q-6,-10 -14,-8 q-2,6 4,12 q6,4 10,-4 Z"/>
+      <path class="ink-thin" d="M385,140 q-6,-10 -14,-8 q-2,6 4,12 q6,4 10,-4"/>
+      <path class="w-leaf" d="M255,128 q7,-9 14,-6 q1,6 -5,11 q-7,3 -9,-5 Z"/>
+      <path class="ink-thin" d="M255,128 q7,-9 14,-6 q1,6 -5,11 q-7,3 -9,-5"/>
+    </g>
+    <!-- lantern template via group -->
+    <g transform="translate(125,135)">
+      <path class="ink-thin" d="M0,0 L0,10"/>
+      <path class="w-lantern" d="M-15,14 Q-19,23 -15,32 Q-6,38 0,38 Q6,38 15,32 Q19,23 15,14 Q6,10 0,10 Q-6,10 -15,14 Z"/>
+      <path class="ink" d="M-15,14 Q-19,23 -15,32 Q-6,38 0,38 Q6,38 15,32 Q19,23 15,14 Q6,10 0,10 Q-6,10 -15,14 Z"/>
+      <path class="ink-thin" d="M-15,23 Q0,26 15,23"/>
+    </g>
+    <g transform="translate(225,148)">
+      <path class="ink-thin" d="M0,0 L0,10"/>
+      <path class="w-lantern" d="M-15,14 Q-19,23 -15,32 Q-6,38 0,38 Q6,38 15,32 Q19,23 15,14 Q6,10 0,10 Q-6,10 -15,14 Z"/>
+      <path class="ink" d="M-15,14 Q-19,23 -15,32 Q-6,38 0,38 Q6,38 15,32 Q19,23 15,14 Q6,10 0,10 Q-6,10 -15,14 Z"/>
+      <path class="ink-thin" d="M-15,23 Q0,26 15,23"/>
+    </g>
+    <g transform="translate(330,138)">
+      <path class="ink-thin" d="M0,0 L0,10"/>
+      <path class="w-lantern" d="M-15,14 Q-19,23 -15,32 Q-6,38 0,38 Q6,38 15,32 Q19,23 15,14 Q6,10 0,10 Q-6,10 -15,14 Z"/>
+      <path class="ink" d="M-15,14 Q-19,23 -15,32 Q-6,38 0,38 Q6,38 15,32 Q19,23 15,14 Q6,10 0,10 Q-6,10 -15,14 Z"/>
+      <path class="ink-thin" d="M-15,23 Q0,26 15,23"/>
+    </g>
+    <g transform="translate(435,160)">
+      <path class="ink-thin" d="M0,0 L0,10"/>
+      <path class="w-lantern" d="M-15,14 Q-19,23 -15,32 Q-6,38 0,38 Q6,38 15,32 Q19,23 15,14 Q6,10 0,10 Q-6,10 -15,14 Z"/>
+      <path class="ink" d="M-15,14 Q-19,23 -15,32 Q-6,38 0,38 Q6,38 15,32 Q19,23 15,14 Q6,10 0,10 Q-6,10 -15,14 Z"/>
+      <path class="ink-thin" d="M-15,23 Q0,26 15,23"/>
+    </g>
+    <!-- glow spots -->
+    <g opacity=".35">
+      <circle cx="125" cy="159" r="26" fill="#e8c547"/>
+      <circle cx="225" cy="172" r="26" fill="#e8c547"/>
+      <circle cx="330" cy="162" r="26" fill="#e8c547"/>
+      <circle cx="435" cy="184" r="26" fill="#e8c547"/>
+    </g>
+  </g>
+</svg>
