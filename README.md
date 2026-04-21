@@ -64,7 +64,8 @@ Alles liegt in `index.html`. Die wichtigsten Stellen:
 | Turkisches Zitat          | `<p class="quote-orig">` — bleibt in beiden Sprachen Türkisch |
 | Übersetzung des Zitats    | `quoteTrans` im `i18n`-Objekt (TR: Paraphrase / DE: Übersetzung) |
 | Paar-Foto                 | Datei `couple.jpeg` im Root durch eigenes ersetzen (Name gleich lassen oder im `<img src="…">` anpassen) |
-| Hero-Video                | `assets/courtyard.mp4` — animiertes Aquarell-Video. Ersetzen: einfach überschreiben (Name beibehalten) oder `<source src="…">` anpassen. |
+| Hero-Video (Desktop)      | `assets/courtyard.mp4` — 16:9 Landscape, wird auf Viewports > 640px geladen. Umbenennen nur wenn `data-src-desktop="…"` im `<video>`-Element angepasst wird. |
+| Hero-Video (Mobile)       | `assets/courtyard-mobile.mp4` — 9:16 Portrait, wird auf Viewports ≤ 640px geladen. Auswahl passiert über ein kleines Inline-Skript direkt nach dem `<video>`-Element. |
 | Fallback-Illustration     | `assets/illustration.svg` — wird als Poster/Notbild angezeigt, wenn das Video nicht geladen werden kann |
 | Schwebende Blütenblätter  | Im `<div class="petals">` direkt nach `<body>`: einzelne `.petal` entfernen → weniger; duplizieren + `p11` Klasse + Animation-Delay → mehr |
 | Section-Dekorationen      | SVGs mit Klasse `section-deco` in jeder Section (Girlande, Zweige, Blüten). Einfach entfernen oder anpassen. |
