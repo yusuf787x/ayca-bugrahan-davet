@@ -1687,26 +1687,46 @@ applyLang(currentLang);
     }
   }, { passive: true });
 
-  // Any tap / click / key anywhere in the splash phase triggers entry.
-  // We use a capturing document-level handler so it fires BEFORE any
-  // element-specific click handler inside the splash (or leaking through
-  // to elements behind it) can run.  Guarded to only fire while the
-  // splash is still the active cover.
+  // Splash tap capture.  Two problems to defend against:
+  //  1. Clicks bubbling to elements *behind* the splash (e.g. the hero
+  //     CTA).  Solved by stopping propagation in a capturing listener
+  //     on document — event never reaches the target.
+  //  2. iOS synthesises a "ghost" click ~300ms AFTER touchstart.  By
+  //     the time it arrives the splash is already in the .closing
+  //     state, so a naive splashActive() check lets it through.  We
+  //     keep a grace window (splashDismissedAt + 700ms) during which
+  //     we still swallow events, so the ghost click never lands on
+  //     the CTA underneath.
+  let splashDismissedAt = 0;
   function splashActive() {
     return splash && !splash.hidden && !splash.classList.contains('closing');
   }
+  function withinGhostWindow() {
+    return splashDismissedAt && (performance.now() - splashDismissedAt < 700);
+  }
   function onSplashInteract(e) {
-    if (!splashActive()) return;
+    const active = splashActive();
+    if (!active && !withinGhostWindow()) return;
+    // swallow the event entirely so no element behind the cover reacts
     if (e && e.preventDefault) { try { e.preventDefault(); } catch(_) {} }
-    enterInvitation();
+    if (e && e.stopPropagation) e.stopPropagation();
+    if (e && e.stopImmediatePropagation) e.stopImmediatePropagation();
+    if (active) {
+      splashDismissedAt = performance.now();
+      enterInvitation();
+    }
   }
   if (splash) {
     document.addEventListener('click',      onSplashInteract, true);
     document.addEventListener('touchstart', onSplashInteract, { capture: true, passive: false });
+    document.addEventListener('touchend',   onSplashInteract, { capture: true, passive: false });
     document.addEventListener('pointerdown',onSplashInteract, true);
     document.addEventListener('keydown', function onKey(e) {
       if (!splashActive()) return;
-      if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') enterInvitation();
+      if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') {
+        splashDismissedAt = performance.now();
+        enterInvitation();
+      }
     });
   }
 
