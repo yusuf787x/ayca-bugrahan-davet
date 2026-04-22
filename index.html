@@ -9,11 +9,18 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<!-- body fonts: render with fallback immediately, swap when loaded -->
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600&family=Dancing+Script:wght@500;600&display=swap" rel="stylesheet" />
-<!-- Parisienne (names/titles): block rendering briefly until loaded so
-     there's no visible FOUT jump when the script font swaps in -->
-<link href="https://fonts.googleapis.com/css2?family=Parisienne&display=block" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600&family=Dancing+Script:wght@500;600&family=Parisienne&display=swap" rel="stylesheet" />
+
+<script>
+  /* Run synchronously before the body paints so the splash-active lock
+     is active from the very first frame.  Also disable browser scroll
+     restoration so a reload doesn't jump mid-page. */
+  (function() {
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    try { window.scrollTo(0, 0); } catch(e) {}
+    document.documentElement.classList.add('splash-active');
+  })();
+</script>
 
 <style>
   :root{
@@ -31,6 +38,17 @@
 
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  /* While the splash is up we lock scrolling so a tap isn't
+     interpreted as a swipe on the hidden body underneath (iOS
+     Safari would otherwise sometimes leave the page scrolled
+     down when the splash dismissed). */
+  html.splash-active,
+  html.splash-active body{
+    overflow:hidden;
+    height:100%;
+    touch-action:none;
+    overscroll-behavior:none;
+  }
   body{
     background:var(--bg);
     color:var(--ink);
@@ -774,17 +792,26 @@
   .hero-content .fade-in{
     opacity:0;
     transform:translateY(18px);
-    /* no transition here — we use an animation on .panels-opened
-       instead, which iOS Safari handles more reliably than a
-       transition triggered by a class swap during heavy work */
+    transition:none;
+    -webkit-transition:none;
   }
   @keyframes heroReveal{
     from{opacity:0;transform:translateY(18px)}
     to  {opacity:1;transform:translateY(0)}
   }
-  /* text reveal starts the moment the splash panels finish swinging open */
+  @-webkit-keyframes heroReveal{
+    from{opacity:0;-webkit-transform:translateY(18px)}
+    to  {opacity:1;-webkit-transform:translateY(0)}
+  }
+  /* Text reveal starts the moment the splash panels finish swinging
+     open.  We declare the final opacity/transform directly too, so if
+     iOS Safari ever drops the animation for whatever reason the text
+     still ends up visible rather than stuck at opacity:0. */
   body.panels-opened .hero-content .fade-in{
-    animation:heroReveal 1.2s cubic-bezier(.2,.6,.2,1) forwards;
+    opacity:1;
+    transform:translateY(0);
+    animation:heroReveal 1.2s cubic-bezier(.2,.6,.2,1) both;
+    -webkit-animation:heroReveal 1.2s cubic-bezier(.2,.6,.2,1) both;
   }
 
   /* ── MOBILE ───────────────────────────────────── */
@@ -924,7 +951,7 @@
 </div>
 
 <!-- ── BACKGROUND MUSIC ─────────────────────────── -->
-<audio id="bgMusic" loop preload="auto">
+<audio id="bgMusic" loop preload="metadata">
   <source src="./assets/music.mp3" type="audio/mpeg" />
 </audio>
 
@@ -950,7 +977,7 @@
     <!-- animated watercolor courtyard as hero background -->
     <video class="hero-video" id="heroVideo"
            autoplay loop muted playsinline
-           preload="auto"
+           preload="metadata"
            poster="./assets/illustration.svg"
            data-src-desktop="./assets/courtyard.mp4"
            data-src-mobile="./assets/courtyard-mobile.mp4"></video>
@@ -1535,27 +1562,36 @@ applyLang(currentLang);
   }
 
   function enterInvitation() {
+    // hard-reset scroll so the user lands at the top of the invitation
+    // regardless of any stray scroll movement during the splash
+    try { window.scrollTo(0, 0); } catch(e) {}
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+
+    // release the body scroll lock we applied at page load
+    document.documentElement.classList.remove('splash-active');
+
     // unmute + play at the user-gesture moment
     if (audio) {
       audio.muted = false;
+      audio.load();
       audio.play().catch(() => {});
     }
     updateBtn();
 
-    // force-load the hero video so it's buffered by the time the panels finish
+    // trigger video play (it uses preload=metadata so only the poster
+    // frame is cached; calling play() starts the full download)
     const hv = document.getElementById('heroVideo');
     if (hv) {
-      try { hv.load(); hv.play().catch(() => {}); } catch (e) {}
+      try { hv.play().catch(() => {}); } catch (e) {}
     }
 
-    // mark body as "entered" — hero text fade-in and scroll hint key off this
     document.body.classList.add('entered');
 
     if (splash) {
       splash.classList.add('closing');
       openPanels(() => {
         splash.hidden = true;
-        // flag panels done immediately — hero fade-in keyframe starts now
         document.body.classList.add('panels-opened');
       });
     } else {
