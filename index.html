@@ -774,15 +774,17 @@
   .hero-content .fade-in{
     opacity:0;
     transform:translateY(18px);
-    transition:opacity .9s cubic-bezier(.2,.6,.2,1),transform .9s cubic-bezier(.2,.6,.2,1);
+    /* no transition here — we use an animation on .panels-opened
+       instead, which iOS Safari handles more reliably than a
+       transition triggered by a class swap during heavy work */
   }
-  /* Hero text only reveals once JS has flagged the panels as fully
-     opened (body.panels-opened is set 1s after the rAF swing ends).
-     Keeps the exact "1s after the animation" timing regardless of
-     whether we're on the 4s desktop or 3.4s mobile duration. */
+  @keyframes heroReveal{
+    from{opacity:0;transform:translateY(18px)}
+    to  {opacity:1;transform:translateY(0)}
+  }
+  /* text reveal starts the moment the splash panels finish swinging open */
   body.panels-opened .hero-content .fade-in{
-    opacity:1;
-    transform:none;
+    animation:heroReveal 1.2s cubic-bezier(.2,.6,.2,1) forwards;
   }
 
   /* ── MOBILE ───────────────────────────────────── */
@@ -1553,13 +1555,10 @@ applyLang(currentLang);
       splash.classList.add('closing');
       openPanels(() => {
         splash.hidden = true;
-        // 1 second of pure scene before the hero text starts to reveal
-        setTimeout(() => {
-          document.body.classList.add('panels-opened');
-        }, 1000);
+        // flag panels done immediately — hero fade-in keyframe starts now
+        document.body.classList.add('panels-opened');
       });
     } else {
-      // no splash in DOM — reveal hero text right away
       document.body.classList.add('panels-opened');
     }
   }
