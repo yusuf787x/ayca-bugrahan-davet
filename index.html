@@ -49,15 +49,15 @@
   .invite-splash{
     position:fixed;inset:0;z-index:500;
     cursor:pointer;
-    transition:visibility 0s linear 4.4s;
     -webkit-tap-highlight-color:transparent;
     user-select:none;-webkit-user-select:none;
     touch-action:none;
     overscroll-behavior:contain;
-    perspective:2000px;
+    perspective:1600px;
+    -webkit-perspective:1600px;
     overflow:hidden;
   }
-  .invite-splash.closing{visibility:hidden;pointer-events:none}
+  .invite-splash.closing{pointer-events:none}
   .invite-splash[hidden]{display:none}
 
   /* Two half-panels that swing open like a card.  Each panel
@@ -70,49 +70,66 @@
     width:50.5%;
     background:linear-gradient(180deg,#faf2dc 0%,var(--bg) 60%,#efe3cb 100%);
     overflow:hidden;
+    transform:translate3d(0,0,0);
+    -webkit-transform:translate3d(0,0,0);
     transition:transform 4s cubic-bezier(.65,0,.18,1),
+               -webkit-transform 4s cubic-bezier(.65,0,.18,1),
                box-shadow 1.2s ease;
-    will-change:transform;
-    backface-visibility:hidden;
     -webkit-backface-visibility:hidden;
+    backface-visibility:hidden;
   }
   .splash-panel-left{
     left:-.15%;
     transform-origin:left center;
+    -webkit-transform-origin:left center;
     box-shadow:inset -14px 0 28px -18px rgba(43,74,50,.35);
   }
   .splash-panel-right{
     right:-.15%;
     transform-origin:right center;
+    -webkit-transform-origin:right center;
     box-shadow:inset 14px 0 28px -18px rgba(43,74,50,.35);
   }
-
-  /* The copy inside each panel is 100vw wide and anchored at
-     the viewport edge, so with text-align:center the text ends
-     up visually centred at viewport 50vw (= the seam between
-     the two panels).  Because each panel clips with overflow:hidden,
-     the left panel shows the left half of that centred text,
-     the right panel shows the right half — read as one line.  */
-  .panel-content{
-    position:absolute;top:50%;
-    width:100vw;
-    text-align:center;
-    padding:24px;
-    pointer-events:none;
-    animation:splashRise 1.2s cubic-bezier(.2,.6,.2,1) both;
+  @media (max-width:640px){
+    .invite-splash{perspective:1000px;-webkit-perspective:1000px}
+    .splash-panel{transition-duration:3.6s,3.6s,1s}
   }
-  .splash-panel-left .panel-content{left:0}   /* content from viewport 0 → 100vw, centred at 50vw */
-  .splash-panel-right .panel-content{right:0} /* content from viewport 0 → 100vw, centred at 50vw */
+
+  /* Panel-content fills the panel's full height and uses flexbox
+     for vertical centering — more reliable on mobile Safari than
+     the translateY(-50%) trick, and doesn't fight with the
+     entrance animation's own transforms.  Horizontally it's
+     100vw wide anchored to the inner edge of each panel so the
+     text is visually centred at viewport 50vw. */
+  .panel-content{
+    position:absolute;
+    top:0;bottom:0;
+    width:100vw;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:32px 24px;
+    padding-top:max(32px, env(safe-area-inset-top));
+    padding-bottom:max(32px, env(safe-area-inset-bottom));
+    pointer-events:none;
+    animation:splashRise 1.1s cubic-bezier(.2,.6,.2,1) both;
+  }
+  .splash-panel-left .panel-content{left:0}   /* viewport 0 → 100vw, centre at 50vw */
+  .splash-panel-right .panel-content{right:0} /* viewport 0 → 100vw, centre at 50vw */
 
   /* the opening animation — the two halves swing outward in 3D */
   .invite-splash.closing .splash-panel-left{
-    transform:translateX(-3%) rotateY(-110deg);
+    transform:translate3d(-3%,0,0) rotateY(-110deg);
+    -webkit-transform:translate3d(-3%,0,0) rotateY(-110deg);
     box-shadow:
       inset -14px 0 28px -18px rgba(43,74,50,.35),
       36px 0 80px -10px rgba(43,74,50,.5);
   }
   .invite-splash.closing .splash-panel-right{
-    transform:translateX(3%) rotateY(110deg);
+    transform:translate3d(3%,0,0) rotateY(110deg);
+    -webkit-transform:translate3d(3%,0,0) rotateY(110deg);
     box-shadow:
       inset 14px 0 28px -18px rgba(43,74,50,.35),
       -36px 0 80px -10px rgba(43,74,50,.5);
@@ -167,10 +184,8 @@
     background:var(--terra);
   }
   @keyframes splashRise{
-    /* keep translateY(-50%) for vertical centering, add a small
-       lift-in offset that decays to zero */
-    from{opacity:0;transform:translateY(calc(-50% + 30px))}
-    to  {opacity:1;transform:translateY(-50%)}
+    from{opacity:0;transform:translateY(26px)}
+    to  {opacity:1;transform:none}
   }
   @keyframes splashRing{
     0%{transform:scale(1);opacity:.6}
