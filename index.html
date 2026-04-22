@@ -660,10 +660,10 @@
     opacity:0;
     transition:opacity 2s ease, transform .8s ease;
   }
-  /* appears after the hero text has fully settled */
+  /* JS reveals this via WAAPI once panels + hero text are done.
+     Fallback final state if WAAPI is unavailable. */
   body.panels-opened .scroll-hint{
     opacity:1;
-    transition-delay:2s;
   }
   /* disappears once user begins scrolling */
   body.scrolled .scroll-hint{
@@ -795,23 +795,13 @@
     transition:none;
     -webkit-transition:none;
   }
-  @keyframes heroReveal{
-    from{opacity:0;transform:translateY(18px)}
-    to  {opacity:1;transform:translateY(0)}
-  }
-  @-webkit-keyframes heroReveal{
-    from{opacity:0;-webkit-transform:translateY(18px)}
-    to  {opacity:1;-webkit-transform:translateY(0)}
-  }
-  /* Text reveal starts the moment the splash panels finish swinging
-     open.  We declare the final opacity/transform directly too, so if
-     iOS Safari ever drops the animation for whatever reason the text
-     still ends up visible rather than stuck at opacity:0. */
+  /* Fallback final state — the actual fade animation is driven by
+     the Web Animations API in JS (same approach as the petals and
+     splash panels).  If WAAPI is missing or the rAF is starved,
+     the text ends up visible rather than stuck invisible. */
   body.panels-opened .hero-content .fade-in{
     opacity:1;
     transform:translateY(0);
-    animation:heroReveal 1.2s cubic-bezier(.2,.6,.2,1) both;
-    -webkit-animation:heroReveal 1.2s cubic-bezier(.2,.6,.2,1) both;
   }
 
   /* ── MOBILE ───────────────────────────────────── */
@@ -1540,11 +1530,10 @@ applyLang(currentLang);
     const rightP = splash && splash.querySelector('.splash-panel-right');
     if (!leftP || !rightP) { if (onDone) onDone(); return; }
     const isMobile  = window.matchMedia('(max-width: 640px)').matches;
-    const duration  = isMobile ? 3400 : 4000;
+    const duration  = isMobile ? 2600 : 3800;
     const maxAngle  = 110;
     const maxShift  = 3;
     const t0 = performance.now();
-    // easeInOut cubic-style curve
     const ease = t => t < .5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3)/2;
     function frame(now) {
       const t = Math.min(1, (now - t0) / duration);
@@ -1559,6 +1548,39 @@ applyLang(currentLang);
       else if (onDone) onDone();
     }
     requestAnimationFrame(frame);
+  }
+
+  // WAAPI-driven reveal — reliable on iOS Safari where CSS
+  // animations / transitions triggered by a class swap sometimes
+  // didn't fire at all
+  function revealHeroText() {
+    const els = document.querySelectorAll('.hero-content .fade-in');
+    els.forEach(el => {
+      if (typeof el.animate === 'function') {
+        el.animate(
+          [
+            { opacity: 0, transform: 'translateY(18px)' },
+            { opacity: 1, transform: 'translateY(0)' }
+          ],
+          { duration: 900, easing: 'cubic-bezier(.2,.6,.2,1)', fill: 'forwards' }
+        );
+      } else {
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+      }
+    });
+  }
+  function revealScrollHint() {
+    const hint = document.getElementById('scrollHint');
+    if (!hint) return;
+    if (typeof hint.animate === 'function') {
+      hint.animate(
+        [{ opacity: 0 }, { opacity: 1 }],
+        { duration: 900, easing: 'ease', fill: 'forwards' }
+      );
+    } else {
+      hint.style.opacity = '1';
+    }
   }
 
   function enterInvitation() {
@@ -1593,9 +1615,13 @@ applyLang(currentLang);
       openPanels(() => {
         splash.hidden = true;
         document.body.classList.add('panels-opened');
+        revealHeroText();                                  // fades in immediately
+        setTimeout(revealScrollHint, 1400);                // ~0.5s after hero done
       });
     } else {
       document.body.classList.add('panels-opened');
+      revealHeroText();
+      setTimeout(revealScrollHint, 1400);
     }
   }
 
