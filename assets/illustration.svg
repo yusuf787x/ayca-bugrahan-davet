@@ -2,20 +2,20 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMax slice" role="img" aria-label="Mediterrane Gartenszene mit Steinhaus, Zypressen, Brunnen und Lichterkette">
   <defs>
     <style>
-      .ink      { stroke:#2c4a7c; fill:none; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
-      .ink-thin { stroke:#2c4a7c; fill:none; stroke-width:1;   stroke-linecap:round; stroke-linejoin:round; }
+      .ink      { stroke:#2b4a32; fill:none; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
+      .ink-thin { stroke:#2b4a32; fill:none; stroke-width:1;   stroke-linecap:round; stroke-linejoin:round; }
       .w-cy     { fill:#5d7a47; opacity:.55; }
       .w-cy-lt  { fill:#7a9b5e; opacity:.45; }
       .w-stone  { fill:#c9b88a; opacity:.48; }
       .w-terra  { fill:#c96f4a; opacity:.55; }
       .w-lantern{ fill:#e8c547; opacity:.75; }
-      .w-water  { fill:#6fa8c7; opacity:.38; }
+      .w-water  { fill:#a3c080; opacity:.38; }
       .w-wine   { fill:#7a2c3a; opacity:.65; }
       .w-bottle { fill:#3d5a3c; opacity:.62; }
       .w-leaf   { fill:#7a9b5e; opacity:.55; }
       .w-petal  { fill:#fbf4e3; opacity:.92; }
       .w-yellow { fill:#e8c547; opacity:.9;  }
-      .w-shutter{ fill:#6fa8c7; opacity:.5;  }
+      .w-shutter{ fill:#a3c080; opacity:.5;  }
       .w-label  { fill:#fbf4e3; opacity:.88; }
     </style>
   </defs>
@@ -198,7 +198,7 @@
         <ellipse cx="0" cy="-8" rx="3.2" ry="6.5" transform="rotate(288)"/>
       </g>
       <circle class="w-yellow" r="3.2"/>
-      <circle r="3.2" fill="none" stroke="#2c4a7c" stroke-width=".8"/>
+      <circle r="3.2" fill="none" stroke="#2b4a32" stroke-width=".8"/>
     </g>
     <g transform="translate(-4,-60)">
       <g class="w-petal">
@@ -216,7 +216,7 @@
         <ellipse cx="0" cy="-8" rx="3.2" ry="6.5" transform="rotate(288)"/>
       </g>
       <circle class="w-yellow" r="3.2"/>
-      <circle r="3.2" fill="none" stroke="#2c4a7c" stroke-width=".8"/>
+      <circle r="3.2" fill="none" stroke="#2b4a32" stroke-width=".8"/>
     </g>
     <g transform="translate(18,-55)">
       <g class="w-petal">
@@ -234,7 +234,7 @@
         <ellipse cx="0" cy="-8" rx="3.2" ry="6.5" transform="rotate(288)"/>
       </g>
       <circle class="w-yellow" r="3.2"/>
-      <circle r="3.2" fill="none" stroke="#2c4a7c" stroke-width=".8"/>
+      <circle r="3.2" fill="none" stroke="#2b4a32" stroke-width=".8"/>
     </g>
   </g>
 

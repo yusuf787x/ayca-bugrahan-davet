@@ -9,17 +9,17 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600&family=Dancing+Script:wght@500;600&family=Great+Vibes&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600&family=Dancing+Script:wght@500;600&family=Parisienne&display=swap" rel="stylesheet" />
 
 <style>
   :root{
     --bg:#f5ecd9;
     --bg-2:#efe3cb;
-    --ink:#2c4a7c;
-    --ink-soft:rgba(44,74,124,.65);
-    --ink-faint:rgba(44,74,124,.2);
+    --ink:#2b4a32;
+    --ink-soft:rgba(43,74,50,.65);
+    --ink-faint:rgba(43,74,50,.2);
     --green:#7a9b5e;
-    --blue:#6fa8c7;
+    --blue:#a3c080;
     --yellow:#e8c547;
     --terra:#c96f4a;
     --stone:#c9b88a;
@@ -45,6 +45,144 @@
   button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   a{color:inherit}
 
+  /* ── INVITATION SPLASH (tap to enter) ─────────── */
+  .invite-splash{
+    position:fixed;inset:0;z-index:500;
+    cursor:pointer;
+    transition:visibility 0s linear 4.4s;
+    -webkit-tap-highlight-color:transparent;
+    user-select:none;-webkit-user-select:none;
+    touch-action:none;
+    overscroll-behavior:contain;
+    perspective:2000px;
+    overflow:hidden;
+  }
+  .invite-splash.closing{visibility:hidden;pointer-events:none}
+  .invite-splash[hidden]{display:none}
+
+  /* Two half-panels that swing open like a card.  Each panel
+     carries a full copy of the cover content; the panel's
+     overflow:hidden clips the copy so only that panel's half
+     is visible.  When the panel rotates outward, its half of
+     the text rotates with it. */
+  .splash-panel{
+    position:absolute;top:0;bottom:0;
+    width:50.5%;
+    background:linear-gradient(180deg,#faf2dc 0%,var(--bg) 60%,#efe3cb 100%);
+    overflow:hidden;
+    transition:transform 4s cubic-bezier(.65,0,.18,1),
+               box-shadow 1.2s ease;
+    will-change:transform;
+    backface-visibility:hidden;
+    -webkit-backface-visibility:hidden;
+  }
+  .splash-panel-left{
+    left:-.15%;
+    transform-origin:left center;
+    box-shadow:inset -14px 0 28px -18px rgba(43,74,50,.35);
+  }
+  .splash-panel-right{
+    right:-.15%;
+    transform-origin:right center;
+    box-shadow:inset 14px 0 28px -18px rgba(43,74,50,.35);
+  }
+
+  /* The copy inside each panel is 100vw wide and anchored at
+     the viewport edge, so with text-align:center the text ends
+     up visually centred at viewport 50vw (= the seam between
+     the two panels).  Because each panel clips with overflow:hidden,
+     the left panel shows the left half of that centred text,
+     the right panel shows the right half — read as one line.  */
+  .panel-content{
+    position:absolute;top:50%;
+    width:100vw;
+    text-align:center;
+    padding:24px;
+    pointer-events:none;
+    animation:splashRise 1.2s cubic-bezier(.2,.6,.2,1) both;
+  }
+  .splash-panel-left .panel-content{left:0}   /* content from viewport 0 → 100vw, centred at 50vw */
+  .splash-panel-right .panel-content{right:0} /* content from viewport 0 → 100vw, centred at 50vw */
+
+  /* the opening animation — the two halves swing outward in 3D */
+  .invite-splash.closing .splash-panel-left{
+    transform:translateX(-3%) rotateY(-110deg);
+    box-shadow:
+      inset -14px 0 28px -18px rgba(43,74,50,.35),
+      36px 0 80px -10px rgba(43,74,50,.5);
+  }
+  .invite-splash.closing .splash-panel-right{
+    transform:translateX(3%) rotateY(110deg);
+    box-shadow:
+      inset 14px 0 28px -18px rgba(43,74,50,.35),
+      -36px 0 80px -10px rgba(43,74,50,.5);
+  }
+  .splash-eyebrow{
+    font-family:'Manrope',sans-serif;font-weight:500;
+    font-size:clamp(.68rem,1.2vw,.82rem);
+    letter-spacing:.4em;text-transform:uppercase;
+    color:var(--ink);margin-bottom:32px;
+  }
+  .splash-names{
+    font-family:'Parisienne','Cormorant Garamond',cursive;
+    font-weight:400;
+    font-size:clamp(3.2rem,9vw,6.8rem);
+    line-height:1.05;color:var(--ink);
+    margin-bottom:30px;
+  }
+  .splash-names .break{display:block}
+  .splash-names .amp{color:var(--terra);margin:0 .06em}
+  .splash-sprig{
+    width:clamp(90px,15vw,140px);height:auto;
+    margin:0 auto 36px;display:block;opacity:.9;
+  }
+  .splash-hint{
+    font-family:'Manrope',sans-serif;font-weight:500;
+    font-size:clamp(.72rem,1.2vw,.82rem);
+    letter-spacing:.28em;text-transform:uppercase;
+    color:var(--ink-soft);margin-bottom:28px;
+    line-height:1.6;
+  }
+  .splash-hint span{display:block}
+  .splash-hint .alt{
+    margin-top:6px;font-size:.85em;
+    letter-spacing:.2em;opacity:.7;text-transform:none;
+    font-style:italic;
+  }
+  .splash-pulse{
+    width:54px;height:54px;
+    border:1.5px solid var(--ink);
+    border-radius:50%;
+    margin:0 auto;
+    display:flex;align-items:center;justify-content:center;
+    position:relative;
+  }
+  .splash-pulse::before{
+    content:'';position:absolute;inset:0;border-radius:50%;
+    border:1.5px solid var(--ink);
+    animation:splashRing 2.2s ease-out infinite;
+  }
+  .splash-pulse span{
+    width:10px;height:10px;border-radius:50%;
+    background:var(--terra);
+  }
+  @keyframes splashRise{
+    /* keep translateY(-50%) for vertical centering, add a small
+       lift-in offset that decays to zero */
+    from{opacity:0;transform:translateY(calc(-50% + 30px))}
+    to  {opacity:1;transform:translateY(-50%)}
+  }
+  @keyframes splashRing{
+    0%{transform:scale(1);opacity:.6}
+    100%{transform:scale(1.6);opacity:0}
+  }
+  @media (max-width:640px){
+    .splash-eyebrow{letter-spacing:.26em;margin-bottom:24px}
+    .splash-names{margin-bottom:24px}
+    .splash-hint{letter-spacing:.22em;margin-bottom:24px}
+    .splash-pulse{width:46px;height:46px}
+  }
+
   /* ── TOP CONTROLS (music + language) ──────────── */
   .top-controls{
     position:fixed;top:18px;right:18px;z-index:100;
@@ -61,14 +199,14 @@
     color:var(--ink);
     border-radius:999px;
     box-shadow:
-      0 12px 30px -10px rgba(44,74,124,.42),
-      0 3px 8px -3px rgba(44,74,124,.28);
+      0 12px 30px -10px rgba(43,74,50,.42),
+      0 3px 8px -3px rgba(43,74,50,.28);
     transition:transform .3s cubic-bezier(.2,.6,.2,1),box-shadow .3s;
     cursor:pointer;
   }
   .music-toggle:hover{
     transform:translateY(-2px) scale(1.05);
-    box-shadow:0 16px 36px -10px rgba(44,74,124,.5),0 4px 10px -3px rgba(44,74,124,.32);
+    box-shadow:0 16px 36px -10px rgba(43,74,50,.5),0 4px 10px -3px rgba(43,74,50,.32);
   }
   .music-toggle:active{transform:translateY(0) scale(.96)}
   .music-toggle .music-icon{width:18px;height:18px;display:block}
@@ -97,15 +235,15 @@
     font-weight:600;font-size:.68rem;letter-spacing:.18em;
     text-transform:uppercase;
     box-shadow:
-      0 12px 30px -10px rgba(44,74,124,.42),
-      0 3px 8px -3px rgba(44,74,124,.28);
+      0 12px 30px -10px rgba(43,74,50,.42),
+      0 3px 8px -3px rgba(43,74,50,.28);
     transition:transform .3s cubic-bezier(.2,.6,.2,1),box-shadow .3s,background .3s;
   }
   .lang-toggle:hover{
     transform:translateY(-2px) scale(1.03);
     box-shadow:
-      0 16px 36px -10px rgba(44,74,124,.5),
-      0 4px 10px -3px rgba(44,74,124,.32);
+      0 16px 36px -10px rgba(43,74,50,.5),
+      0 4px 10px -3px rgba(43,74,50,.32);
   }
   .lang-toggle:active{transform:translateY(0) scale(.98)}
   .lang-toggle .flag{
@@ -115,7 +253,7 @@
     overflow:hidden;
     box-shadow:
       0 2px 4px rgba(0,0,0,.2),
-      inset 0 0 0 1px rgba(44,74,124,.12);
+      inset 0 0 0 1px rgba(43,74,50,.12);
     position:relative;
     flex-shrink:0;
   }
@@ -186,7 +324,7 @@
       0 0 14px rgba(245,236,217,.95),
       0 0 28px rgba(245,236,217,.85),
       0 1px 0 rgba(245,236,217,.9),
-      0 2px 12px rgba(44,74,124,.18);
+      0 2px 12px rgba(43,74,50,.18);
   }
   .eyebrow{
     font-size:clamp(.68rem,1.1vw,.84rem);
@@ -195,7 +333,7 @@
     margin-bottom:28px;
   }
   .names{
-    font-family:'Great Vibes','Cormorant Garamond',cursive;
+    font-family:'Parisienne','Cormorant Garamond',cursive;
     font-style:normal;font-weight:400;
     font-size:clamp(3.6rem,9vw,8rem);
     line-height:1.05;letter-spacing:0;
@@ -221,14 +359,14 @@
     border-radius:999px;
     text-decoration:none;
     box-shadow:
-      0 10px 30px -12px rgba(44,74,124,.55),
-      0 2px 6px -2px rgba(44,74,124,.35);
+      0 10px 30px -12px rgba(43,74,50,.55),
+      0 2px 6px -2px rgba(43,74,50,.35);
     transition:background .3s,color .3s,transform .3s,box-shadow .3s;
   }
   .cta:hover{
     background:var(--bg);color:var(--ink);
     transform:translateY(-2px);
-    box-shadow:0 14px 34px -12px rgba(44,74,124,.45);
+    box-shadow:0 14px 34px -12px rgba(43,74,50,.45);
   }
 
   /* ── SECTION ORNAMENT ──────────────────────────── */
@@ -289,8 +427,8 @@
     background:#fff;
     padding:16px 16px 58px;
     box-shadow:
-      0 18px 45px -22px rgba(44,74,124,.4),
-      0 3px 8px -4px rgba(44,74,124,.22);
+      0 18px 45px -22px rgba(43,74,50,.4),
+      0 3px 8px -4px rgba(43,74,50,.22);
     transform:rotate(-4deg);
     max-width:min(92%,440px);
     position:relative;
@@ -300,8 +438,8 @@
     content:'';position:absolute;top:-14px;left:50%;
     width:86px;height:26px;transform:translateX(-50%) rotate(-3deg);
     background:rgba(233,199,100,.45);
-    border:1px dashed rgba(44,74,124,.25);
-    box-shadow:0 2px 6px -4px rgba(44,74,124,.3);
+    border:1px dashed rgba(43,74,50,.25);
+    box-shadow:0 2px 6px -4px rgba(43,74,50,.3);
   }
   .photo-frame img{
     width:100%;height:auto;
@@ -318,7 +456,7 @@
   /* ── DETAILS ───────────────────────────────────── */
   .details{padding:80px 24px 100px;text-align:center;position:relative}
   .details-title{
-    font-family:'Great Vibes','Cormorant Garamond',cursive;font-weight:400;
+    font-family:'Parisienne','Cormorant Garamond',cursive;font-weight:400;
     font-size:clamp(2.8rem,6.6vw,4.8rem);
     line-height:1.1;margin-bottom:10px;
   }
@@ -342,7 +480,7 @@
   .info-row{
     display:grid;grid-template-columns:110px 1fr;gap:20px;
     padding:16px 0;text-align:left;
-    border-bottom:1px dashed rgba(44,74,124,.22);
+    border-bottom:1px dashed rgba(43,74,50,.22);
   }
   .info-row:last-child{border-bottom:none}
   .info-label{
@@ -373,7 +511,7 @@
   /* ── ROUTE MODAL (Apple users) ───────────────── */
   .route-modal{
     position:fixed;inset:0;z-index:200;
-    background:rgba(44,74,124,.55);
+    background:rgba(43,74,50,.55);
     backdrop-filter:blur(6px);
     -webkit-backdrop-filter:blur(6px);
     display:flex;align-items:center;justify-content:center;
@@ -392,7 +530,7 @@
     display:flex;flex-direction:column;gap:12px;
     transform:translateY(16px) scale(.96);
     transition:transform .35s cubic-bezier(.2,.6,.2,1);
-    box-shadow:0 22px 50px -20px rgba(44,74,124,.5);
+    box-shadow:0 22px 50px -20px rgba(43,74,50,.5);
   }
   .route-modal.visible .route-card{transform:translateY(0) scale(1)}
   .route-title{
@@ -425,7 +563,7 @@
     line-height:1.4;margin-bottom:22px;
   }
   .quote-trans{
-    font-family:'Great Vibes','Cormorant Garamond',cursive;
+    font-family:'Parisienne','Cormorant Garamond',cursive;
     font-weight:400;
     font-size:clamp(2rem,4.8vw,3.4rem);
     line-height:1.2;
@@ -475,6 +613,58 @@
   footer .foot-flower ellipse[stroke]{stroke:rgba(245,236,217,.4)}
   footer .foot-flower circle[fill="#e8c547"]{fill:#f4d96a}
   footer .foot-flower circle[stroke]{stroke:rgba(245,236,217,.4)}
+
+  /* ── SCROLL HINT ──────────────────────────────── */
+  .scroll-hint{
+    position:absolute;
+    bottom:38px;left:50%;
+    transform:translateX(-50%);
+    z-index:3;
+    text-align:center;
+    pointer-events:none;
+    opacity:0;
+    transition:opacity 2s ease, transform .8s ease;
+  }
+  /* appears after the hero text has settled in */
+  body.entered .scroll-hint{
+    opacity:1;
+    transition-delay:4.2s;
+  }
+  /* disappears once user begins scrolling */
+  body.scrolled .scroll-hint{
+    opacity:0;
+    transform:translateX(-50%) translateY(10px);
+    transition-delay:0s;
+  }
+  .scroll-chevron{
+    width:22px;height:22px;
+    color:var(--ink-soft);
+    animation:scrollBounce 2.2s ease-in-out infinite;
+    display:block;margin:0 auto 6px;
+  }
+  .scroll-hint-text{
+    font-family:'Manrope',sans-serif;font-weight:500;
+    font-size:.62rem;letter-spacing:.26em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    line-height:1.5;
+  }
+  .scroll-hint-text span{display:block}
+  .scroll-hint-text .alt{
+    font-style:italic;font-weight:400;
+    text-transform:none;letter-spacing:.16em;
+    font-size:.9em;opacity:.7;
+    margin-top:2px;
+  }
+  @keyframes scrollBounce{
+    0%,100%{transform:translateY(0);opacity:.75}
+    50%    {transform:translateY(6px);opacity:1}
+  }
+  @media (max-width:640px){
+    .scroll-hint{bottom:24px}
+    .scroll-hint-text{font-size:.56rem;letter-spacing:.2em}
+    .scroll-chevron{width:20px;height:20px}
+  }
 
   /* ── GLOBAL FLOATING PETALS ──────────────────── */
   /* high z-index + forced GPU layer so iOS Safari renders them
@@ -561,17 +751,22 @@
   /* ── SCROLL-ANIMATIONS ────────────────────────── */
   .fade-in{opacity:0;transform:translateY(22px);transition:opacity 1s cubic-bezier(.2,.6,.2,1),transform 1s cubic-bezier(.2,.6,.2,1)}
   .fade-in.visible{opacity:1;transform:none}
-  /* hero text fades in slowly AFTER the video scene is already visible —
-     longer transition + staggered later delays so the user first
-     takes in the scene, then the text settles in gracefully */
+  /* Hero text is held INVISIBLE until the splash opens (body.entered).
+     Only after the card has swung open and the scene has settled for
+     ~2 seconds does the text start fading in, one line at a time. */
   .hero-content .fade-in{
+    opacity:0;
     transform:translateY(18px);
-    transition:opacity 2.2s cubic-bezier(.2,.6,.2,1),transform 2.2s cubic-bezier(.2,.6,.2,1);
+    transition:opacity .9s cubic-bezier(.2,.6,.2,1),transform .9s cubic-bezier(.2,.6,.2,1);
   }
-  .hero-content .fade-in:nth-child(1){transition-delay:1.0s}
-  .hero-content .fade-in:nth-child(2){transition-delay:1.5s}
-  .hero-content .fade-in:nth-child(3){transition-delay:2.1s}
-  .hero-content .fade-in:nth-child(4){transition-delay:2.7s}
+  body.entered .hero-content .fade-in{
+    opacity:1;
+    transform:none;
+  }
+  body.entered .hero-content .fade-in:nth-child(1){transition-delay:2.6s}
+  body.entered .hero-content .fade-in:nth-child(2){transition-delay:2.8s}
+  body.entered .hero-content .fade-in:nth-child(3){transition-delay:3.1s}
+  body.entered .hero-content .fade-in:nth-child(4){transition-delay:3.3s}
 
   /* ── MOBILE ───────────────────────────────────── */
   @media (max-width:640px){
@@ -634,16 +829,79 @@
      synchronized row.  A JS engine sidesteps the animation
      subsystem completely and works identically on every browser. -->
 <div class="petals" aria-hidden="true">
-  <span class="petal p1"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#7a9b5e" opacity=".82" stroke="#2c4a7c" stroke-width=".7"/><path d="M12,4 Q10,15 12,26" stroke="#2c4a7c" stroke-width=".5" fill="none" opacity=".6"/></svg></span>
-  <span class="petal p2"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#7a9b5e" opacity=".78" stroke="#2c4a7c" stroke-width=".7"/><path d="M12,4 Q10,15 12,26" stroke="#2c4a7c" stroke-width=".5" fill="none" opacity=".6"/></svg></span>
-  <span class="petal p3"><svg viewBox="0 0 24 30"><path d="M12,1 Q4,8 5,18 Q8,27 12,29 Q16,27 19,18 Q20,8 12,1 Z" fill="#7a9b5e" opacity=".85" stroke="#2c4a7c" stroke-width=".7"/><path d="M12,3 Q12,15 12,28" stroke="#2c4a7c" stroke-width=".6" fill="none" opacity=".7"/><path d="M12,12 L8,16 M12,18 L16,22" stroke="#2c4a7c" stroke-width=".4" opacity=".5"/></svg></span>
-  <span class="petal p4"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#7a9b5e" opacity=".75" stroke="#2c4a7c" stroke-width=".7"/><path d="M12,4 Q10,15 12,26" stroke="#2c4a7c" stroke-width=".5" fill="none" opacity=".55"/></svg></span>
-  <span class="petal p5"><svg viewBox="0 0 24 30"><path d="M12,2 Q3,9 4,19 Q7,27 12,28 Q17,27 20,19 Q21,9 12,2 Z" fill="#7a9b5e" opacity=".8" stroke="#2c4a7c" stroke-width=".7"/></svg></span>
-  <span class="petal p6"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#7a9b5e" opacity=".72" stroke="#2c4a7c" stroke-width=".7"/><path d="M12,4 Q10,15 12,26" stroke="#2c4a7c" stroke-width=".5" fill="none" opacity=".55"/></svg></span>
-  <span class="petal p7"><svg viewBox="0 0 24 30"><path d="M12,1 Q4,8 5,18 Q8,27 12,29 Q16,27 19,18 Q20,8 12,1 Z" fill="#7a9b5e" opacity=".88" stroke="#2c4a7c" stroke-width=".7"/><path d="M12,3 Q12,15 12,28" stroke="#2c4a7c" stroke-width=".6" fill="none" opacity=".7"/></svg></span>
-  <span class="petal p8"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#7a9b5e" opacity=".78" stroke="#2c4a7c" stroke-width=".6"/></svg></span>
-  <span class="petal p9"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#7a9b5e" opacity=".82" stroke="#2c4a7c" stroke-width=".6"/></svg></span>
-  <span class="petal p10"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#7a9b5e" opacity=".76" stroke="#2c4a7c" stroke-width=".6"/></svg></span>
+  <span class="petal p1"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#7a9b5e" opacity=".82" stroke="#2b4a32" stroke-width=".7"/><path d="M12,4 Q10,15 12,26" stroke="#2b4a32" stroke-width=".5" fill="none" opacity=".6"/></svg></span>
+  <span class="petal p2"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#7a9b5e" opacity=".78" stroke="#2b4a32" stroke-width=".7"/><path d="M12,4 Q10,15 12,26" stroke="#2b4a32" stroke-width=".5" fill="none" opacity=".6"/></svg></span>
+  <span class="petal p3"><svg viewBox="0 0 24 30"><path d="M12,1 Q4,8 5,18 Q8,27 12,29 Q16,27 19,18 Q20,8 12,1 Z" fill="#7a9b5e" opacity=".85" stroke="#2b4a32" stroke-width=".7"/><path d="M12,3 Q12,15 12,28" stroke="#2b4a32" stroke-width=".6" fill="none" opacity=".7"/><path d="M12,12 L8,16 M12,18 L16,22" stroke="#2b4a32" stroke-width=".4" opacity=".5"/></svg></span>
+  <span class="petal p4"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#7a9b5e" opacity=".75" stroke="#2b4a32" stroke-width=".7"/><path d="M12,4 Q10,15 12,26" stroke="#2b4a32" stroke-width=".5" fill="none" opacity=".55"/></svg></span>
+  <span class="petal p5"><svg viewBox="0 0 24 30"><path d="M12,2 Q3,9 4,19 Q7,27 12,28 Q17,27 20,19 Q21,9 12,2 Z" fill="#7a9b5e" opacity=".8" stroke="#2b4a32" stroke-width=".7"/></svg></span>
+  <span class="petal p6"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#7a9b5e" opacity=".72" stroke="#2b4a32" stroke-width=".7"/><path d="M12,4 Q10,15 12,26" stroke="#2b4a32" stroke-width=".5" fill="none" opacity=".55"/></svg></span>
+  <span class="petal p7"><svg viewBox="0 0 24 30"><path d="M12,1 Q4,8 5,18 Q8,27 12,29 Q16,27 19,18 Q20,8 12,1 Z" fill="#7a9b5e" opacity=".88" stroke="#2b4a32" stroke-width=".7"/><path d="M12,3 Q12,15 12,28" stroke="#2b4a32" stroke-width=".6" fill="none" opacity=".7"/></svg></span>
+  <span class="petal p8"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#7a9b5e" opacity=".78" stroke="#2b4a32" stroke-width=".6"/></svg></span>
+  <span class="petal p9"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#7a9b5e" opacity=".82" stroke="#2b4a32" stroke-width=".6"/></svg></span>
+  <span class="petal p10"><svg viewBox="0 0 24 30"><path d="M12,1 Q2,10 3,20 Q6,28 12,29 Q18,28 21,20 Q22,10 12,1 Z" fill="#7a9b5e" opacity=".76" stroke="#2b4a32" stroke-width=".6"/></svg></span>
+</div>
+
+<!-- ── INVITATION SPLASH (tap to enter — guarantees audio autoplay) ── -->
+<div class="invite-splash" id="inviteSplash" role="dialog" aria-modal="true">
+  <!-- Two "card" panels — each carries a duplicate of the cover
+       content, clipped by the panel's overflow:hidden so each
+       panel shows only its own half.  When the panels swing open
+       the text is physically split between them and travels
+       outward with the panels. -->
+  <div class="splash-panel splash-panel-left" aria-hidden="true">
+    <div class="panel-content">
+      <p class="splash-eyebrow">KIZ İSTEME &amp; NİŞAN</p>
+      <h2 class="splash-names">
+        <span>Ayça&nbsp;Feza</span>
+        <span class="amp">&amp;</span>
+        <span class="break">Buğrahan</span>
+      </h2>
+      <svg class="splash-sprig" viewBox="0 0 120 40" aria-hidden="true">
+        <path d="M6,20 Q60,16 114,20" stroke="#2b4a32" stroke-width="1.1" fill="none" stroke-linecap="round"/>
+        <path d="M30,18 q-4,-7 -11,-5 q1,7 11,5 Z" fill="#7a9b5e" opacity=".7"/>
+        <path d="M30,18 q-4,-7 -11,-5 q1,7 11,5" stroke="#2b4a32" stroke-width=".8" fill="none"/>
+        <path d="M50,22 q4,7 11,5 q-1,-7 -11,-5 Z" fill="#7a9b5e" opacity=".7"/>
+        <path d="M50,22 q4,7 11,5 q-1,-7 -11,-5" stroke="#2b4a32" stroke-width=".8" fill="none"/>
+        <path d="M72,18 q-4,-7 -11,-5 q1,7 11,5 Z" fill="#7a9b5e" opacity=".7"/>
+        <path d="M72,18 q-4,-7 -11,-5 q1,7 11,5" stroke="#2b4a32" stroke-width=".8" fill="none"/>
+        <path d="M90,22 q4,7 11,5 q-1,-7 -11,-5 Z" fill="#7a9b5e" opacity=".7"/>
+        <path d="M90,22 q4,7 11,5 q-1,-7 -11,-5" stroke="#2b4a32" stroke-width=".8" fill="none"/>
+        <circle cx="60" cy="20" r="2" fill="#c96f4a" opacity=".8"/>
+      </svg>
+      <p class="splash-hint">
+        <span>Davetiyeyi açmak için dokunun</span>
+        <span class="alt">Tippen zum Öffnen</span>
+      </p>
+      <div class="splash-pulse" aria-hidden="true"><span></span></div>
+    </div>
+  </div>
+  <div class="splash-panel splash-panel-right" aria-hidden="true">
+    <div class="panel-content">
+      <p class="splash-eyebrow">KIZ İSTEME &amp; NİŞAN</p>
+      <h2 class="splash-names">
+        <span>Ayça&nbsp;Feza</span>
+        <span class="amp">&amp;</span>
+        <span class="break">Buğrahan</span>
+      </h2>
+      <svg class="splash-sprig" viewBox="0 0 120 40" aria-hidden="true">
+        <path d="M6,20 Q60,16 114,20" stroke="#2b4a32" stroke-width="1.1" fill="none" stroke-linecap="round"/>
+        <path d="M30,18 q-4,-7 -11,-5 q1,7 11,5 Z" fill="#7a9b5e" opacity=".7"/>
+        <path d="M30,18 q-4,-7 -11,-5 q1,7 11,5" stroke="#2b4a32" stroke-width=".8" fill="none"/>
+        <path d="M50,22 q4,7 11,5 q-1,-7 -11,-5 Z" fill="#7a9b5e" opacity=".7"/>
+        <path d="M50,22 q4,7 11,5 q-1,-7 -11,-5" stroke="#2b4a32" stroke-width=".8" fill="none"/>
+        <path d="M72,18 q-4,-7 -11,-5 q1,7 11,5 Z" fill="#7a9b5e" opacity=".7"/>
+        <path d="M72,18 q-4,-7 -11,-5 q1,7 11,5" stroke="#2b4a32" stroke-width=".8" fill="none"/>
+        <path d="M90,22 q4,7 11,5 q-1,-7 -11,-5 Z" fill="#7a9b5e" opacity=".7"/>
+        <path d="M90,22 q4,7 11,5 q-1,-7 -11,-5" stroke="#2b4a32" stroke-width=".8" fill="none"/>
+        <circle cx="60" cy="20" r="2" fill="#c96f4a" opacity=".8"/>
+      </svg>
+      <p class="splash-hint">
+        <span>Davetiyeyi açmak için dokunun</span>
+        <span class="alt">Tippen zum Öffnen</span>
+      </p>
+      <div class="splash-pulse" aria-hidden="true"><span></span></div>
+    </div>
+  </div>
 </div>
 
 <!-- ── BACKGROUND MUSIC ─────────────────────────── -->
@@ -700,6 +958,17 @@
     <p class="hero-meta last fade-in" data-i18n="heroDate">27 Haziran 2026 Cumartesi</p>
     <a class="cta fade-in" href="#details" data-i18n="saveDate">TARİHİ KAYDEDİN</a>
   </div>
+
+  <!-- subtle scroll hint — fades in after the hero text, fades out once user scrolls -->
+  <div class="scroll-hint" id="scrollHint" aria-hidden="true">
+    <svg class="scroll-chevron" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M5 9 L12 16 L19 9" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <p class="scroll-hint-text">
+      <span>aşağı kaydırın</span>
+      <span class="alt">nach unten scrollen</span>
+    </p>
+  </div>
 </section>
 
 <!-- ── COUNTDOWN ─────────────────────────────────── -->
@@ -707,85 +976,85 @@
   <!-- flower garland across the top -->
   <svg class="section-deco garland-top sway-b" viewBox="0 0 560 80" aria-hidden="true">
     <!-- wire -->
-    <path d="M10,18 Q140,62 280,50 Q420,40 550,18" stroke="#2c4a7c" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".7"/>
+    <path d="M10,18 Q140,62 280,50 Q420,40 550,18" stroke="#2b4a32" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".7"/>
     <!-- leaves along wire -->
     <g>
       <path d="M70,36 q-8,-6 -14,2 q4,8 15,2 Z" fill="#7a9b5e" opacity=".7"/>
-      <path d="M70,36 q-8,-6 -14,2 q4,8 15,2" stroke="#2c4a7c" stroke-width=".8" fill="none"/>
+      <path d="M70,36 q-8,-6 -14,2 q4,8 15,2" stroke="#2b4a32" stroke-width=".8" fill="none"/>
       <path d="M180,52 q8,-6 15,2 q-5,8 -16,2 Z" fill="#7a9b5e" opacity=".7"/>
-      <path d="M180,52 q8,-6 15,2 q-5,8 -16,2" stroke="#2c4a7c" stroke-width=".8" fill="none"/>
+      <path d="M180,52 q8,-6 15,2 q-5,8 -16,2" stroke="#2b4a32" stroke-width=".8" fill="none"/>
       <path d="M350,48 q-8,-6 -15,2 q5,8 16,2 Z" fill="#5d7a47" opacity=".7"/>
-      <path d="M350,48 q-8,-6 -15,2 q5,8 16,2" stroke="#2c4a7c" stroke-width=".8" fill="none"/>
+      <path d="M350,48 q-8,-6 -15,2 q5,8 16,2" stroke="#2b4a32" stroke-width=".8" fill="none"/>
       <path d="M470,32 q8,-6 15,2 q-5,8 -16,2 Z" fill="#7a9b5e" opacity=".7"/>
-      <path d="M470,32 q8,-6 15,2 q-5,8 -16,2" stroke="#2c4a7c" stroke-width=".8" fill="none"/>
+      <path d="M470,32 q8,-6 15,2 q-5,8 -16,2" stroke="#2b4a32" stroke-width=".8" fill="none"/>
     </g>
     <!-- hanging flowers -->
     <g transform="translate(130,56)">
-      <path d="M0,0 L0,8" stroke="#2c4a7c" stroke-width=".8"/>
+      <path d="M0,0 L0,8" stroke="#2b4a32" stroke-width=".8"/>
       <g transform="translate(0,14)">
-        <g fill="#fbf4e3" stroke="#2c4a7c" stroke-width=".7">
+        <g fill="#fbf4e3" stroke="#2b4a32" stroke-width=".7">
           <ellipse cx="0" cy="-7" rx="3" ry="6"/>
           <ellipse cx="0" cy="-7" rx="3" ry="6" transform="rotate(72)"/>
           <ellipse cx="0" cy="-7" rx="3" ry="6" transform="rotate(144)"/>
           <ellipse cx="0" cy="-7" rx="3" ry="6" transform="rotate(216)"/>
           <ellipse cx="0" cy="-7" rx="3" ry="6" transform="rotate(288)"/>
         </g>
-        <circle r="2.8" fill="#e8c547" stroke="#2c4a7c" stroke-width=".7"/>
+        <circle r="2.8" fill="#e8c547" stroke="#2b4a32" stroke-width=".7"/>
       </g>
     </g>
     <g transform="translate(240,62)">
-      <path d="M0,0 L0,8" stroke="#2c4a7c" stroke-width=".8"/>
+      <path d="M0,0 L0,8" stroke="#2b4a32" stroke-width=".8"/>
       <g transform="translate(0,16)">
-        <circle r="7" fill="#c96f4a" opacity=".72" stroke="#2c4a7c" stroke-width=".7"/>
-        <circle r="3" fill="#e8c547" stroke="#2c4a7c" stroke-width=".5"/>
+        <circle r="7" fill="#c96f4a" opacity=".72" stroke="#2b4a32" stroke-width=".7"/>
+        <circle r="3" fill="#e8c547" stroke="#2b4a32" stroke-width=".5"/>
       </g>
     </g>
     <g transform="translate(310,56)">
-      <path d="M0,0 L0,8" stroke="#2c4a7c" stroke-width=".8"/>
+      <path d="M0,0 L0,8" stroke="#2b4a32" stroke-width=".8"/>
       <g transform="translate(0,14)">
-        <g fill="#fbf4e3" stroke="#2c4a7c" stroke-width=".7">
+        <g fill="#fbf4e3" stroke="#2b4a32" stroke-width=".7">
           <ellipse cx="0" cy="-7" rx="3" ry="6"/>
           <ellipse cx="0" cy="-7" rx="3" ry="6" transform="rotate(72)"/>
           <ellipse cx="0" cy="-7" rx="3" ry="6" transform="rotate(144)"/>
           <ellipse cx="0" cy="-7" rx="3" ry="6" transform="rotate(216)"/>
           <ellipse cx="0" cy="-7" rx="3" ry="6" transform="rotate(288)"/>
         </g>
-        <circle r="2.8" fill="#e8c547" stroke="#2c4a7c" stroke-width=".7"/>
+        <circle r="2.8" fill="#e8c547" stroke="#2b4a32" stroke-width=".7"/>
       </g>
     </g>
     <g transform="translate(420,52)">
-      <path d="M0,0 L0,8" stroke="#2c4a7c" stroke-width=".8"/>
+      <path d="M0,0 L0,8" stroke="#2b4a32" stroke-width=".8"/>
       <g transform="translate(0,16)">
-        <circle r="6" fill="#c96f4a" opacity=".7" stroke="#2c4a7c" stroke-width=".7"/>
-        <circle r="2.5" fill="#e8c547" stroke="#2c4a7c" stroke-width=".5"/>
+        <circle r="6" fill="#c96f4a" opacity=".7" stroke="#2b4a32" stroke-width=".7"/>
+        <circle r="2.5" fill="#e8c547" stroke="#2b4a32" stroke-width=".5"/>
       </g>
     </g>
   </svg>
 
   <!-- small corner sprigs -->
   <svg class="section-deco sprig-tiny-l sway-a" viewBox="0 0 80 120" aria-hidden="true">
-    <path d="M40,0 Q44,40 36,80 Q30,110 24,118" stroke="#2c4a7c" stroke-width="1" fill="none"/>
+    <path d="M40,0 Q44,40 36,80 Q30,110 24,118" stroke="#2b4a32" stroke-width="1" fill="none"/>
     <path d="M40,25 q-10,-4 -14,6 q6,7 15,0 Z" fill="#7a9b5e" opacity=".65"/>
-    <path d="M40,25 q-10,-4 -14,6 q6,7 15,0" stroke="#2c4a7c" stroke-width=".7" fill="none"/>
+    <path d="M40,25 q-10,-4 -14,6 q6,7 15,0" stroke="#2b4a32" stroke-width=".7" fill="none"/>
     <path d="M42,55 q10,-4 14,6 q-6,7 -15,0 Z" fill="#7a9b5e" opacity=".65"/>
-    <path d="M42,55 q10,-4 14,6 q-6,7 -15,0" stroke="#2c4a7c" stroke-width=".7" fill="none"/>
+    <path d="M42,55 q10,-4 14,6 q-6,7 -15,0" stroke="#2b4a32" stroke-width=".7" fill="none"/>
     <path d="M36,85 q-10,-4 -14,6 q6,7 15,0 Z" fill="#5d7a47" opacity=".7"/>
-    <path d="M36,85 q-10,-4 -14,6 q6,7 15,0" stroke="#2c4a7c" stroke-width=".7" fill="none"/>
+    <path d="M36,85 q-10,-4 -14,6 q6,7 15,0" stroke="#2b4a32" stroke-width=".7" fill="none"/>
     <g transform="translate(24,115)">
-      <circle r="4" fill="#c96f4a" opacity=".72" stroke="#2c4a7c" stroke-width=".6"/>
+      <circle r="4" fill="#c96f4a" opacity=".72" stroke="#2b4a32" stroke-width=".6"/>
       <circle r="1.5" fill="#e8c547"/>
     </g>
   </svg>
   <svg class="section-deco sprig-tiny-r sway-b" viewBox="0 0 80 120" aria-hidden="true">
-    <path d="M40,0 Q44,40 36,80 Q30,110 24,118" stroke="#2c4a7c" stroke-width="1" fill="none"/>
+    <path d="M40,0 Q44,40 36,80 Q30,110 24,118" stroke="#2b4a32" stroke-width="1" fill="none"/>
     <path d="M40,25 q-10,-4 -14,6 q6,7 15,0 Z" fill="#7a9b5e" opacity=".65"/>
-    <path d="M40,25 q-10,-4 -14,6 q6,7 15,0" stroke="#2c4a7c" stroke-width=".7" fill="none"/>
+    <path d="M40,25 q-10,-4 -14,6 q6,7 15,0" stroke="#2b4a32" stroke-width=".7" fill="none"/>
     <path d="M42,55 q10,-4 14,6 q-6,7 -15,0 Z" fill="#7a9b5e" opacity=".65"/>
-    <path d="M42,55 q10,-4 14,6 q-6,7 -15,0" stroke="#2c4a7c" stroke-width=".7" fill="none"/>
+    <path d="M42,55 q10,-4 14,6 q-6,7 -15,0" stroke="#2b4a32" stroke-width=".7" fill="none"/>
     <path d="M36,85 q-10,-4 -14,6 q6,7 15,0 Z" fill="#5d7a47" opacity=".7"/>
-    <path d="M36,85 q-10,-4 -14,6 q6,7 15,0" stroke="#2c4a7c" stroke-width=".7" fill="none"/>
+    <path d="M36,85 q-10,-4 -14,6 q6,7 15,0" stroke="#2b4a32" stroke-width=".7" fill="none"/>
     <g transform="translate(24,115)">
-      <g fill="#fbf4e3" stroke="#2c4a7c" stroke-width=".6">
+      <g fill="#fbf4e3" stroke="#2b4a32" stroke-width=".6">
         <ellipse cx="0" cy="-5" rx="2.2" ry="4.5"/>
         <ellipse cx="0" cy="-5" rx="2.2" ry="4.5" transform="rotate(72)"/>
         <ellipse cx="0" cy="-5" rx="2.2" ry="4.5" transform="rotate(144)"/>
@@ -811,57 +1080,57 @@
   <!-- top-left floral cluster -->
   <svg class="section-deco floral-tl sway-a" viewBox="0 0 150 160" aria-hidden="true">
     <!-- curved stem -->
-    <path d="M10,155 Q30,100 65,65 Q100,35 140,15" stroke="#2c4a7c" stroke-width="1.1" fill="none" stroke-linecap="round"/>
+    <path d="M10,155 Q30,100 65,65 Q100,35 140,15" stroke="#2b4a32" stroke-width="1.1" fill="none" stroke-linecap="round"/>
     <!-- leaves -->
     <path d="M26,120 q-14,-4 -18,10 q9,9 22,0 Z" fill="#7a9b5e" opacity=".7"/>
-    <path d="M26,120 q-14,-4 -18,10 q9,9 22,0" stroke="#2c4a7c" stroke-width=".8" fill="none"/>
+    <path d="M26,120 q-14,-4 -18,10 q9,9 22,0" stroke="#2b4a32" stroke-width=".8" fill="none"/>
     <path d="M50,80 q-14,-4 -18,10 q9,9 22,0 Z" fill="#5d7a47" opacity=".65"/>
-    <path d="M50,80 q-14,-4 -18,10 q9,9 22,0" stroke="#2c4a7c" stroke-width=".8" fill="none"/>
+    <path d="M50,80 q-14,-4 -18,10 q9,9 22,0" stroke="#2b4a32" stroke-width=".8" fill="none"/>
     <path d="M85,50 q14,-4 18,10 q-9,9 -22,0 Z" fill="#7a9b5e" opacity=".7"/>
-    <path d="M85,50 q14,-4 18,10 q-9,9 -22,0" stroke="#2c4a7c" stroke-width=".8" fill="none"/>
+    <path d="M85,50 q14,-4 18,10 q-9,9 -22,0" stroke="#2b4a32" stroke-width=".8" fill="none"/>
     <!-- terracotta flower cluster -->
     <g transform="translate(70,55)">
-      <circle r="9" fill="#c96f4a" opacity=".72" stroke="#2c4a7c" stroke-width=".7"/>
-      <circle cx="-6" cy="8" r="7" fill="#c96f4a" opacity=".68" stroke="#2c4a7c" stroke-width=".7"/>
-      <circle cx="8" cy="6" r="6" fill="#c96f4a" opacity=".7" stroke="#2c4a7c" stroke-width=".7"/>
+      <circle r="9" fill="#c96f4a" opacity=".72" stroke="#2b4a32" stroke-width=".7"/>
+      <circle cx="-6" cy="8" r="7" fill="#c96f4a" opacity=".68" stroke="#2b4a32" stroke-width=".7"/>
+      <circle cx="8" cy="6" r="6" fill="#c96f4a" opacity=".7" stroke="#2b4a32" stroke-width=".7"/>
       <circle r="3" fill="#e8c547"/>
     </g>
     <!-- daisy top -->
     <g transform="translate(135,20)">
-      <g fill="#fbf4e3" stroke="#2c4a7c" stroke-width=".8">
+      <g fill="#fbf4e3" stroke="#2b4a32" stroke-width=".8">
         <ellipse cx="0" cy="-10" rx="4" ry="8"/>
         <ellipse cx="0" cy="-10" rx="4" ry="8" transform="rotate(72)"/>
         <ellipse cx="0" cy="-10" rx="4" ry="8" transform="rotate(144)"/>
         <ellipse cx="0" cy="-10" rx="4" ry="8" transform="rotate(216)"/>
         <ellipse cx="0" cy="-10" rx="4" ry="8" transform="rotate(288)"/>
       </g>
-      <circle r="3.5" fill="#e8c547" stroke="#2c4a7c" stroke-width=".6"/>
+      <circle r="3.5" fill="#e8c547" stroke="#2b4a32" stroke-width=".6"/>
     </g>
   </svg>
 
   <!-- bottom-right cluster -->
   <svg class="section-deco floral-br sway-b" viewBox="0 0 170 170" aria-hidden="true">
-    <path d="M160,165 Q140,110 105,70 Q70,35 20,15" stroke="#2c4a7c" stroke-width="1.1" fill="none" stroke-linecap="round"/>
+    <path d="M160,165 Q140,110 105,70 Q70,35 20,15" stroke="#2b4a32" stroke-width="1.1" fill="none" stroke-linecap="round"/>
     <path d="M140,130 q14,-4 18,10 q-9,9 -22,0 Z" fill="#7a9b5e" opacity=".7"/>
-    <path d="M140,130 q14,-4 18,10 q-9,9 -22,0" stroke="#2c4a7c" stroke-width=".8" fill="none"/>
+    <path d="M140,130 q14,-4 18,10 q-9,9 -22,0" stroke="#2b4a32" stroke-width=".8" fill="none"/>
     <path d="M115,90 q-14,-4 -18,10 q9,9 22,0 Z" fill="#5d7a47" opacity=".68"/>
-    <path d="M115,90 q-14,-4 -18,10 q9,9 22,0" stroke="#2c4a7c" stroke-width=".8" fill="none"/>
+    <path d="M115,90 q-14,-4 -18,10 q9,9 22,0" stroke="#2b4a32" stroke-width=".8" fill="none"/>
     <path d="M80,55 q-14,-4 -18,10 q9,9 22,0 Z" fill="#7a9b5e" opacity=".7"/>
-    <path d="M80,55 q-14,-4 -18,10 q9,9 22,0" stroke="#2c4a7c" stroke-width=".8" fill="none"/>
+    <path d="M80,55 q-14,-4 -18,10 q9,9 22,0" stroke="#2b4a32" stroke-width=".8" fill="none"/>
     <!-- large daisy -->
     <g transform="translate(95,72)">
-      <g fill="#fbf4e3" stroke="#2c4a7c" stroke-width=".9">
+      <g fill="#fbf4e3" stroke="#2b4a32" stroke-width=".9">
         <ellipse cx="0" cy="-13" rx="5" ry="10"/>
         <ellipse cx="0" cy="-13" rx="5" ry="10" transform="rotate(72)"/>
         <ellipse cx="0" cy="-13" rx="5" ry="10" transform="rotate(144)"/>
         <ellipse cx="0" cy="-13" rx="5" ry="10" transform="rotate(216)"/>
         <ellipse cx="0" cy="-13" rx="5" ry="10" transform="rotate(288)"/>
       </g>
-      <circle r="4.5" fill="#e8c547" stroke="#2c4a7c" stroke-width=".7"/>
+      <circle r="4.5" fill="#e8c547" stroke="#2b4a32" stroke-width=".7"/>
     </g>
     <!-- bud -->
     <g transform="translate(35,25)">
-      <path d="M0,0 Q-4,-8 0,-14 Q4,-8 0,0 Z" fill="#c96f4a" opacity=".7" stroke="#2c4a7c" stroke-width=".7"/>
+      <path d="M0,0 Q-4,-8 0,-14 Q4,-8 0,0 Z" fill="#c96f4a" opacity=".7" stroke="#2b4a32" stroke-width=".7"/>
       <path d="M-2,0 Q2,-2 4,2" stroke="#7a9b5e" stroke-width="1" fill="none"/>
     </g>
   </svg>
@@ -869,16 +1138,16 @@
   <!-- small bottom-left accent -->
   <svg class="section-deco floral-bl sway-c" viewBox="0 0 100 100" aria-hidden="true">
     <g transform="translate(50,50)">
-      <g fill="#fbf4e3" stroke="#2c4a7c" stroke-width=".9">
+      <g fill="#fbf4e3" stroke="#2b4a32" stroke-width=".9">
         <ellipse cx="0" cy="-18" rx="6" ry="14"/>
         <ellipse cx="0" cy="-18" rx="6" ry="14" transform="rotate(72)"/>
         <ellipse cx="0" cy="-18" rx="6" ry="14" transform="rotate(144)"/>
         <ellipse cx="0" cy="-18" rx="6" ry="14" transform="rotate(216)"/>
         <ellipse cx="0" cy="-18" rx="6" ry="14" transform="rotate(288)"/>
       </g>
-      <circle r="6" fill="#e8c547" stroke="#2c4a7c" stroke-width=".8"/>
+      <circle r="6" fill="#e8c547" stroke="#2b4a32" stroke-width=".8"/>
     </g>
-    <path d="M50,78 Q44,92 34,98" stroke="#2c4a7c" stroke-width="1" fill="none"/>
+    <path d="M50,78 Q44,92 34,98" stroke="#2b4a32" stroke-width="1" fill="none"/>
     <path d="M46,90 q-8,-2 -10,6 q6,4 12,-2 Z" fill="#7a9b5e" opacity=".7"/>
   </svg>
 
@@ -894,45 +1163,45 @@
 <section class="details" id="details">
   <!-- hanging branch left -->
   <svg class="section-deco sprig-l sway-a" viewBox="0 0 130 320" aria-hidden="true">
-    <path d="M65,0 Q70,80 60,160 Q50,240 35,315" stroke="#2c4a7c" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+    <path d="M65,0 Q70,80 60,160 Q50,240 35,315" stroke="#2b4a32" stroke-width="1.2" fill="none" stroke-linecap="round"/>
     <path d="M65,40 q-16,-4 -22,10 q10,10 24,0 Z" fill="#7a9b5e" opacity=".7"/>
-    <path d="M65,40 q-16,-4 -22,10 q10,10 24,0" stroke="#2c4a7c" stroke-width=".9" fill="none"/>
+    <path d="M65,40 q-16,-4 -22,10 q10,10 24,0" stroke="#2b4a32" stroke-width=".9" fill="none"/>
     <path d="M67,80 q16,-4 22,10 q-10,10 -24,0 Z" fill="#5d7a47" opacity=".65"/>
-    <path d="M67,80 q16,-4 22,10 q-10,10 -24,0" stroke="#2c4a7c" stroke-width=".9" fill="none"/>
+    <path d="M67,80 q16,-4 22,10 q-10,10 -24,0" stroke="#2b4a32" stroke-width=".9" fill="none"/>
     <path d="M62,125 q-16,-4 -22,10 q10,10 24,0 Z" fill="#7a9b5e" opacity=".7"/>
-    <path d="M62,125 q-16,-4 -22,10 q10,10 24,0" stroke="#2c4a7c" stroke-width=".9" fill="none"/>
+    <path d="M62,125 q-16,-4 -22,10 q10,10 24,0" stroke="#2b4a32" stroke-width=".9" fill="none"/>
     <path d="M58,170 q16,-4 22,10 q-10,10 -24,0 Z" fill="#5d7a47" opacity=".65"/>
-    <path d="M58,170 q16,-4 22,10 q-10,10 -24,0" stroke="#2c4a7c" stroke-width=".9" fill="none"/>
+    <path d="M58,170 q16,-4 22,10 q-10,10 -24,0" stroke="#2b4a32" stroke-width=".9" fill="none"/>
     <path d="M50,218 q-16,-4 -22,10 q10,10 24,0 Z" fill="#7a9b5e" opacity=".7"/>
-    <path d="M50,218 q-16,-4 -22,10 q10,10 24,0" stroke="#2c4a7c" stroke-width=".9" fill="none"/>
+    <path d="M50,218 q-16,-4 -22,10 q10,10 24,0" stroke="#2b4a32" stroke-width=".9" fill="none"/>
     <!-- flower at tip -->
     <g transform="translate(35,300)">
-      <g fill="#fbf4e3" stroke="#2c4a7c" stroke-width=".8">
+      <g fill="#fbf4e3" stroke="#2b4a32" stroke-width=".8">
         <ellipse cx="0" cy="-9" rx="4" ry="7"/>
         <ellipse cx="0" cy="-9" rx="4" ry="7" transform="rotate(72)"/>
         <ellipse cx="0" cy="-9" rx="4" ry="7" transform="rotate(144)"/>
         <ellipse cx="0" cy="-9" rx="4" ry="7" transform="rotate(216)"/>
         <ellipse cx="0" cy="-9" rx="4" ry="7" transform="rotate(288)"/>
       </g>
-      <circle r="3" fill="#e8c547" stroke="#2c4a7c" stroke-width=".6"/>
+      <circle r="3" fill="#e8c547" stroke="#2b4a32" stroke-width=".6"/>
     </g>
   </svg>
 
   <!-- hanging branch right (mirrored) -->
   <svg class="section-deco sprig-r sway-b" viewBox="0 0 130 320" aria-hidden="true">
-    <path d="M65,0 Q70,80 60,160 Q50,240 35,315" stroke="#2c4a7c" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+    <path d="M65,0 Q70,80 60,160 Q50,240 35,315" stroke="#2b4a32" stroke-width="1.2" fill="none" stroke-linecap="round"/>
     <path d="M65,40 q-16,-4 -22,10 q10,10 24,0 Z" fill="#7a9b5e" opacity=".7"/>
-    <path d="M65,40 q-16,-4 -22,10 q10,10 24,0" stroke="#2c4a7c" stroke-width=".9" fill="none"/>
+    <path d="M65,40 q-16,-4 -22,10 q10,10 24,0" stroke="#2b4a32" stroke-width=".9" fill="none"/>
     <path d="M67,80 q16,-4 22,10 q-10,10 -24,0 Z" fill="#5d7a47" opacity=".65"/>
-    <path d="M67,80 q16,-4 22,10 q-10,10 -24,0" stroke="#2c4a7c" stroke-width=".9" fill="none"/>
+    <path d="M67,80 q16,-4 22,10 q-10,10 -24,0" stroke="#2b4a32" stroke-width=".9" fill="none"/>
     <path d="M62,125 q-16,-4 -22,10 q10,10 24,0 Z" fill="#7a9b5e" opacity=".7"/>
-    <path d="M62,125 q-16,-4 -22,10 q10,10 24,0" stroke="#2c4a7c" stroke-width=".9" fill="none"/>
+    <path d="M62,125 q-16,-4 -22,10 q10,10 24,0" stroke="#2b4a32" stroke-width=".9" fill="none"/>
     <path d="M58,170 q16,-4 22,10 q-10,10 -24,0 Z" fill="#5d7a47" opacity=".65"/>
-    <path d="M58,170 q16,-4 22,10 q-10,10 -24,0" stroke="#2c4a7c" stroke-width=".9" fill="none"/>
+    <path d="M58,170 q16,-4 22,10 q-10,10 -24,0" stroke="#2b4a32" stroke-width=".9" fill="none"/>
     <path d="M50,218 q-16,-4 -22,10 q10,10 24,0 Z" fill="#7a9b5e" opacity=".7"/>
-    <path d="M50,218 q-16,-4 -22,10 q10,10 24,0" stroke="#2c4a7c" stroke-width=".9" fill="none"/>
+    <path d="M50,218 q-16,-4 -22,10 q10,10 24,0" stroke="#2b4a32" stroke-width=".9" fill="none"/>
     <g transform="translate(35,300)">
-      <circle r="8" fill="#c96f4a" opacity=".72" stroke="#2c4a7c" stroke-width=".8"/>
+      <circle r="8" fill="#c96f4a" opacity=".72" stroke="#2b4a32" stroke-width=".8"/>
       <circle r="3" fill="#e8c547"/>
     </g>
   </svg>
@@ -944,23 +1213,23 @@
   <div class="info-card fade-in">
     <!-- corner ornaments -->
     <svg class="corner tl" viewBox="0 0 60 60" aria-hidden="true">
-      <path d="M8,48 Q22,36 34,40 Q42,24 52,10" stroke="#2c4a7c" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+      <path d="M8,48 Q22,36 34,40 Q42,24 52,10" stroke="#2b4a32" stroke-width="1.4" fill="none" stroke-linecap="round"/>
       <path d="M22,38 q-5,-7 -12,-6 q3,9 13,7 Z" fill="#7a9b5e" opacity=".55"/>
-      <path d="M22,38 q-5,-7 -12,-6 q3,9 13,7" stroke="#2c4a7c" stroke-width=".9" fill="none"/>
+      <path d="M22,38 q-5,-7 -12,-6 q3,9 13,7" stroke="#2b4a32" stroke-width=".9" fill="none"/>
       <path d="M34,28 q5,-7 12,-6 q-3,9 -13,7 Z" fill="#7a9b5e" opacity=".55"/>
-      <path d="M34,28 q5,-7 12,-6 q-3,9 -13,7" stroke="#2c4a7c" stroke-width=".9" fill="none"/>
+      <path d="M34,28 q5,-7 12,-6 q-3,9 -13,7" stroke="#2b4a32" stroke-width=".9" fill="none"/>
       <path d="M44,14 q-4,-5 -10,-4 q2,7 10,5 Z" fill="#7a9b5e" opacity=".55"/>
-      <path d="M44,14 q-4,-5 -10,-4 q2,7 10,5" stroke="#2c4a7c" stroke-width=".9" fill="none"/>
+      <path d="M44,14 q-4,-5 -10,-4 q2,7 10,5" stroke="#2b4a32" stroke-width=".9" fill="none"/>
       <circle cx="52" cy="9" r="2" fill="#c96f4a" opacity=".75"/>
     </svg>
     <svg class="corner br" viewBox="0 0 60 60" aria-hidden="true">
-      <path d="M8,48 Q22,36 34,40 Q42,24 52,10" stroke="#2c4a7c" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+      <path d="M8,48 Q22,36 34,40 Q42,24 52,10" stroke="#2b4a32" stroke-width="1.4" fill="none" stroke-linecap="round"/>
       <path d="M22,38 q-5,-7 -12,-6 q3,9 13,7 Z" fill="#7a9b5e" opacity=".55"/>
-      <path d="M22,38 q-5,-7 -12,-6 q3,9 13,7" stroke="#2c4a7c" stroke-width=".9" fill="none"/>
+      <path d="M22,38 q-5,-7 -12,-6 q3,9 13,7" stroke="#2b4a32" stroke-width=".9" fill="none"/>
       <path d="M34,28 q5,-7 12,-6 q-3,9 -13,7 Z" fill="#7a9b5e" opacity=".55"/>
-      <path d="M34,28 q5,-7 12,-6 q-3,9 -13,7" stroke="#2c4a7c" stroke-width=".9" fill="none"/>
+      <path d="M34,28 q5,-7 12,-6 q-3,9 -13,7" stroke="#2b4a32" stroke-width=".9" fill="none"/>
       <path d="M44,14 q-4,-5 -10,-4 q2,7 10,5 Z" fill="#7a9b5e" opacity=".55"/>
-      <path d="M44,14 q-4,-5 -10,-4 q2,7 10,5" stroke="#2c4a7c" stroke-width=".9" fill="none"/>
+      <path d="M44,14 q-4,-5 -10,-4 q2,7 10,5" stroke="#2b4a32" stroke-width=".9" fill="none"/>
       <circle cx="52" cy="9" r="2" fill="#c96f4a" opacity=".75"/>
     </svg>
 
@@ -1010,11 +1279,11 @@
       <circle cx="80" cy="80" r="15" fill="#fbf4e3" opacity=".5"/>
     </g>
     <!-- ink accents -->
-    <path d="M40,90 Q70,50 110,70" stroke="#2c4a7c" stroke-width=".8" fill="none" opacity=".5"/>
+    <path d="M40,90 Q70,50 110,70" stroke="#2b4a32" stroke-width=".8" fill="none" opacity=".5"/>
     <path d="M60,120 q-10,-6 -14,4 q6,8 16,2 Z" fill="#5d7a47" opacity=".5"/>
-    <path d="M60,120 q-10,-6 -14,4 q6,8 16,2" stroke="#2c4a7c" stroke-width=".6" fill="none" opacity=".6"/>
+    <path d="M60,120 q-10,-6 -14,4 q6,8 16,2" stroke="#2b4a32" stroke-width=".6" fill="none" opacity=".6"/>
     <g transform="translate(100,60)">
-      <g fill="#fbf4e3" stroke="#2c4a7c" stroke-width=".7" opacity=".8">
+      <g fill="#fbf4e3" stroke="#2b4a32" stroke-width=".7" opacity=".8">
         <ellipse cx="0" cy="-9" rx="4" ry="7"/>
         <ellipse cx="0" cy="-9" rx="4" ry="7" transform="rotate(72)"/>
         <ellipse cx="0" cy="-9" rx="4" ry="7" transform="rotate(144)"/>
@@ -1032,9 +1301,9 @@
       <circle cx="50" cy="85" r="25" fill="#c96f4a" opacity=".38"/>
       <circle cx="90" cy="90" r="22" fill="#e8c547" opacity=".4"/>
     </g>
-    <path d="M30,70 Q60,40 100,60" stroke="#2c4a7c" stroke-width=".8" fill="none" opacity=".5"/>
+    <path d="M30,70 Q60,40 100,60" stroke="#2b4a32" stroke-width=".8" fill="none" opacity=".5"/>
     <g transform="translate(50,50)">
-      <circle r="8" fill="#c96f4a" opacity=".8" stroke="#2c4a7c" stroke-width=".7"/>
+      <circle r="8" fill="#c96f4a" opacity=".8" stroke="#2b4a32" stroke-width=".7"/>
       <circle r="3" fill="#e8c547"/>
     </g>
   </svg>
@@ -1048,28 +1317,28 @@
 <footer>
   <svg class="foot-flower bob" viewBox="0 0 44 44" aria-hidden="true">
     <g transform="translate(22,22)">
-      <g fill="#fbf4e3" stroke="#2c4a7c" stroke-width=".9">
+      <g fill="#fbf4e3" stroke="#2b4a32" stroke-width=".9">
         <ellipse cx="0" cy="-10" rx="4.5" ry="9"/>
         <ellipse cx="0" cy="-10" rx="4.5" ry="9" transform="rotate(72)"/>
         <ellipse cx="0" cy="-10" rx="4.5" ry="9" transform="rotate(144)"/>
         <ellipse cx="0" cy="-10" rx="4.5" ry="9" transform="rotate(216)"/>
         <ellipse cx="0" cy="-10" rx="4.5" ry="9" transform="rotate(288)"/>
       </g>
-      <circle r="3.8" fill="#e8c547" stroke="#2c4a7c" stroke-width=".7"/>
+      <circle r="3.8" fill="#e8c547" stroke="#2b4a32" stroke-width=".7"/>
     </g>
   </svg>
   <p class="script fade-in">Ayça Feza &amp; Buğrahan</p>
   <p class="date fade-in" data-i18n="footerDate">27 Haziran 2026</p>
   <svg class="footer-branch fade-in" viewBox="0 0 110 40" aria-hidden="true">
-    <path d="M4,20 Q55,16 106,20" stroke="#2c4a7c" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+    <path d="M4,20 Q55,16 106,20" stroke="#2b4a32" stroke-width="1.3" fill="none" stroke-linecap="round"/>
     <path d="M26,18 q-4,-7 -11,-5 q1,7 11,5 Z" fill="#7a9b5e" opacity=".7"/>
-    <path d="M26,18 q-4,-7 -11,-5 q1,7 11,5" stroke="#2c4a7c" stroke-width=".9" fill="none"/>
+    <path d="M26,18 q-4,-7 -11,-5 q1,7 11,5" stroke="#2b4a32" stroke-width=".9" fill="none"/>
     <path d="M42,22 q4,7 11,5 q-1,-7 -11,-5 Z" fill="#7a9b5e" opacity=".7"/>
-    <path d="M42,22 q4,7 11,5 q-1,-7 -11,-5" stroke="#2c4a7c" stroke-width=".9" fill="none"/>
+    <path d="M42,22 q4,7 11,5 q-1,-7 -11,-5" stroke="#2b4a32" stroke-width=".9" fill="none"/>
     <path d="M66,18 q-4,-7 -11,-5 q1,7 11,5 Z" fill="#7a9b5e" opacity=".7"/>
-    <path d="M66,18 q-4,-7 -11,-5 q1,7 11,5" stroke="#2c4a7c" stroke-width=".9" fill="none"/>
+    <path d="M66,18 q-4,-7 -11,-5 q1,7 11,5" stroke="#2b4a32" stroke-width=".9" fill="none"/>
     <path d="M82,22 q4,7 11,5 q-1,-7 -11,-5 Z" fill="#7a9b5e" opacity=".7"/>
-    <path d="M82,22 q4,7 11,5 q-1,-7 -11,-5" stroke="#2c4a7c" stroke-width=".9" fill="none"/>
+    <path d="M82,22 q4,7 11,5 q-1,-7 -11,-5" stroke="#2b4a32" stroke-width=".9" fill="none"/>
     <circle cx="55" cy="20" r="1.8" fill="#c96f4a" opacity=".8"/>
   </svg>
 </footer>
@@ -1096,6 +1365,8 @@ const EVENT_DATE = new Date(EVENT.startUTC);
 const i18n = {
   tr: {
     docTitle:      'Ayça Feza & Buğrahan — Kız İsteme & Nişan',
+    splashEyebrow: 'KIZ İSTEME & NİŞAN',
+    splashHint:    'DAVETİYEYİ AÇMAK İÇİN DOKUNUN',
     eyebrow:       'KIZ İSTEME & NİŞAN DAVETİ',
     heroDate:      '27 Haziran 2026 Cumartesi',
     heroLoc:       'Amselweg 10 · 40878 Ratingen',
@@ -1118,6 +1389,8 @@ const i18n = {
   },
   de: {
     docTitle:      'Ayça Feza & Buğrahan — Verlobung & Kız İsteme',
+    splashEyebrow: 'VERLOBUNG · KIZ İSTEME',
+    splashHint:    'ZUM ÖFFNEN DER EINLADUNG TIPPEN',
     eyebrow:       'EINLADUNG · KIZ İSTEME & VERLOBUNG',
     heroDate:      'Samstag, 27. Juni 2026',
     heroLoc:       'Amselweg 10 · 40878 Ratingen',
@@ -1189,48 +1462,79 @@ document.getElementById('langToggle').addEventListener('click', () => {
 applyLang(currentLang);
 
 /* ────────────────────────────────────────────────
-   BACKGROUND MUSIC — full volume, plays loud as soon
-   as browser policy permits (immediately on return
-   visits, on first interaction for fresh visits).
+   INVITATION SPLASH + BACKGROUND MUSIC
+   The splash guarantees exactly one user gesture before
+   the invitation appears — that gesture unmutes the
+   audio so the song plays at full volume from the
+   moment the invitation is revealed.  This is the
+   only cross-browser-reliable way to autoplay audio.
    ──────────────────────────────────────────────── */
-(function musicPlayer() {
-  const audio = document.getElementById('bgMusic');
-  const btn   = document.getElementById('musicToggle');
-  if (!audio || !btn) return;
+(function inviteAndMusic() {
+  const splash = document.getElementById('inviteSplash');
+  const audio  = document.getElementById('bgMusic');
+  const btn    = document.getElementById('musicToggle');
 
-  audio.volume = 1.0;
-  audio.muted  = false;
+  if (audio) {
+    audio.volume = 1.0;
+    audio.muted  = true;           // start muted so the element is primed
+    audio.play().catch(() => {});  // warm-load (silent)
+  }
 
   function updateBtn() {
+    if (!btn || !audio) return;
     btn.classList.toggle('muted', audio.muted);
     btn.setAttribute('aria-label', audio.muted ? 'Musik anschalten' : 'Musik stummschalten');
     btn.setAttribute('title',      audio.muted ? 'Musik anschalten' : 'Musik stummschalten');
   }
 
-  // try unmuted autoplay first (works if user has interacted with the site before)
-  audio.play().catch(() => {
-    // browser blocked it — play muted so something starts, then unmute on any interaction
-    audio.muted = true;
-    updateBtn();
-    audio.play().catch(() => {});
-    const unmute = () => {
+  function enterInvitation() {
+    // unmute + play at the user-gesture moment
+    if (audio) {
       audio.muted = false;
       audio.play().catch(() => {});
-      updateBtn();
-    };
-    ['pointerdown','touchstart','click','keydown','scroll'].forEach(ev =>
-      document.addEventListener(ev, unmute, { once: true, passive: true })
-    );
-  });
-
-  // button: manual mute / unmute
-  btn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    audio.muted = !audio.muted;
-    audio.play().catch(() => {});
+    }
     updateBtn();
-  });
 
+    // mark body as "entered" — hero text fade-in and scroll hint key off this
+    document.body.classList.add('entered');
+
+    // trigger the opening animation; leave the splash element in the DOM
+    // until the panels have fully swung open (matches the 4s CSS transition)
+    if (splash) {
+      splash.classList.add('closing');
+      setTimeout(() => { splash.hidden = true; }, 4200);
+    }
+  }
+
+  // hide the scroll hint once the user actually starts scrolling
+  let scrolled = false;
+  window.addEventListener('scroll', () => {
+    if (scrolled) return;
+    if (window.scrollY > 40) {
+      scrolled = true;
+      document.body.classList.add('scrolled');
+    }
+  }, { passive: true });
+
+  // any tap / click / key anywhere on the splash triggers entry
+  if (splash) {
+    splash.addEventListener('click', enterInvitation);
+    splash.addEventListener('touchstart', enterInvitation, { passive: true });
+    document.addEventListener('keydown', function onKey(e) {
+      if (splash.classList.contains('closing') || splash.hidden) return;
+      if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') enterInvitation();
+    });
+  }
+
+  // button on page: manual mute / unmute
+  if (btn) {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      audio.muted = !audio.muted;
+      audio.play().catch(() => {});
+      updateBtn();
+    });
+  }
   updateBtn();
 })();
 
