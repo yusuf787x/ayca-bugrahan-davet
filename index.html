@@ -12,11 +12,18 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600&family=Dancing+Script:wght@500;600&family=Parisienne&display=swap" rel="stylesheet" />
 
 <script>
-  /* Run synchronously before the body paints so the splash-active lock
-     is active from the very first frame.  Also disable browser scroll
-     restoration so a reload doesn't jump mid-page. */
+  /* Runs synchronously before the body paints so the splash-active
+     scroll-lock is active from the very first frame.  Also:
+       - disables browser scroll restoration (no jump-to-old-position
+         on reload)
+       - strips any URL hash (#details etc.) BEFORE the body parses,
+         so the browser never auto-scrolls to that anchor after
+         opening the invitation */
   (function() {
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    if (location.hash) {
+      try { history.replaceState(null, '', location.pathname + location.search); } catch(e) {}
+    }
     try { window.scrollTo(0, 0); } catch(e) {}
     document.documentElement.classList.add('splash-active');
   })();
@@ -992,7 +999,7 @@
       <span class="break">Buğrahan</span>
     </h1>
     <p class="hero-meta last fade-in" data-i18n="heroDate">27 Haziran 2026 Cumartesi</p>
-    <a class="cta fade-in" href="#details" data-i18n="saveDate">TARİHİ KAYDEDİN</a>
+    <a class="cta fade-in" href="#details" id="saveDateCta" data-i18n="saveDate">TARİHİ KAYDEDİN</a>
   </div>
 
   <!-- subtle scroll hint — fades in after the hero text, fades out once user scrolls -->
@@ -1614,6 +1621,12 @@ applyLang(currentLang);
       splash.classList.add('closing');
       openPanels(() => {
         splash.hidden = true;
+        // safety reset: re-anchor the scroll position at the top after the
+        // splash element is removed from the flow.  Some iOS versions
+        // shift the viewport when a fixed element is removed.
+        try { window.scrollTo(0, 0); } catch(e) {}
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
         document.body.classList.add('panels-opened');
         revealHeroText();                                  // fades in immediately
         setTimeout(revealScrollHint, 1400);                // ~0.5s after hero done
@@ -1623,6 +1636,19 @@ applyLang(currentLang);
       revealHeroText();
       setTimeout(revealScrollHint, 1400);
     }
+  }
+
+  // CTA button: smooth-scroll to details WITHOUT putting #details in
+  // the URL.  This kept haunting us — once a guest had clicked it,
+  // the URL they bookmarked/shared had #details, and reopening it
+  // auto-jumped to the bottom of the page.
+  const saveCta = document.getElementById('saveDateCta');
+  if (saveCta) {
+    saveCta.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.getElementById('details');
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
   }
 
   // hide the scroll hint once the user actually starts scrolling
