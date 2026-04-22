@@ -12,13 +12,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600&family=Dancing+Script:wght@500;600&family=Parisienne&display=swap" rel="stylesheet" />
 
 <script>
-  /* Runs synchronously before the body paints so the splash-active
-     scroll-lock is active from the very first frame.  Also:
-       - disables browser scroll restoration (no jump-to-old-position
-         on reload)
-       - strips any URL hash (#details etc.) BEFORE the body parses,
-         so the browser never auto-scrolls to that anchor after
-         opening the invitation */
+  /* Runs synchronously before the body paints.
+       - disables browser scroll restoration
+       - strips any URL hash (#details etc.) BEFORE body parses, so
+         the browser never auto-anchors
+       - locks scroll via the splash-active class on <html>
+       - on EVERY pageshow (incl. bfcache restore) + scroll events
+         during the splash phase, forces the scroll back to the top */
   (function() {
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     if (location.hash) {
@@ -26,6 +26,22 @@
     }
     try { window.scrollTo(0, 0); } catch(e) {}
     document.documentElement.classList.add('splash-active');
+
+    function resetTop() {
+      try { window.scrollTo(0, 0); } catch(_) {}
+      if (document.documentElement) document.documentElement.scrollTop = 0;
+      if (document.body) document.body.scrollTop = 0;
+    }
+    // covers reload, first load AND bfcache restores (iOS uses bfcache heavily)
+    window.addEventListener('pageshow', resetTop);
+    window.addEventListener('load', resetTop);
+    // while the splash is active, snap back any stray scroll the OS
+    // might try to apply during layout / URL-bar show-hide
+    window.addEventListener('scroll', function() {
+      if (document.documentElement.classList.contains('splash-active')) {
+        resetTop();
+      }
+    }, { passive: true });
   })();
 </script>
 
@@ -1590,14 +1606,24 @@ applyLang(currentLang);
     }
   }
 
-  function enterInvitation() {
-    // hard-reset scroll so the user lands at the top of the invitation
-    // regardless of any stray scroll movement during the splash
-    try { window.scrollTo(0, 0); } catch(e) {}
+  // repeatedly force the scroll to the top in case Safari / bfcache /
+  // URL hash / momentum scrolling tries to restore a position.  Belt
+  // and braces, but cheap.
+  function hardScrollTop() {
+    try { window.scrollTo(0, 0); } catch(_) {}
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
+    if (location.hash) {
+      try { history.replaceState(null, '', location.pathname + location.search); } catch(_) {}
+    }
+  }
 
-    // release the body scroll lock we applied at page load
+  function enterInvitation() {
+    hardScrollTop();
+    requestAnimationFrame(hardScrollTop);
+    setTimeout(hardScrollTop, 30);
+    setTimeout(hardScrollTop, 200);
+
     document.documentElement.classList.remove('splash-active');
 
     // unmute + play at the user-gesture moment
@@ -1661,12 +1687,25 @@ applyLang(currentLang);
     }
   }, { passive: true });
 
-  // any tap / click / key anywhere on the splash triggers entry
+  // Any tap / click / key anywhere in the splash phase triggers entry.
+  // We use a capturing document-level handler so it fires BEFORE any
+  // element-specific click handler inside the splash (or leaking through
+  // to elements behind it) can run.  Guarded to only fire while the
+  // splash is still the active cover.
+  function splashActive() {
+    return splash && !splash.hidden && !splash.classList.contains('closing');
+  }
+  function onSplashInteract(e) {
+    if (!splashActive()) return;
+    if (e && e.preventDefault) { try { e.preventDefault(); } catch(_) {} }
+    enterInvitation();
+  }
   if (splash) {
-    splash.addEventListener('click', enterInvitation);
-    splash.addEventListener('touchstart', enterInvitation, { passive: true });
+    document.addEventListener('click',      onSplashInteract, true);
+    document.addEventListener('touchstart', onSplashInteract, { capture: true, passive: false });
+    document.addEventListener('pointerdown',onSplashInteract, true);
     document.addEventListener('keydown', function onKey(e) {
-      if (splash.classList.contains('closing') || splash.hidden) return;
+      if (!splashActive()) return;
       if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') enterInvitation();
     });
   }
