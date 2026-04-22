@@ -568,7 +568,7 @@
 
   /* ── QUOTE ─────────────────────────────────────── */
   .quote{padding:60px 24px 90px;text-align:center}
-  .quote blockquote{max-width:680px;margin:0 auto;position:relative}
+  .quote blockquote{max-width:680px;margin:0 auto;position:relative;z-index:5}
   .quote .marks{
     font-family:'Cormorant Garamond',serif;font-style:italic;
     font-size:5rem;line-height:0;color:var(--terra);
@@ -642,10 +642,10 @@
     opacity:0;
     transition:opacity 2s ease, transform .8s ease;
   }
-  /* appears after the hero text has settled in */
-  body.entered .scroll-hint{
+  /* appears after the hero text has fully settled */
+  body.panels-opened .scroll-hint{
     opacity:1;
-    transition-delay:4.2s;
+    transition-delay:2s;
   }
   /* disappears once user begins scrolling */
   body.scrolled .scroll-hint{
@@ -776,14 +776,14 @@
     transform:translateY(18px);
     transition:opacity .9s cubic-bezier(.2,.6,.2,1),transform .9s cubic-bezier(.2,.6,.2,1);
   }
-  body.entered .hero-content .fade-in{
+  /* Hero text only reveals once JS has flagged the panels as fully
+     opened (body.panels-opened is set 1s after the rAF swing ends).
+     Keeps the exact "1s after the animation" timing regardless of
+     whether we're on the 4s desktop or 3.4s mobile duration. */
+  body.panels-opened .hero-content .fade-in{
     opacity:1;
     transform:none;
   }
-  /* all hero lines appear together — stops the "jumpy staggered" feel on
-     slower mobile devices where each line rendering independently looked
-     like the page was loading in pieces */
-  body.entered .hero-content .fade-in{transition-delay:2.6s}
 
   /* ── MOBILE ───────────────────────────────────── */
   @media (max-width:640px){
@@ -1551,7 +1551,16 @@ applyLang(currentLang);
 
     if (splash) {
       splash.classList.add('closing');
-      openPanels(() => { splash.hidden = true; });
+      openPanels(() => {
+        splash.hidden = true;
+        // 1 second of pure scene before the hero text starts to reveal
+        setTimeout(() => {
+          document.body.classList.add('panels-opened');
+        }, 1000);
+      });
+    } else {
+      // no splash in DOM — reveal hero text right away
+      document.body.classList.add('panels-opened');
     }
   }
 
