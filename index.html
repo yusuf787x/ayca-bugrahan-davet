@@ -9,7 +9,11 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600&family=Dancing+Script:wght@500;600&family=Parisienne&display=swap" rel="stylesheet" />
+<!-- body fonts: render with fallback immediately, swap when loaded -->
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600&family=Dancing+Script:wght@500;600&display=swap" rel="stylesheet" />
+<!-- Parisienne (names/titles): block rendering briefly until loaded so
+     there's no visible FOUT jump when the script font swaps in -->
+<link href="https://fonts.googleapis.com/css2?family=Parisienne&display=block" rel="stylesheet" />
 
 <style>
   :root{
@@ -72,11 +76,10 @@
     overflow:hidden;
     transform:translate3d(0,0,0);
     -webkit-transform:translate3d(0,0,0);
-    transition:transform 4s cubic-bezier(.65,0,.18,1),
-               -webkit-transform 4s cubic-bezier(.65,0,.18,1),
-               box-shadow 1.2s ease;
     -webkit-backface-visibility:hidden;
     backface-visibility:hidden;
+    /* no CSS transition — panel transform is driven by a rAF
+       loop in JS so mobile Safari can't quietly skip the animation */
   }
   .splash-panel-left{
     left:-.15%;
@@ -92,7 +95,6 @@
   }
   @media (max-width:640px){
     .invite-splash{perspective:1000px;-webkit-perspective:1000px}
-    .splash-panel{transition-duration:3.6s,3.6s,1s}
   }
 
   /* Panel-content fills the panel's full height and uses flexbox
@@ -119,20 +121,20 @@
   .splash-panel-left .panel-content{left:0}   /* viewport 0 → 100vw, centre at 50vw */
   .splash-panel-right .panel-content{right:0} /* viewport 0 → 100vw, centre at 50vw */
 
-  /* the opening animation — the two halves swing outward in 3D */
+  /* Closing state styles (box-shadow only) — the actual transform
+     is set each frame by JS.  CSS rules here would compete with
+     JS-assigned inline styles and misbehave on iOS. */
   .invite-splash.closing .splash-panel-left{
-    transform:translate3d(-3%,0,0) rotateY(-110deg);
-    -webkit-transform:translate3d(-3%,0,0) rotateY(-110deg);
     box-shadow:
       inset -14px 0 28px -18px rgba(43,74,50,.35),
       36px 0 80px -10px rgba(43,74,50,.5);
+    transition:box-shadow 1.2s ease;
   }
   .invite-splash.closing .splash-panel-right{
-    transform:translate3d(3%,0,0) rotateY(110deg);
-    -webkit-transform:translate3d(3%,0,0) rotateY(110deg);
     box-shadow:
       inset 14px 0 28px -18px rgba(43,74,50,.35),
       -36px 0 80px -10px rgba(43,74,50,.5);
+    transition:box-shadow 1.2s ease;
   }
   .splash-eyebrow{
     font-family:'Manrope',sans-serif;font-weight:500;
@@ -778,10 +780,10 @@
     opacity:1;
     transform:none;
   }
-  body.entered .hero-content .fade-in:nth-child(1){transition-delay:2.6s}
-  body.entered .hero-content .fade-in:nth-child(2){transition-delay:2.8s}
-  body.entered .hero-content .fade-in:nth-child(3){transition-delay:3.1s}
-  body.entered .hero-content .fade-in:nth-child(4){transition-delay:3.3s}
+  /* all hero lines appear together — stops the "jumpy staggered" feel on
+     slower mobile devices where each line rendering independently looked
+     like the page was loading in pieces */
+  body.entered .hero-content .fade-in{transition-delay:2.6s}
 
   /* ── MOBILE ───────────────────────────────────── */
   @media (max-width:640px){
@@ -946,7 +948,7 @@
     <!-- animated watercolor courtyard as hero background -->
     <video class="hero-video" id="heroVideo"
            autoplay loop muted playsinline
-           preload="metadata"
+           preload="auto"
            poster="./assets/illustration.svg"
            data-src-desktop="./assets/courtyard.mp4"
            data-src-mobile="./assets/courtyard-mobile.mp4"></video>
@@ -1502,6 +1504,34 @@ applyLang(currentLang);
     btn.setAttribute('title',      audio.muted ? 'Musik anschalten' : 'Musik stummschalten');
   }
 
+  // JS-driven panel swing (bypasses CSS transitions which mobile Safari
+  // occasionally refused to animate, especially combined with a playing video)
+  function openPanels(onDone) {
+    const leftP  = splash && splash.querySelector('.splash-panel-left');
+    const rightP = splash && splash.querySelector('.splash-panel-right');
+    if (!leftP || !rightP) { if (onDone) onDone(); return; }
+    const isMobile  = window.matchMedia('(max-width: 640px)').matches;
+    const duration  = isMobile ? 3400 : 4000;
+    const maxAngle  = 110;
+    const maxShift  = 3;
+    const t0 = performance.now();
+    // easeInOut cubic-style curve
+    const ease = t => t < .5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3)/2;
+    function frame(now) {
+      const t = Math.min(1, (now - t0) / duration);
+      const e = ease(t);
+      const a = maxAngle * e;
+      const s = maxShift * e;
+      leftP.style.transform  = 'translate3d(' + (-s) + '%,0,0) rotateY(' + (-a) + 'deg)';
+      rightP.style.transform = 'translate3d(' + ( s) + '%,0,0) rotateY(' + ( a) + 'deg)';
+      leftP.style.webkitTransform  = leftP.style.transform;
+      rightP.style.webkitTransform = rightP.style.transform;
+      if (t < 1) requestAnimationFrame(frame);
+      else if (onDone) onDone();
+    }
+    requestAnimationFrame(frame);
+  }
+
   function enterInvitation() {
     // unmute + play at the user-gesture moment
     if (audio) {
@@ -1510,14 +1540,18 @@ applyLang(currentLang);
     }
     updateBtn();
 
+    // force-load the hero video so it's buffered by the time the panels finish
+    const hv = document.getElementById('heroVideo');
+    if (hv) {
+      try { hv.load(); hv.play().catch(() => {}); } catch (e) {}
+    }
+
     // mark body as "entered" — hero text fade-in and scroll hint key off this
     document.body.classList.add('entered');
 
-    // trigger the opening animation; leave the splash element in the DOM
-    // until the panels have fully swung open (matches the 4s CSS transition)
     if (splash) {
       splash.classList.add('closing');
-      setTimeout(() => { splash.hidden = true; }, 4200);
+      openPanels(() => { splash.hidden = true; });
     }
   }
 
